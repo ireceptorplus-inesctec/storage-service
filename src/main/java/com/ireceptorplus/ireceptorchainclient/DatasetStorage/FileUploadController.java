@@ -23,20 +23,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
-public class DatasetUploadController {
+public class FileUploadController {
 
     private final StorageService storageService;
+    private static final String contentName = "datasets";
 
     @Autowired
-    public DatasetUploadController(StorageService storageService) {
+    public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
 
-    @GetMapping("/datasets/")
+    @GetMapping("/" + contentName + "/")
     public String listUploadedFiles(Model model) throws IOException {
 
         model.addAttribute("files", storageService.loadAll().map(
-                        path -> MvcUriComponentsBuilder.fromMethodName(DatasetUploadController.class,
+                        path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
                                 "serveFile", path.getFileName().toString()).build().toUri().toString())
                 .collect(Collectors.toList()));
 
