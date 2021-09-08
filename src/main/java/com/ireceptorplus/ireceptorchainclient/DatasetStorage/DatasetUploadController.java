@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class DatasetUploadController {
 
     private final StorageService storageService;
-    protected static final String contentName = "datasets";
+    protected static final String contentName = "dataset";
 
     @Autowired
     public DatasetUploadController(StorageService storageService) {
