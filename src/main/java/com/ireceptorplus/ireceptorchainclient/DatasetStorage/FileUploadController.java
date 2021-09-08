@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class FileUploadController {
 
     private final StorageService storageService;
-    private static final String contentName = "datasets";
+    protected static final String contentName = "datasets";
 
     @Autowired
     public FileUploadController(StorageService storageService) {
@@ -44,7 +44,7 @@ public class FileUploadController {
         return "uploadForm";
     }
 
-    @GetMapping("/datasets/{filename:.+}")
+    @GetMapping("/" + contentName + "/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -53,7 +53,7 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/datasets/")
+    @PostMapping("/" + contentName + "/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
@@ -61,7 +61,7 @@ public class FileUploadController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/datasets";
+        return "redirect:/" + contentName;
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
