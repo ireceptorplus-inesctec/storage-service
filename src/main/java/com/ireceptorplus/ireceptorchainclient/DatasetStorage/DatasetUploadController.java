@@ -1,10 +1,10 @@
-package com.ireceptorplus.ireceptorchainclient.FileStorage;
+package com.ireceptorplus.ireceptorchainclient.DatasetStorage;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-import com.ireceptorplus.ireceptorchainclient.FileStorage.storage.StorageFileNotFoundException;
-import com.ireceptorplus.ireceptorchainclient.FileStorage.storage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageFileNotFoundException;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
-public class FileUploadController {
+public class DatasetUploadController {
 
     private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    public DatasetUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
 
@@ -36,7 +36,7 @@ public class FileUploadController {
     public String listUploadedFiles(Model model) throws IOException {
 
         model.addAttribute("files", storageService.loadAll().map(
-                        path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                        path -> MvcUriComponentsBuilder.fromMethodName(DatasetUploadController.class,
                                 "serveFile", path.getFileName().toString()).build().toUri().toString())
                 .collect(Collectors.toList()));
 
