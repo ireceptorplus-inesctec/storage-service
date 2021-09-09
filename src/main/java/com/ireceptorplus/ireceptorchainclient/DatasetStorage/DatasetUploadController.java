@@ -41,7 +41,7 @@ public class DatasetUploadController {
                                 "serveFile", path.getFileName().toString()).build().toUri().toString())
                 .collect(Collectors.toList()));
 
-        return "uploadForm";
+        return "uploadDatasetForm";
     }
 
     @GetMapping("/" + contentName + "/{filename:.+}")
