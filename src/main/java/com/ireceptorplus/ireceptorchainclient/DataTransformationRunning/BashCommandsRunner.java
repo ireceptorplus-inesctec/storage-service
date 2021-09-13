@@ -26,6 +26,11 @@ public class BashCommandsRunner extends DataTransformationRunner
 
     void runBashCommand(Command command)
     {
+        runBashCommand(command.getString());
+    }
+
+    void runBashCommand(String command)
+    {
         try
         {
 
@@ -44,7 +49,7 @@ public class BashCommandsRunner extends DataTransformationRunner
 
             //Run a bat file
             Process process = Runtime.getRuntime().exec(
-                    command.getString(), null, new File(workingDir));
+                    command, null, new File(workingDir));
 
             StringBuilder output = new StringBuilder();
 
