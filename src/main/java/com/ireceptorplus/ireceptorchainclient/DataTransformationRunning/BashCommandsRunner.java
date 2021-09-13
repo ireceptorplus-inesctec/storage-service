@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class BashCommandsRunner extends DataTransformationRunner
 {
+    private static String workingDir;
+
     public BashCommandsRunner(ArrayList<Dataset> inputs, Script script) {
         super(inputs, script);
     }
@@ -17,7 +19,7 @@ public class BashCommandsRunner extends DataTransformationRunner
         
     }
 
-    void runBashCommands()
+    void runBashCommand(Command command)
     {
         try {
 
@@ -36,7 +38,7 @@ public class BashCommandsRunner extends DataTransformationRunner
 
             //Run a bat file
             Process process = Runtime.getRuntime().exec(
-                    "cmd /c hello.bat", null, new File("C:\\Users\\mkyong\\"));
+                    command.getString(), null, new File(workingDir));
 
             StringBuilder output = new StringBuilder();
 
