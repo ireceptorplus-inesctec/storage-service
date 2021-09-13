@@ -7,17 +7,17 @@ public abstract class DataTransformationRunner
     /**
      * The inputs datasets that when applied the processing yield the outputs.
      */
-    private ArrayList<Dataset> inputs;
+    protected ArrayList<Dataset> inputs;
 
     /**
      * The script that when applied to the inputs yields the outputs.
      */
-    private Script script;
+    protected Script script;
 
     /**
      * The outputs which are yield when the script is applied to the inputs.
      */
-    private ArrayList<Dataset> outputs;
+    protected ArrayList<Dataset> outputs;
 
     public DataTransformationRunner(ArrayList<Dataset> inputs, Script script) {
         this.inputs = inputs;
