@@ -10,7 +10,8 @@ public class BashCommandsRunner extends DataTransformationRunner
 {
     private static String workingDir;
 
-    public BashCommandsRunner(ArrayList<Dataset> inputs, Script script) {
+    public BashCommandsRunner(ArrayList<Dataset> inputs, Script script)
+    {
         super(inputs, script);
     }
 
@@ -25,7 +26,8 @@ public class BashCommandsRunner extends DataTransformationRunner
 
     void runBashCommand(Command command)
     {
-        try {
+        try
+        {
 
             // -- Linux --
 
@@ -50,28 +52,34 @@ public class BashCommandsRunner extends DataTransformationRunner
                     new InputStreamReader(process.getInputStream()));
 
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 output.append(line + "\n");
             }
 
             int exitVal = process.waitFor();
-            if (exitVal == 0) {
+            if (exitVal == 0)
+            {
                 System.out.println("Success!");
                 System.out.println(output);
                 System.exit(0);
-            } else {
+            } else
+            {
                 //abnormal...
             }
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    boolean verifyIfOutputsMatch(Dataset dataset) {
+    boolean verifyIfOutputsMatch(Dataset dataset)
+    {
         return false;
     }
 }
