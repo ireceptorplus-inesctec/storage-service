@@ -93,6 +93,7 @@ public class BashCommandsRunner extends DataTransformationRunner
         return false;
     }
 
+    //test main
     public static void main(String []args)
     {
         BashCommandsRunner runner = new BashCommandsRunner(null, null);
