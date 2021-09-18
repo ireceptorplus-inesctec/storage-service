@@ -1,7 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -46,10 +45,16 @@ public class BashCommandsRunner extends DataTransformationRunner
 
             // Run a command
             //Process process = Runtime.getRuntime().exec("cmd /c dir C:\\Users\\mkyong");
-
-            //Run a bat file
-            Process process = Runtime.getRuntime().exec(
-                    command, null, new File(workingDir));
+            Process process;
+            String operatingSystemName = System.getProperty("os.name");
+            if (operatingSystemName.contains("Windows"))
+            {
+                process = Runtime.getRuntime().exec("cmd /c " + command);
+            }
+            else
+            {
+                process = Runtime.getRuntime().exec(command);
+            }
 
             StringBuilder output = new StringBuilder();
 
@@ -86,5 +91,11 @@ public class BashCommandsRunner extends DataTransformationRunner
     boolean verifyIfOutputsMatch(Dataset dataset)
     {
         return false;
+    }
+
+    public static void main(String []args)
+    {
+        BashCommandsRunner runner = new BashCommandsRunner(null, null);
+        runner.runBashCommand("ping 192.168.1.1");
     }
 }
