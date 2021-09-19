@@ -1,67 +1,40 @@
 #!/usr/bin/env nextflow
 
-/*
- * Defines the pipeline inputs parameters (giving a default value for each for them)
- * Each of the following parameters can be specified as command line options
- */
-params.query = "$baseDir/data/sample.fa"
-params.db = "$baseDir/blast-db/pdb/tiny"
-params.out = "result.txt"
-params.chunkSize = 100
-
-db_name = file(params.db).name
-db_dir = file(params.db).parent
+params.in = "$baseDir/data/sample.fa"
 
 /*
- * Given the query parameter creates a channel emitting the query fasta file(s),
- * the file is split in chunks containing as many sequences as defined by the parameter 'chunkSize'.
- * Finally assign the result channel to the variable 'fasta_ch'
+ * split a fasta file in multiple files
  */
-Channel
-    .fromPath(params.query)
-    .splitFasta(by: params.chunkSize, file:true)
-    .set { fasta_ch }
+process splitSequences {
 
-/*
- * Executes a BLAST job for each chunk emitted by the 'fasta_ch' channel
- * and creates as output a channel named 'top_hits' emitting the resulting
- * BLAST matches
- */
-process blast {
     input:
-    path 'query.fa' from fasta_ch
-    path db from db_dir
+    path 'input.fa' from params.in
 
     output:
-    file 'top_hits' into hits_ch
+    path 'seq_*' into records
 
     """
-    blastp -db $db/$db_name -query query.fa -outfmt 6 > blast_result
-    cat blast_result | head -n 10 | cut -f 2 > top_hits
+    awk '/^>/{f="seq_"++d} {print > f}' < input.fa
     """
 }
 
 /*
- * Each time a file emitted by the 'top_hits' channel an extract job is executed
- * producing a file containing the matching sequences
+ * Simple reverse the sequences
  */
-process extract {
+process reverse {
+
     input:
-    path 'top_hits' from hits_ch
-    path db from db_dir
+    path x from records
 
     output:
-    file 'sequences' into sequences_ch
+    stdout into result
 
     """
-    blastdbcmd -db $db/$db_name -entry_batch top_hits | head -n 10 > sequences
+    cat $x | rev
     """
 }
 
 /*
- * Collects all the sequences files into a single file
- * and prints the resulting file content when complete
+ * print the channel content
  */
-sequences_ch
-    .collectFile(name: params.out)
-    .view { file -> "matching sequences:\n ${file.text}" }
+result.subscribe { println it }
