@@ -1,12 +1,24 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NextFlowScriptRunner extends DataTransformationRunner
 {
-    public NextFlowScriptRunner(ArrayList<Dataset> inputs, Script script)
+    public NextFlowScriptRunner(ArrayList<Dataset> inputs, NextFlowScript script)
     {
         super(inputs, script);
+    }
+
+    protected void createNextFlowScript() throws IOException
+    {
+        String str = "Hello";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(script.getContent()));
+        writer.write(str);
+
+        writer.close();
     }
 
     @Override
@@ -19,7 +31,7 @@ public class NextFlowScriptRunner extends DataTransformationRunner
 
         NextFlowScript nextFlowScript = (NextFlowScript) script;
         BashCommandsRunner bashCommandsRunner = new BashCommandsRunner(inputs, script);
-        bashCommandsRunner.runBashCommand(nextFlowScript.getCommands().get(0));
+        bashCommandsRunner.runBashCommand(nextFlowScript.getContent());
 
     }
 
