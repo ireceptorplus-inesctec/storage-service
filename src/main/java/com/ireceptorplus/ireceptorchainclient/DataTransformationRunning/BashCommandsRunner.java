@@ -17,7 +17,7 @@ public class BashCommandsRunner extends DataTransformationRunner
     @Override
     void run()
     {
-        runBashCommand(script.getCommand());
+        runBashCommand(script.getContent());
     }
 
     void runBashCommand(Command command)

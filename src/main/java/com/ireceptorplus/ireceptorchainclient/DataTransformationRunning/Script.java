@@ -19,7 +19,7 @@ public class Script
         this.content = content;
     }
 
-    public String getCommand()
+    public String getContent()
     {
         return content;
     }
