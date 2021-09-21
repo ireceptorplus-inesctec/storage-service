@@ -3,13 +3,13 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 import java.util.ArrayList;
 
 public class Script {
-    protected ArrayList<Command> commands;
+    protected String commands;
 
-    public Script(ArrayList<Command> commands) {
+    public Script(String commands) {
         this.commands = commands;
     }
 
-    public ArrayList<Command> getCommands() {
+    public String getCommand() {
         return commands;
     }
 }

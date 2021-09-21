@@ -17,10 +17,7 @@ public class BashCommandsRunner extends DataTransformationRunner
     @Override
     void run()
     {
-        for (Command command : script.getCommands())
-        {
-            runBashCommand(command);
-        }
+        runBashCommand(script.getCommand());
     }
 
     void runBashCommand(Command command)
@@ -50,8 +47,7 @@ public class BashCommandsRunner extends DataTransformationRunner
             if (operatingSystemName.contains("Windows"))
             {
                 process = Runtime.getRuntime().exec("cmd /c " + command);
-            }
-            else
+            } else
             {
                 process = Runtime.getRuntime().exec(command);
             }
@@ -95,7 +91,7 @@ public class BashCommandsRunner extends DataTransformationRunner
 
     //TODO
     //test main
-    public static void main(String []args)
+    public static void main(String[] args)
     {
         BashCommandsRunner runner = new BashCommandsRunner(null, null);
         runner.runBashCommand("ping 192.168.1.1");
