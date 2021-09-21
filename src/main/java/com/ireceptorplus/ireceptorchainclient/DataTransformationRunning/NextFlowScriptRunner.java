@@ -24,6 +24,15 @@ public class NextFlowScriptRunner extends DataTransformationRunner
     @Override
     void run()
     {
+        try
+        {
+            createNextFlowScript();
+        } catch (IOException e)
+        {
+            System.out.println("Failed to create next flow script on disk.");
+            e.printStackTrace();
+        }
+
         for (Dataset dataset : inputs)
         {
             downloadDatasetAndPlaceItOnDir(dataset);
