@@ -32,5 +32,9 @@ public abstract class DataTransformationRunner
 
     abstract boolean verifyIfOutputsMatch(Dataset dataset);
 
+    protected void downloadDatasetAndPlaceItOnDir(Dataset dataset)
+    {
+        //TODO
+    }
 
 }

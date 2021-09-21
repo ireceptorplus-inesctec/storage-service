@@ -12,6 +12,14 @@ public class NextFlowScriptRunner extends DataTransformationRunner
     @Override
     void run()
     {
+        for (Dataset dataset : inputs)
+        {
+            downloadDatasetAndPlaceItOnDir(dataset);
+        }
+
+        NextFlowScript nextFlowScript = (NextFlowScript) script;
+        BashCommandsRunner bashCommandsRunner = new BashCommandsRunner(inputs, script);
+        bashCommandsRunner.runBashCommand(nextFlowScript.getCommands().get(0));
 
     }
 
