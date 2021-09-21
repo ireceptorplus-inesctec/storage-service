@@ -10,13 +10,13 @@ import java.util.Arrays;
  */
 public class NextFlowScript extends Script
 {
-    private String name;
-    private String content;
+    private static final String commandPrefixToRunScript = "./nextflow run ";
 
-    public NextFlowScript(String name, String content)
+    private String name;
+
+    public NextFlowScript(String content, String name)
     {
-        super(new ArrayList<>(Arrays.asList(new Command("./nextflow run " + name))));
+        super(content);
         this.name = name;
-        this.content = content;
     }
 }
