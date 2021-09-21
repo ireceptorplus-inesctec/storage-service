@@ -28,4 +28,11 @@ public class NextFlowScriptRunner extends DataTransformationRunner
     {
         return false;
     }
+
+    public static void main(String args[])
+    {
+        NextFlowScript script = new NextFlowScript("BasicPipeline", "./nextflow run BasicPipeline");
+        NextFlowScriptRunner runner = new NextFlowScriptRunner(null, script);
+        runner.run();
+    }
 }
