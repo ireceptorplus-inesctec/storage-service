@@ -6,6 +6,14 @@ public class Script
 {
     protected String content;
 
+    public Script(ArrayList<String> commands)
+    {
+        for (String command : commands)
+        {
+            content = content.concat(command);
+        }
+    }
+
     public Script(String content)
     {
         this.content = content;
