@@ -4,16 +4,15 @@ import java.util.ArrayList;
 
 public class Script
 {
-    protected String commands;
+    protected String content;
 
-
-    public Script(String commands)
+    public Script(String content)
     {
-        this.commands = commands;
+        this.content = content;
     }
 
     public String getCommand()
     {
-        return commands;
+        return content;
     }
 }
