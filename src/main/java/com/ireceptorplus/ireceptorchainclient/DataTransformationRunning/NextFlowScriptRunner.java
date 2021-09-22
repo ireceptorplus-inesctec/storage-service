@@ -51,7 +51,47 @@ public class NextFlowScriptRunner extends DataTransformationRunner
 
     public static void main(String args[])
     {
-        NextFlowScript script = new NextFlowScript("BasicPipeline", "./nextflow run BasicPipeline");
+        String testNextFlowScriptContent = "#!/usr/bin/env nextflow\n" +
+                "\n" +
+                "params.in = \"$baseDir/data/sample.fa\"\n" +
+                "\n" +
+                "/*\n" +
+                " * split a fasta file in multiple files\n" +
+                " */\n" +
+                "process splitSequences {\n" +
+                "\n" +
+                "    input:\n" +
+                "    path 'input.fa' from params.in\n" +
+                "\n" +
+                "    output:\n" +
+                "    path 'seq_*' into records\n" +
+                "\n" +
+                "    \"\"\"\n" +
+                "    awk '/^>/{f=\"seq_\"++d} {print > f}' < input.fa\n" +
+                "    \"\"\"\n" +
+                "}\n" +
+                "\n" +
+                "/*\n" +
+                " * Simple reverse the sequences\n" +
+                " */\n" +
+                "process reverse {\n" +
+                "\n" +
+                "    input:\n" +
+                "    path x from records\n" +
+                "\n" +
+                "    output:\n" +
+                "    stdout into result\n" +
+                "\n" +
+                "    \"\"\"\n" +
+                "    cat $x | rev\n" +
+                "    \"\"\"\n" +
+                "}\n" +
+                "\n" +
+                "/*\n" +
+                " * print the channel content\n" +
+                " */\n" +
+                "result.subscribe { println it }";
+        NextFlowScript script = new NextFlowScript(testNextFlowScriptContent, "BasicPipeline");
         NextFlowScriptRunner runner = new NextFlowScriptRunner(null, script);
         runner.run();
     }
