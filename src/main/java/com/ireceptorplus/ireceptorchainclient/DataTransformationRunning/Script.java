@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Script
 {
     protected String content;
+    protected String name;
 
     public Script(ArrayList<String> commands)
     {
@@ -14,13 +15,19 @@ public class Script
         }
     }
 
-    public Script(String content)
+    public Script(String content, String name)
     {
         this.content = content;
+        this.name = name;
     }
 
     public String getContent()
     {
         return content;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }

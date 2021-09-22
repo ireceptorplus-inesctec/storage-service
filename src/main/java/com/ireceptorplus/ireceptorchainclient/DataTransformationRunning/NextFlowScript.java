@@ -12,11 +12,9 @@ public class NextFlowScript extends Script
 {
     private static final String commandPrefixToRunScript = "./nextflow run ";
 
-    private String name;
-
     public NextFlowScript(String content, String name)
     {
-        super(content);
-        this.name = name;
+        super(content, name);
     }
+
 }
