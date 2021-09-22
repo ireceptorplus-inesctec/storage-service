@@ -14,9 +14,8 @@ public class NextFlowScriptRunner extends DataTransformationRunner
 
     protected void createNextFlowScript() throws IOException
     {
-        String str = "Hello";
-        BufferedWriter writer = new BufferedWriter(new FileWriter(script.getContent()));
-        writer.write(str);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(script.getName()));
+        writer.write(script.getContent());
 
         writer.close();
     }
