@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class NextFlowScript extends Script
 {
-    private static final String commandPrefixToRunScript = "./nextflow run ";
+    private static final String commandPrefixToRunScript = "nextflow run ";
 
     public NextFlowScript(String content, String name)
     {
