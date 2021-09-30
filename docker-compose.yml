@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:12
+    volumes:
+      - middleware_db:/var/lib/postgresql/data:delegated
+    ports:
+      - 5432:5432
+    environment:
+      # default user is 'postgres'
+      POSTGRES_DB: middleware_db
+      POSTGRES_PASSWORD: password
+
+volumes:
+  middleware_db:
