@@ -10,7 +10,7 @@ services:
       - 5432:5432
     environment:
       # default user is 'postgres'
-      POSTGRES_DB: middleware_db
+      POSTGRES_DB: ireceptorchain-storage-service
       POSTGRES_PASSWORD: password
 
 volumes:
