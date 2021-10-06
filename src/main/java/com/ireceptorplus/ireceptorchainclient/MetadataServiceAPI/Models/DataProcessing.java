@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DataProcessing;
+package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 import javax.persistence.*;
 

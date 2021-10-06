@@ -1,5 +1,7 @@
-package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DataProcessing;
+package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DataProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

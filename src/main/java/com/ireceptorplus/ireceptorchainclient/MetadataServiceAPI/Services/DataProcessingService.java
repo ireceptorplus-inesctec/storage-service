@@ -1,10 +1,8 @@
-package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DataProcessing;
+package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services;
 
-import org.springframework.stereotype.Component;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
