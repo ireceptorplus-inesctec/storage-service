@@ -10,43 +10,28 @@ import java.util.List;
 public class GermlineDatabase
 {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
 
     @JsonIgnore
     @Column(name = "data_processings")
-    @OneToMany(targetEntity=DataProcessing.class, mappedBy="germlineDatabase")
+    @OneToMany(mappedBy = "germlineDatabase", cascade = CascadeType.ALL)
     private List<DataProcessing> dataProcessings;
 
+    public GermlineDatabase() {}
 
-    public GermlineDatabase()
-    {
-    }
-
-    public GermlineDatabase(List<DataProcessing> dataProcessings)
-    {
+    public GermlineDatabase(String firstName, String lastName, List<DataProcessing> dataProcessings) {
         this.dataProcessings = dataProcessings;
     }
 
-
-    public Long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public List<DataProcessing> getDataProcessings()
-    {
-        return dataProcessings;
-    }
-
-    public void setDataProcessings(List<DataProcessing> dataProcessings)
-    {
-        this.dataProcessings = dataProcessings;
-    }
 }
