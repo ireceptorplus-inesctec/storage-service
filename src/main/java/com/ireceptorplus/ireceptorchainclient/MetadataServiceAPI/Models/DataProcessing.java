@@ -12,7 +12,6 @@ public class DataProcessing
     @Id
     private Long id;
 
-    @JsonIgnore //keeps the endpoint, that we will create, from serializing the customer details multiple times
     @ManyToOne
     @JoinColumn(name = "germline_database_id")
     private GermlineDatabase germlineDatabase;
