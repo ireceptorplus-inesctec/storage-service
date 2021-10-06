@@ -14,19 +14,15 @@ public class GermlineDatabase
     @Column(nullable = false)
     private Long id;
 
-
+/*
     @JsonIgnore
     @Column(name = "data_processings")
     @OneToMany(mappedBy = "germlineDatabase", cascade = CascadeType.ALL)
     private List<DataProcessing> dataProcessings;
-
+*/
 
 
     public GermlineDatabase() {}
-
-    public GermlineDatabase(List<DataProcessing> dataProcessings) {
-        this.dataProcessings = dataProcessings;
-    }
 
     public Long getId() {
         return id;
