@@ -11,7 +11,6 @@ public class GermlineDatabase
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
 /*
