@@ -72,12 +72,11 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0.3</version>
                 <configuration>
-                    <user>databaseUser</user>
-                    <password>databasePassword</password>
+                    <user>postgres</user>
+                    <password>password</password>
                     <schemas>
-                        <schema>schemaName</schema>
+                        <schema>ireceptorchain-storage-service</schema>
                     </schemas>
-                    ...
                 </configuration>
             </plugin>
 
