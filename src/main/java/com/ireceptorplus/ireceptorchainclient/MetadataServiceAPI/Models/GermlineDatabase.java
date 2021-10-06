@@ -11,7 +11,7 @@ public class GermlineDatabase
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
 
@@ -19,6 +19,8 @@ public class GermlineDatabase
     @Column(name = "data_processings")
     @OneToMany(mappedBy = "germlineDatabase", cascade = CascadeType.ALL)
     private List<DataProcessing> dataProcessings;
+
+
 
     public GermlineDatabase() {}
 

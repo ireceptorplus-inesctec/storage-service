@@ -10,7 +10,6 @@ import javax.persistence.*;
 public class DataProcessing
 {
     @Id
-    @Column(name = "id")
     private Long id;
 
     @JsonIgnore //keeps the endpoint, that we will create, from serializing the customer details multiple times
