@@ -1,21 +1,26 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "data_processing")
 public class DataProcessing
 {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //private Long repertoireId;
     //private Long readingTechniqueId;
 
-    //aqui fica o objeto mesmo
-    //@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy="question")
-    //private long germlineDatabaseId;
+    @JsonIgnore
+    @JoinColumn(name = "germline_database_id")
+    @ManyToOne
+    @Column(name = "germline_database")
+    private GermlineDatabase germlineDatabase;
 
 
     public DataProcessing()
@@ -23,15 +28,29 @@ public class DataProcessing
 
     }
 
+    public DataProcessing(GermlineDatabase germlineDatabase)
+    {
+        this.germlineDatabase = germlineDatabase;
+    }
 
     public void setId(Long id)
     {
         this.id = id;
     }
 
-    @Id
+
     public Long getId()
     {
         return id;
+    }
+
+    public GermlineDatabase getGermlineDatabase()
+    {
+        return germlineDatabase;
+    }
+
+    public void setGermlineDatabase(GermlineDatabase germlineDatabase)
+    {
+        this.germlineDatabase = germlineDatabase;
     }
 }
