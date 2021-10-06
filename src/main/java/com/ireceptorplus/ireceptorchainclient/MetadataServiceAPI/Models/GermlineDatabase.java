@@ -22,7 +22,7 @@ public class GermlineDatabase
 
     public GermlineDatabase() {}
 
-    public GermlineDatabase(String firstName, String lastName, List<DataProcessing> dataProcessings) {
+    public GermlineDatabase(List<DataProcessing> dataProcessings) {
         this.dataProcessings = dataProcessings;
     }
 
