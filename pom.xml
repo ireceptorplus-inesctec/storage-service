@@ -51,10 +51,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -65,18 +61,6 @@
                 <configuration>
                     <executable>true</executable>
                     <mainClass>com.ireceptorplus.ireceptorchainclient.IReceptorChainClientApplication</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>4.0.3</version>
-                <configuration>
-                    <user>postgres</user>
-                    <password>password</password>
-                    <schemas>
-                        <schema>ireceptorchain-storage-service</schema>
-                    </schemas>
                 </configuration>
             </plugin>
 
