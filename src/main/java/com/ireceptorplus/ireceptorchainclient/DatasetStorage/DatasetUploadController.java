@@ -33,7 +33,7 @@ public class DatasetUploadController {
         this.storageService = storageService;
     }
 
-    @GetMapping("/" + contentName + "/")
+    @GetMapping("/" + contentName)
     public String listUploadedFiles(Model model) throws IOException {
 
         model.addAttribute("files", storageService.loadAll().map(
