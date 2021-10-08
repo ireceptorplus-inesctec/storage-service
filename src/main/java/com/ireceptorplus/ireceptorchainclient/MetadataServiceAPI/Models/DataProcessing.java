@@ -4,6 +4,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "data_processing")
@@ -16,7 +17,8 @@ public class DataProcessing
     @JoinColumn(name = "germline_database_id")
     private GermlineDatabase germlineDatabase;
 
-
+    @OneToMany(mappedBy = "dataProcessing")
+    private List<ProcessingStep> processingSteps;
 
     public DataProcessing()
     {
