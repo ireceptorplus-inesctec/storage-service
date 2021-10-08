@@ -24,6 +24,9 @@ public class ProcessingStep
     @OneToMany
     private List<Dataset> outputDatasets;
 
+    @OneToMany
+    private List<Command> commands;
+
     @Column
     private Long stepOrder;
 
