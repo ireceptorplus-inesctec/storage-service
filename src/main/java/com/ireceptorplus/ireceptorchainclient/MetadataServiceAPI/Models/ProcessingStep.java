@@ -14,10 +14,6 @@ public class ProcessingStep
     @JoinColumn(name = "data_processing_id")
     private DataProcessing dataProcessing;
 
-    @OneToOne
-    @JoinColumn(name = "processing_stage_id")
-    private ProcessingStage processingStage;
-
     @OneToMany
     private List<Dataset> inputDatasets;
 
