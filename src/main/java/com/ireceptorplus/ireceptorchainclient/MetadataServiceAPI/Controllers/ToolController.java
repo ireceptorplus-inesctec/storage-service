@@ -17,12 +17,12 @@ import java.util.Optional;
 @RequestMapping("tool")
 public class ToolController
 {
+    @Autowired
     private final ToolService toolService;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     public ToolController(ToolService toolService)
     {
         this.toolService = toolService;
