@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ToolService
+public class ToolService extends CreateAndReadService<Tool, Long>
 {
-    @Autowired
     private final ToolRepository toolRepository;
 
+    @Autowired
     public ToolService(ToolRepository toolRepository)
     {
+        super(toolRepository);
         this.toolRepository = toolRepository;
     }
 
@@ -29,8 +30,4 @@ public class ToolService
         return toolRepository.findById(id);
     }
 
-    public Tool createTool(Tool tool)
-    {
-        return toolRepository.save(tool);
-    }
 }

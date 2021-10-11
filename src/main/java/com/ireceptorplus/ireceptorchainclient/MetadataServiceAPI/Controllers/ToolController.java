@@ -44,7 +44,7 @@ public class ToolController
     public ToolDTO createTool(@RequestBody @Valid ToolDTO toolDTO)
     {
         Tool tool = modelMapper.map(toolDTO, Tool.class);
-        Tool createdTool = toolService.createTool(tool);
+        Tool createdTool = toolService.create(tool);
         ToolDTO createdToolDTO = modelMapper.map(createdTool, ToolDTO.class);
 
         return createdToolDTO;
