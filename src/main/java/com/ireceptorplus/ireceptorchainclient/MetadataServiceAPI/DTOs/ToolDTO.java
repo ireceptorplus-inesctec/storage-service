@@ -1,14 +1,27 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Column;
+import javax.validation.constraints.NotEmpty;
 
 public class ToolDTO
 {
     @Column
+    @NotNull
+    @NotEmpty
     private String name;
 
     @Column
+    @NotNull
     private String version;
+
+    /**
+     * An url from which the executable program can be fetched.
+     */
+    @Column
+    @NotNull
+    private String url;
 
     @Column
     private String description;
@@ -16,10 +29,11 @@ public class ToolDTO
     @Column
     private String docsReference;
 
-    public ToolDTO(String name, String version, String description, String docsReference)
+    public ToolDTO(String name, String version, String url, String description, String docsReference)
     {
         this.name = name;
         this.version = version;
+        this.url = url;
         this.description = description;
         this.docsReference = docsReference;
     }
@@ -42,6 +56,16 @@ public class ToolDTO
     public void setVersion(String version)
     {
         this.version = version;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl(String url)
+    {
+        this.url = url;
     }
 
     public String getDescription()
