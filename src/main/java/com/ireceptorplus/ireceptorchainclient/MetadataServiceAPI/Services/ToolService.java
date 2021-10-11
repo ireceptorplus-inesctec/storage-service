@@ -28,4 +28,9 @@ public class ToolService
     {
         return toolRepository.findById(id);
     }
+
+    public Tool createTool(Tool tool)
+    {
+        return toolRepository.save(tool);
+    }
 }

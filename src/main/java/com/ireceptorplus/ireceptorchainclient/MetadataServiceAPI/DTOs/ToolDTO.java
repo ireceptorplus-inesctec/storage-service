@@ -14,6 +14,7 @@ public class ToolDTO
 
     @Column
     @NotNull
+    @NotEmpty
     private String version;
 
     /**
@@ -21,6 +22,7 @@ public class ToolDTO
      */
     @Column
     @NotNull
+    @NotEmpty
     private String url;
 
     @Column
@@ -36,6 +38,10 @@ public class ToolDTO
         this.url = url;
         this.description = description;
         this.docsReference = docsReference;
+    }
+
+    public ToolDTO()
+    {
     }
 
     public String getName()

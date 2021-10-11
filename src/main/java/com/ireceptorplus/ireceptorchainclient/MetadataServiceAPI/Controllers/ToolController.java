@@ -4,10 +4,12 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ToolDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Tool;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.ToolService;
 import com.sun.istack.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,9 @@ import java.util.Optional;
 public class ToolController
 {
     private final ToolService toolService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     public ToolController(ToolService toolService)
@@ -36,9 +41,13 @@ public class ToolController
     }
 
     @PostMapping
-    public String createTool(@ModelAttribute @Validated ToolDTO toolDTO)
+    public ToolDTO createTool(@RequestBody @Valid ToolDTO toolDTO)
     {
-        return toolDTO.getVersion();
+        Tool tool = modelMapper.map(toolDTO, Tool.class);
+        Tool createdTool = toolService.createTool(tool);
+        ToolDTO createdToolDTO = modelMapper.map(createdTool, ToolDTO.class);
+
+        return createdToolDTO;
     }
 
 }
