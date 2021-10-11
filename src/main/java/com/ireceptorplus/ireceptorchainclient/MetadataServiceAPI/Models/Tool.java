@@ -1,5 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,11 +18,28 @@ public class Tool
     @Column
     private String version;
 
+    /**
+     * An url from which the executable program can be fetched.
+     */
+    @Column
+    @NotNull
+    private String url;
+
     @Column
     private String description;
 
     @Column
     private String docsReference;
+
+    public Tool(Long id, String name, String version, String url, String description, String docsReference)
+    {
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        this.url = url;
+        this.description = description;
+        this.docsReference = docsReference;
+    }
 
     public Long getId()
     {
