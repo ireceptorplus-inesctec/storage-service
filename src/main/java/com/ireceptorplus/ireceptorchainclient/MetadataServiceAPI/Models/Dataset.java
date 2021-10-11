@@ -13,9 +13,6 @@ public class Dataset
     @Column
     private String url;
 
-    @ManyToOne
-    private ProcessingStep processingStep;
-
     public Long getId()
     {
         return id;
@@ -36,13 +33,4 @@ public class Dataset
         this.url = url;
     }
 
-    public ProcessingStep getProcessingStep()
-    {
-        return processingStep;
-    }
-
-    public void setProcessingStep(ProcessingStep processingStep)
-    {
-        this.processingStep = processingStep;
-    }
 }

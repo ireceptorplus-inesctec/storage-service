@@ -14,10 +14,10 @@ public class ProcessingStep
     @JoinColumn(name = "data_processing_id")
     private DataProcessing dataProcessing;
 
-    @OneToMany
+    @ManyToMany
     private List<Dataset> inputDatasets;
 
-    @OneToMany
+    @ManyToMany
     private List<Dataset> outputDatasets;
 
     @OneToMany
