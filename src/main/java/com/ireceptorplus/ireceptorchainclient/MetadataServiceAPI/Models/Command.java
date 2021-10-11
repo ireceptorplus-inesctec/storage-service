@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Command
 {
     @Id
-    @Column()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
