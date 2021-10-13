@@ -5,7 +5,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "data_processing")
 public class DataProcessing
 {
     @Id
