@@ -10,18 +10,14 @@ import javax.validation.constraints.NotNull;
 
 public class DatasetDTO
 {
-    @NotNull
-    @NotEmpty
     private Long id;
 
     @NotNull
     @NotEmpty
     private String url;
 
-    public DatasetDTO(Long id, String url)
+    public DatasetDTO()
     {
-        this.id = id;
-        this.url = url;
     }
 
     public Long getId()

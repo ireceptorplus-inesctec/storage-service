@@ -11,10 +11,8 @@ public class GermlineDTO
 
     private String url;
 
-    public GermlineDTO(Long id, String url)
+    public GermlineDTO()
     {
-        this.id = id;
-        this.url = url;
     }
 
     public Long getId()
