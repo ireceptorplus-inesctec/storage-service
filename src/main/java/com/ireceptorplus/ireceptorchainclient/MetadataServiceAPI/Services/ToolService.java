@@ -20,14 +20,4 @@ public class ToolService extends CreateAndReadService<Tool, Long>
         this.toolRepository = toolRepository;
     }
 
-    public List<Tool> findAll()
-    {
-        return toolRepository.findAll();
-    }
-
-    public Optional<Tool> findById(Long id)
-    {
-        return toolRepository.findById(id);
-    }
-
 }

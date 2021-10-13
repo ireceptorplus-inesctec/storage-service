@@ -31,13 +31,13 @@ public class ToolController
     @GetMapping
     public List<Tool> getTools()
     {
-        return toolService.findAll();
+        return toolService.readAll();
     }
 
 
     @GetMapping("/{id}")
     public Optional<Tool> getTool(@PathVariable @NotNull Long id) {
-        return toolService.findById(id);
+        return toolService.readById(id);
     }
 
     @PostMapping
