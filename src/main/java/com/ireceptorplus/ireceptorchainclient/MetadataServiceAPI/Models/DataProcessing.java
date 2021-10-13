@@ -1,8 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class DataProcessing
 
     @ManyToOne
     @JoinColumn(name = "germline_database_id")
-    private GermlineDatabase germlineDatabase;
+    private Germline germline;
 
     @OneToMany(mappedBy = "dataProcessing")
     private List<ProcessingStep> processingSteps;
@@ -40,7 +38,7 @@ public class DataProcessing
     public String toString() {
         return "BankAccount{" +
                 "id=" + id +
-                ", employee=" + germlineDatabase +
+                ", employee=" + germline +
                 '}';
     }
 }
