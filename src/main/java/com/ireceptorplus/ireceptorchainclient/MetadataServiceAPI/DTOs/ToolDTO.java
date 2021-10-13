@@ -7,12 +7,10 @@ import javax.validation.constraints.NotEmpty;
 
 public class ToolDTO
 {
-    @Column
     @NotNull
     @NotEmpty
     private String name;
 
-    @Column
     @NotNull
     @NotEmpty
     private String version;
@@ -20,15 +18,12 @@ public class ToolDTO
     /**
      * An url from which the executable program can be fetched.
      */
-    @Column
     @NotNull
     @NotEmpty
     private String url;
 
-    @Column
     private String description;
 
-    @Column
     private String docsReference;
 
     public ToolDTO(String name, String version, String url, String description, String docsReference)
