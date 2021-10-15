@@ -33,4 +33,78 @@ public class ProcessingStepDTO
 
     @NotNull
     private String command;
+
+    public ProcessingStepDTO()
+    {
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public DataProcessingDTO getDataProcessing()
+    {
+        return dataProcessing;
+    }
+
+    public void setDataProcessing(DataProcessingDTO dataProcessing)
+    {
+        this.dataProcessing = dataProcessing;
+    }
+
+    public List<DatasetDTO> getInputDatasets()
+    {
+        return inputDatasets;
+    }
+
+    public void setInputDatasets(List<DatasetDTO> inputDatasets)
+    {
+        this.inputDatasets = inputDatasets;
+    }
+
+    public List<DatasetDTO> getOutputDatasets()
+    {
+        return outputDatasets;
+    }
+
+    public void setOutputDatasets(List<DatasetDTO> outputDatasets)
+    {
+        this.outputDatasets = outputDatasets;
+    }
+
+    public List<CommandDTO> getCommands()
+    {
+        return commands;
+    }
+
+    public void setCommands(List<CommandDTO> commands)
+    {
+        this.commands = commands;
+    }
+
+    public Long getStepOrder()
+    {
+        return stepOrder;
+    }
+
+    public void setStepOrder(Long stepOrder)
+    {
+        this.stepOrder = stepOrder;
+    }
+
+    public String getCommand()
+    {
+        return command;
+    }
+
+    public void setCommand(String command)
+    {
+        this.command = command;
+    }
 }

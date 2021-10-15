@@ -19,4 +19,37 @@ public class DataProcessingDTO
     @NotEmpty
     private List<ProcessingStepDTO> processingSteps;
 
+    public DataProcessingDTO()
+    {
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public Long getGermlineId()
+    {
+        return germlineId;
+    }
+
+    public void setGermlineId(Long germlineId)
+    {
+        this.germlineId = germlineId;
+    }
+
+    public List<ProcessingStepDTO> getProcessingSteps()
+    {
+        return processingSteps;
+    }
+
+    public void setProcessingSteps(List<ProcessingStepDTO> processingSteps)
+    {
+        this.processingSteps = processingSteps;
+    }
 }

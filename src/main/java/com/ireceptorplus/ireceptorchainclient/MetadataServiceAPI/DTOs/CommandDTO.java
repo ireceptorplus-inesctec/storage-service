@@ -17,4 +17,38 @@ public class CommandDTO
 
     @NotNull
     private Tool tool;
+
+    public CommandDTO()
+    {
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public ProcessingStep getProcessingStep()
+    {
+        return processingStep;
+    }
+
+    public void setProcessingStep(ProcessingStep processingStep)
+    {
+        this.processingStep = processingStep;
+    }
+
+    public Tool getTool()
+    {
+        return tool;
+    }
+
+    public void setTool(Tool tool)
+    {
+        this.tool = tool;
+    }
 }
