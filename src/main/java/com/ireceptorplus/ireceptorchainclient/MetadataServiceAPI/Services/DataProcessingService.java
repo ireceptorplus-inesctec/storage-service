@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DataProcessingService
+public class DataProcessingService extends CreateAndReadService<DataProcessing, Long>
 {
     @Autowired
     private final DataProcessingRepository dataProcessingRepository;
 
     public DataProcessingService(DataProcessingRepository dataProcessingRepository)
     {
+        super(dataProcessingRepository);
         this.dataProcessingRepository = dataProcessingRepository;
     }
 
