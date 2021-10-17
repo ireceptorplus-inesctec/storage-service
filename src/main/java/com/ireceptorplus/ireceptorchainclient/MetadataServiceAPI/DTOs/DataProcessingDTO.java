@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Germline;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStep;
 
@@ -13,10 +14,12 @@ public class DataProcessingDTO
     private Long id;
 
     @NotNull
+    @JsonProperty("germline_id")
     private Long germlineId;
 
     @NotNull
     @NotEmpty
+    @JsonProperty("processing_steps")
     private List<ProcessingStepDTO> processingSteps;
 
     public DataProcessingDTO()

@@ -14,9 +14,6 @@ public class ProcessingStepDTO
     private Long id;
 
     @NotNull
-    private DataProcessingDTO dataProcessing;
-
-    @NotNull
     @NotEmpty
     private List<DatasetDTO> inputDatasets;
 
@@ -46,16 +43,6 @@ public class ProcessingStepDTO
     public void setId(Long id)
     {
         this.id = id;
-    }
-
-    public DataProcessingDTO getDataProcessing()
-    {
-        return dataProcessing;
-    }
-
-    public void setDataProcessing(DataProcessingDTO dataProcessing)
-    {
-        this.dataProcessing = dataProcessing;
     }
 
     public List<DatasetDTO> getInputDatasets()

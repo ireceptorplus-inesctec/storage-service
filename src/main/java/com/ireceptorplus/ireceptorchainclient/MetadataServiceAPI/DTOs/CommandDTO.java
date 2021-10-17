@@ -13,9 +13,6 @@ public class CommandDTO
     private Long id;
 
     @NotNull
-    private ProcessingStep processingStep;
-
-    @NotNull
     private Tool tool;
 
     public CommandDTO()
@@ -30,16 +27,6 @@ public class CommandDTO
     public void setId(Long id)
     {
         this.id = id;
-    }
-
-    public ProcessingStep getProcessingStep()
-    {
-        return processingStep;
-    }
-
-    public void setProcessingStep(ProcessingStep processingStep)
-    {
-        this.processingStep = processingStep;
     }
 
     public Tool getTool()
