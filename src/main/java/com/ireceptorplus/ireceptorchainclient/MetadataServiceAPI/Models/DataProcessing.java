@@ -31,13 +31,33 @@ public class DataProcessing
         this.id = id;
     }
 
+    public Germline getGermline()
+    {
+        return germline;
+    }
 
+    public void setGermline(Germline germline)
+    {
+        this.germline = germline;
+    }
+
+    public List<ProcessingStep> getProcessingSteps()
+    {
+        return processingSteps;
+    }
+
+    public void setProcessingSteps(List<ProcessingStep> processingSteps)
+    {
+        this.processingSteps = processingSteps;
+    }
 
     @Override
-    public String toString() {
-        return "BankAccount{" +
+    public String toString()
+    {
+        return "DataProcessing{" +
                 "id=" + id +
-                ", employee=" + germline +
+                ", germline=" + germline +
+                ", processingSteps=" + processingSteps +
                 '}';
     }
 }
