@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
@@ -14,10 +15,12 @@ public class ProcessingStepDTO
     private Long id;
 
     @NotNull
+    @JsonProperty("input_datasets")
     @NotEmpty
     private List<DatasetDTO> inputDatasets;
 
     @NotNull
+    @JsonProperty("output_datasets")
     @NotEmpty
     private List<DatasetDTO> outputDatasets;
 
