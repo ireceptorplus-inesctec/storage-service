@@ -3,17 +3,21 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CommandDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DataProcessingDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.DataProcessingResolver;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStep;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(
-        componentModel = "spring"
+        componentModel = "spring",
+        nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
+        uses = {
+                DataProcessingResolver.class
+        }
 )
 public interface DataProcessingMapper
 {
@@ -26,11 +30,8 @@ public interface DataProcessingMapper
     })
     DataProcessing dataProcessingDTOtoDataProcessing(DataProcessingDTO dataProcessingDTO);
 
-    List<ProcessingStepDTO> processingStepToProcessingStepDTOs(List<ProcessingStep> processingSteps);
-    List<ProcessingStep> processingStepDTOToProcessingSteps(List<ProcessingStepDTO> processingSteps);
 
-    ProcessingStepDTO processingStepToProcessingStepDTO(ProcessingStep processingStep);
-    ProcessingStep processingStepDTOToProcessingStep(ProcessingStepDTO processingStep);
+
 
     CommandDTO commandToCommandDTO(Command command);
     Command commandToCommandDTO(CommandDTO command);
