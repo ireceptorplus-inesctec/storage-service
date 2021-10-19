@@ -5,24 +5,11 @@ import java.util.List;
 
 @Entity
 @Table
-public class Dataset
+public class Dataset extends ModelWithId
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column
     private String url;
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
 
     public String getUrl()
     {

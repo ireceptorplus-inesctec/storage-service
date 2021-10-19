@@ -6,12 +6,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Germline
+public class Germline extends ModelWithId
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column
     private String url;
 
@@ -25,16 +21,6 @@ public class Germline
 
     public Germline()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getUrl()

@@ -5,12 +5,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class DataProcessing
+public class DataProcessing extends ModelWithId
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "germline_database_id")
     private Germline germline;
@@ -21,14 +17,6 @@ public class DataProcessing
     public DataProcessing()
     {
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Germline getGermline()
@@ -55,7 +43,6 @@ public class DataProcessing
     public String toString()
     {
         return "DataProcessing{" +
-                "id=" + id +
                 ", germline=" + germline +
                 ", processingSteps=" + processingSteps +
                 '}';

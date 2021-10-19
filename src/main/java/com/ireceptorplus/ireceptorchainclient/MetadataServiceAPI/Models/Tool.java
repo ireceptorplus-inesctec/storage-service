@@ -6,12 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class Tool
+public class Tool extends ModelWithId
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column
     private String name;
 
@@ -31,29 +27,9 @@ public class Tool
     @Column
     private String docsReference;
 
-    public Tool(Long id, String name, String version, String url, String description, String docsReference)
-    {
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        this.url = url;
-        this.description = description;
-        this.docsReference = docsReference;
-    }
-
     public Tool()
     {
 
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getName()
@@ -110,7 +86,6 @@ public class Tool
     public String toString()
     {
         return "Tool{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", version='" + version + '\'' +
                 ", description='" + description + '\'' +
