@@ -33,6 +33,5 @@ public interface DataProcessingMapper
 
 
 
-    CommandDTO commandToCommandDTO(Command command);
-    Command commandToCommandDTO(CommandDTO command);
+
 }
