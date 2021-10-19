@@ -17,12 +17,12 @@ import java.util.List;
 public interface CommandMapper
 {
     @Mappings({
-            @Mapping(target="germlineId", source="germline.id")
+            @Mapping(target="toolId", source="tool.id")
     })
     CommandDTO commandToCommandDTO(Command command);
 
     @Mappings({
-            @Mapping(target="germline", source="germlineId")
+            @Mapping(target="tool", source="toolId")
     })
     Command commandToCommandDTO(CommandDTO command);
 
