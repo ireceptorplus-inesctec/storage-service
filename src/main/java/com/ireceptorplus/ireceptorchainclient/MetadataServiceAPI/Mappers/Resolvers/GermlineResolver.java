@@ -24,4 +24,6 @@ public class GermlineResolver extends ResolverById<Germline>
     {
         return new Germline();
     }
+
+
 }

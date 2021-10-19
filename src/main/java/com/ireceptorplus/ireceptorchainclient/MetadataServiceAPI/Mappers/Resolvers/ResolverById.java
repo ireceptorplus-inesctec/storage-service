@@ -3,6 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolv
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DTOWithId;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DataProcessingDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Germline;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Repositories.DataProcessingRepository;
 import org.mapstruct.ObjectFactory;
 import org.mapstruct.TargetType;
@@ -11,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class ResolverById<T>
 {
-    private JpaRepository<T, Long> repository;
+    protected JpaRepository<T, Long> repository;
 
     public ResolverById(JpaRepository<T, Long> repository)
     {
@@ -29,6 +30,13 @@ public abstract class ResolverById<T>
         {
             resolved = getNewEntity();
         }
+
+        return resolved;
+    }
+
+    public T resolveById(Long id)
+    {
+        T resolved = repository.findById(id).get();
 
         return resolved;
     }

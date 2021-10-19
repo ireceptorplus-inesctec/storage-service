@@ -11,7 +11,8 @@ public class DataProcessing extends ModelWithId
     @JoinColumn(name = "germline_database_id")
     private Germline germline;
 
-    @OneToMany(mappedBy = "dataProcessing")
+    @OneToMany
+    @JoinColumn(name = "data_processing_id")
     private List<ProcessingStep> processingSteps;
 
     public DataProcessing()
