@@ -5,24 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-public class GermlineDTO
+public class GermlineDTO extends DTOWithId
 {
-    private Long id;
-
     private String url;
 
     public GermlineDTO()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getUrl()

@@ -8,10 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-public class CommandDTO
+public class CommandDTO extends DTOWithId
 {
-    private Long id;
-
     @NotNull
     private Tool tool;
 
@@ -19,15 +17,6 @@ public class CommandDTO
     {
     }
 
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
 
     public Tool getTool()
     {

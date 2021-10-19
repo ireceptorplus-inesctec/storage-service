@@ -5,7 +5,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
-public class ToolDTO
+public class ToolDTO extends DTOWithId
 {
     @NotNull
     @NotEmpty

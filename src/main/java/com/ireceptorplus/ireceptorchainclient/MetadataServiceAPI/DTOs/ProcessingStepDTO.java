@@ -10,10 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class ProcessingStepDTO
+public class ProcessingStepDTO extends DTOWithId
 {
-    private Long id;
-
     @NotNull
     @JsonProperty("input_datasets")
     @NotEmpty
@@ -36,16 +34,6 @@ public class ProcessingStepDTO
 
     public ProcessingStepDTO()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public List<DatasetDTO> getInputDatasets()

@@ -9,10 +9,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class DataProcessingDTO
+public class DataProcessingDTO extends DTOWithId
 {
-    private Long id;
-
     @NotNull
     @JsonProperty("germline_id")
     private Long germlineId;
@@ -24,16 +22,6 @@ public class DataProcessingDTO
 
     public DataProcessingDTO()
     {
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public Long getGermlineId()
