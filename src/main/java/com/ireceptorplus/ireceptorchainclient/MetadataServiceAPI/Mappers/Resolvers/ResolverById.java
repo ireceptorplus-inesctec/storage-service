@@ -11,8 +11,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class ResolverById<T>
 {
-    @Autowired
     private JpaRepository<T, Long> repository;
+
+    public ResolverById(JpaRepository<T, Long> repository)
+    {
+        this.repository = repository;
+    }
 
     @ObjectFactory
     public T resolve(DTOWithId dto, @TargetType Class<T> type)

@@ -6,11 +6,18 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Repositories.Da
 import org.mapstruct.ObjectFactory;
 import org.mapstruct.TargetType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataProcessingResolver extends ResolverById<DataProcessing>
 {
+    @Autowired
+    public DataProcessingResolver(JpaRepository<DataProcessing, Long> repository)
+    {
+        super(repository);
+    }
+
     @Override
     public DataProcessing getNewEntity()
     {
