@@ -6,6 +6,9 @@ import javax.persistence.*;
 @Table
 public class Command
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "processing_step_id")

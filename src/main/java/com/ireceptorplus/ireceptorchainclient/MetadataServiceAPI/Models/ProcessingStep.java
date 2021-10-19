@@ -1,14 +1,16 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table
-public class ProcessingStep extends ModelWithId
+public class ProcessingStep
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "data_processing_id")
     private DataProcessing dataProcessing;
@@ -30,6 +32,16 @@ public class ProcessingStep extends ModelWithId
 
     public ProcessingStep()
     {
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
     }
 
     public DataProcessing getDataProcessing()
