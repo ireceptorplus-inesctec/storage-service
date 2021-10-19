@@ -3,9 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CommandDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.DataProcessingResolver;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,7 +16,14 @@ import java.util.List;
 )
 public interface CommandMapper
 {
+    @Mappings({
+            @Mapping(target="germlineId", source="germline.id")
+    })
     CommandDTO commandToCommandDTO(Command command);
+
+    @Mappings({
+            @Mapping(target="germline", source="germlineId")
+    })
     Command commandToCommandDTO(CommandDTO command);
 
 }

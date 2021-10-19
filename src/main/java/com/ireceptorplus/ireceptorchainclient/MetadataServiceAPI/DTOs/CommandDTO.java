@@ -11,20 +11,20 @@ import javax.validation.constraints.NotNull;
 public class CommandDTO extends DTOWithId
 {
     @NotNull
-    private Tool tool;
+    private Long toolId;
 
     public CommandDTO()
     {
     }
 
 
-    public Tool getTool()
+    public Long getToolId()
     {
-        return tool;
+        return toolId;
     }
 
-    public void setTool(Tool tool)
+    public void setToolId(Long toolId)
     {
-        this.tool = tool;
+        this.toolId = toolId;
     }
 }
