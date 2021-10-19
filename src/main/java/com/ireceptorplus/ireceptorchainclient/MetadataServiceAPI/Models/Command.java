@@ -10,7 +10,7 @@ public class Command
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "processing_step_id")
     private ProcessingStep processingStep;
 

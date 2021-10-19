@@ -11,17 +11,18 @@ public class ProcessingStep
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "data_processing_id")
     private DataProcessing dataProcessing;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Dataset> inputDatasets;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Dataset> outputDatasets;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "processing_step_id")
     private List<Command> commands;
 
     @Column
