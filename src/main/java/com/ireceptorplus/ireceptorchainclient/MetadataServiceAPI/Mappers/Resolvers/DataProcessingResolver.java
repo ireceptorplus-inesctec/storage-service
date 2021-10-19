@@ -9,24 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-
-public class DataProcessingResolver
+public class DataProcessingResolver extends ResolverById<DataProcessing>
 {
-    @Autowired
-    private DataProcessingRepository repository;
-
-    @ObjectFactory
-    public DataProcessing resolve(DataProcessingDTO dto, @TargetType Class<DataProcessing> type)
+    @Override
+    public DataProcessing getNewEntity()
     {
-        DataProcessing resolved = null;
-        if (dto != null && dto.getId() != null)
-        {
-            resolved = repository.findById(dto.getId()).get();
-        } else
-        {
-            resolved = new DataProcessing();
-        }
-
-        return resolved;
+        return new DataProcessing();
     }
 }
