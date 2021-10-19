@@ -19,7 +19,9 @@ import java.util.List;
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
         uses = {
                 DataProcessingResolver.class,
-                GermlineResolver.class
+                GermlineResolver.class,
+                CommandMapper.class,
+                ProcessingStepMapper.class
         }
 )
 public interface DataProcessingMapper
