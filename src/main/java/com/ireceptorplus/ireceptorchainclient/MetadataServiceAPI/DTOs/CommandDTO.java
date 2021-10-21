@@ -1,7 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStep;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Tool;
+
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

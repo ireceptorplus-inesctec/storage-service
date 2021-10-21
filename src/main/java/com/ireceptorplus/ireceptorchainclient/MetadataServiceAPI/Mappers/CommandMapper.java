@@ -2,6 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers;
 
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CommandDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.DataProcessingResolver;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.ToolResolver;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
 import org.mapstruct.*;
 
@@ -12,6 +13,8 @@ import java.util.List;
         nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION,
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
         uses = {
+                ToolMapper.class,
+                ToolResolver.class
         }
 )
 public interface CommandMapper
