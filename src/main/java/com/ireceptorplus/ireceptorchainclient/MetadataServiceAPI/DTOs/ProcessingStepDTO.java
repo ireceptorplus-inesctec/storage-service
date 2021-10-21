@@ -29,9 +29,6 @@ public class ProcessingStepDTO extends DTOWithId
     @NotNull
     private Long stepOrder;
 
-    @NotNull
-    private String command;
-
     public ProcessingStepDTO()
     {
     }
@@ -74,15 +71,5 @@ public class ProcessingStepDTO extends DTOWithId
     public void setStepOrder(Long stepOrder)
     {
         this.stepOrder = stepOrder;
-    }
-
-    public String getCommand()
-    {
-        return command;
-    }
-
-    public void setCommand(String command)
-    {
-        this.command = command;
     }
 }

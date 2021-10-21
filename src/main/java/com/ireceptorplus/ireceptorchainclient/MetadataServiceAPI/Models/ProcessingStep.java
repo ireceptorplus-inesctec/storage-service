@@ -28,9 +28,6 @@ public class ProcessingStep
     @Column
     private Long stepOrder;
 
-    @Column
-    private String command;
-
     public ProcessingStep()
     {
     }
@@ -93,15 +90,5 @@ public class ProcessingStep
     public void setStepOrder(Long stepOrder)
     {
         this.stepOrder = stepOrder;
-    }
-
-    public String getCommand()
-    {
-        return command;
-    }
-
-    public void setCommand(String command)
-    {
-        this.command = command;
     }
 }
