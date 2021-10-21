@@ -27,6 +27,7 @@ public class ProcessingStepDTO extends DTOWithId
     private List<CommandDTO> commands;
 
     @NotNull
+    @JsonProperty("step_order")
     private Long stepOrder;
 
     public ProcessingStepDTO()
