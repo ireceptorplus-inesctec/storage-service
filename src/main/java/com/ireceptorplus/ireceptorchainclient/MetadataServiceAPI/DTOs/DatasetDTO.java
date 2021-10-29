@@ -10,22 +10,33 @@ import javax.validation.constraints.NotNull;
 
 public class DatasetDTO extends DTOWithId
 {
+    @Column
+    private String name;
 
-    @NotNull
-    @NotEmpty
-    private String url;
+    @Column
+    private String description;
 
     public DatasetDTO()
     {
     }
 
-    public String getUrl()
+    public String getName()
     {
-        return url;
+        return name;
     }
 
-    public void setUrl(String url)
+    public void setName(String name)
     {
-        this.url = url;
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

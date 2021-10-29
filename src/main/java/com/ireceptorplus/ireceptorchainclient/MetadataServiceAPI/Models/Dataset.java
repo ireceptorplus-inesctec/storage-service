@@ -12,7 +12,10 @@ public class Dataset
     private Long id;
 
     @Column
-    private String url;
+    private String name;
+
+    @Column
+    private String description;
 
     public Long getId()
     {
@@ -24,14 +27,23 @@ public class Dataset
         this.id = id;
     }
 
-    public String getUrl()
+    public String getName()
     {
-        return url;
+        return name;
     }
 
-    public void setUrl(String url)
+    public void setName(String name)
     {
-        this.url = url;
+        this.name = name;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 }
