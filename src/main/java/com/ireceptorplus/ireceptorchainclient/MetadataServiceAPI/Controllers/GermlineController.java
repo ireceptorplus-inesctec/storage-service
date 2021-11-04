@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("germline")
+@RequestMapping("api/germline")
 public class GermlineController
 {
 

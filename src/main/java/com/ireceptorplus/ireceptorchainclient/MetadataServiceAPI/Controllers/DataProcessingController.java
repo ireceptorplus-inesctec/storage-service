@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("data_processing")
+@RequestMapping("api/data_processing")
 public class DataProcessingController
 {
     @Autowired

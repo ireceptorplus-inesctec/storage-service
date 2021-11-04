@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("tool")
+@RequestMapping("api/tool")
 public class ToolController
 {
     @Autowired

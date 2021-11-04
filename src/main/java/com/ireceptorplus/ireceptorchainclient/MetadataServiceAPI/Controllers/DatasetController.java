@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("dataset")
+@RequestMapping("api/dataset")
 public class DatasetController
 {
     @Autowired
