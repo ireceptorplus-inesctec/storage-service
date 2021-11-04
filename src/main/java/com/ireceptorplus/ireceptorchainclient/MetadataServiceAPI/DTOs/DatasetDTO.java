@@ -7,14 +7,19 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class DatasetDTO extends DTOWithId
 {
-    @Column
+
     private String name;
 
-    @Column
     private String description;
+
+    /**
+     * This identifies the file in the file system and, therefore, defines the file name.
+     */
+    private UUID uuid;
 
     public DatasetDTO()
     {
@@ -38,5 +43,15 @@ public class DatasetDTO extends DTOWithId
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid)
+    {
+        this.uuid = uuid;
     }
 }
