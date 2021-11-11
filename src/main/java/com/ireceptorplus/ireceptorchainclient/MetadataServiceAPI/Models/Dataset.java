@@ -1,7 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +23,9 @@ public class Dataset
 
     @Column
     private String description;
+
+    @Column
+    private Date createdDate;
 
     public Long getId()
     {
@@ -62,5 +65,15 @@ public class Dataset
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public Date getCreatedDate()
+    {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdOn)
+    {
+        this.createdDate = createdOn;
     }
 }

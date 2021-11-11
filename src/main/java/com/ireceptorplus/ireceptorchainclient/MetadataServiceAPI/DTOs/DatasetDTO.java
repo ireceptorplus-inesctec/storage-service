@@ -1,25 +1,23 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStep;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.UUID;
 
 public class DatasetDTO extends DTOWithId
 {
-
-    private String name;
-
-    private String description;
-
     /**
      * This identifies the file in the file system and, therefore, defines the file name.
      */
     private UUID uuid;
+
+    @NotNull
+    private String name;
+
+    private String description;
+
+    private Date createdDate;
+
 
     public DatasetDTO()
     {
@@ -53,5 +51,15 @@ public class DatasetDTO extends DTOWithId
     public void setUuid(UUID uuid)
     {
         this.uuid = uuid;
+    }
+
+    public Date getCreatedDate()
+    {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate)
+    {
+        this.createdDate = createdDate;
     }
 }
