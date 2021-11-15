@@ -16,7 +16,7 @@ public class DatasetDTO extends DTOWithId
 
     private String description;
 
-    private Date createdDate;
+    private Date creationDate;
 
 
     public DatasetDTO()
@@ -53,13 +53,13 @@ public class DatasetDTO extends DTOWithId
         this.uuid = uuid;
     }
 
-    public Date getCreatedDate()
+    public Date getCreationDate()
     {
-        return createdDate;
+        return creationDate;
     }
 
-    public void setCreatedDate(Date createdDate)
+    public void setCreationDate(Date creationDate)
     {
-        this.createdDate = createdDate;
+        this.creationDate = creationDate;
     }
 }

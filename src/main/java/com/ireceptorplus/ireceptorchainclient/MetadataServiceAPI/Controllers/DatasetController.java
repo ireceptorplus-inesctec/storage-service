@@ -1,6 +1,5 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageService;
@@ -14,11 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/dataset")
@@ -64,7 +61,7 @@ public class DatasetController
         storageService.store(file);
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
-        dataset.setCreatedDate(new Date());
+        dataset.setCreationDate(new Date());
 
         Dataset createdDataset = datasetService.create(dataset);
         DatasetDTO createdDatasetDTO = modelMapper.map(createdDataset, DatasetDTO.class);

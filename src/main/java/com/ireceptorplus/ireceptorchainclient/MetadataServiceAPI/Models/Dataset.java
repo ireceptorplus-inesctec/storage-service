@@ -25,7 +25,7 @@ public class Dataset
     private String description;
 
     @Column
-    private Date createdDate;
+    private Date creationDate;
 
     public Long getId()
     {
@@ -67,13 +67,13 @@ public class Dataset
         this.description = description;
     }
 
-    public Date getCreatedDate()
+    public Date getCreationDate()
     {
-        return createdDate;
+        return creationDate;
     }
 
-    public void setCreatedDate(Date createdOn)
+    public void setCreationDate(Date createdOn)
     {
-        this.createdDate = createdOn;
+        this.creationDate = createdOn;
     }
 }
