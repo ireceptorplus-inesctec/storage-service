@@ -60,6 +60,7 @@ public class DatasetController
             return null;
         }
         UUID uuid = UUID.randomUUID();
+        datasetDTO.setUuid(uuid);
         storageService.store(file, uuid.toString());
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
