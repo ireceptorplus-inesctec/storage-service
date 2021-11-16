@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/dataset")
@@ -58,7 +59,8 @@ public class DatasetController
             e.printStackTrace();
             return null;
         }
-        storageService.store(file);
+        UUID uuid = UUID.randomUUID();
+        storageService.store(file, uuid.toString());
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
         dataset.setCreationDate(new Date());
