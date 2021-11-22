@@ -10,7 +10,7 @@ public class StorageProperties {
 	/**
 	 * Folder location for storing files
 	 */
-	private String location = "datasets";
+	private String location = null;
 
 	public String getLocation() {
 		return location;
