@@ -53,6 +53,16 @@ public class Dataset
         this.uuid = uuid;
     }
 
+    public String getOriginalFileName()
+    {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName)
+    {
+        this.originalFileName = originalFileName;
+    }
+
     public String getName()
     {
         return name;
@@ -78,8 +88,8 @@ public class Dataset
         return creationDate;
     }
 
-    public void setCreationDate(Date createdOn)
+    public void setCreationDate(Date creationDate)
     {
-        this.creationDate = createdOn;
+        this.creationDate = creationDate;
     }
 }
