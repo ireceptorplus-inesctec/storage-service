@@ -18,6 +18,12 @@ public class Dataset
     @Column
     private UUID uuid;
 
+    /**
+     * A String representing the original file name in the computer of the uploader.
+     */
+    @Column
+    private String originalFileName;
+
     @Column
     private String name;
 

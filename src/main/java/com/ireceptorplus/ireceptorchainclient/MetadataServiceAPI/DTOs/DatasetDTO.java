@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
@@ -10,6 +11,12 @@ public class DatasetDTO extends DTOWithId
      * This identifies the file in the file system and, therefore, defines the file name.
      */
     private UUID uuid;
+
+    @NotNull
+    /**
+     * A String representing the original file name in the computer of the uploader.
+     */
+    private String originalFileName;
 
     @NotNull
     private String name;
