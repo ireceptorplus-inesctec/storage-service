@@ -13,12 +13,6 @@ public class DatasetDTO extends DTOWithId
     private UUID uuid;
 
     @NotNull
-    /**
-     * A String representing the original file name in the computer of the uploader.
-     */
-    private String originalFileName;
-
-    @NotNull
     private String name;
 
     private String description;
