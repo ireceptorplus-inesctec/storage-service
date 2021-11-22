@@ -1,7 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.DatasetStorage;
 
-import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageFileNotFoundException;
-import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage.StorageFileNotFoundException;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

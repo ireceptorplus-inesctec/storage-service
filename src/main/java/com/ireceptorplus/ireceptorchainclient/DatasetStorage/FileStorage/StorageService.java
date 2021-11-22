@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage;
+package com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;

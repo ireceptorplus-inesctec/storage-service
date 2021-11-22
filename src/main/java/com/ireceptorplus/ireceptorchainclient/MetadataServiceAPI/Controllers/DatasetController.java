@@ -2,7 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage.StorageService;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DatasetService;

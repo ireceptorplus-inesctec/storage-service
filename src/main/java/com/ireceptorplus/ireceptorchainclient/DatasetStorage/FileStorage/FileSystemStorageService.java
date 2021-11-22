@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage;
+package com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage;
 
 import java.io.IOException;
 import java.io.InputStream;

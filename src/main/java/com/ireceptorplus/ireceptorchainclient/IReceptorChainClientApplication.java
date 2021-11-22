@@ -1,6 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient;
 
-import com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage.StorageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
