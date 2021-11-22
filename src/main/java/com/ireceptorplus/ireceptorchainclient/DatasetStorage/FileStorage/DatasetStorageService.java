@@ -8,7 +8,7 @@ public class DatasetStorageService extends FileSystemStorageService
 {
 
     @Autowired
-    public DatasetStorageService(StorageProperties properties)
+    public DatasetStorageService(DatasetStorageProperties properties)
     {
         super(properties);
     }
