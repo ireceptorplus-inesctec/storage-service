@@ -59,12 +59,14 @@ public class DatasetController
             e.printStackTrace();
             return null;
         }
+        String originalFileName = file.getOriginalFilename();
         UUID uuid = UUID.randomUUID();
         datasetDTO.setUuid(uuid);
         storageService.store(file, uuid.toString());
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
         dataset.setCreationDate(new Date());
+        dataset.setOriginalFileName(originalFileName);
 
         Dataset createdDataset = datasetService.create(dataset);
         DatasetDTO createdDatasetDTO = modelMapper.map(createdDataset, DatasetDTO.class);
