@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.FileStorage;
+package com.ireceptorplus.ireceptorchainclient.FileStorage;
 
 public class StorageFileNotFoundException extends StorageException {
 
