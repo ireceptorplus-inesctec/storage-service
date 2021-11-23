@@ -14,13 +14,6 @@ public class IReceptorChainClientApplication {
         SpringApplication.run(IReceptorChainClientApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner init(StorageService storageService) {
-        return (args) -> {
-            storageService.deleteAll();
-            storageService.init();
-        };
-    }
 
     @Bean
     public ModelMapper modelMapper() {
