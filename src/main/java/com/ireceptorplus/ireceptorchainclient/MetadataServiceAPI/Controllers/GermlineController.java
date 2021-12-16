@@ -57,7 +57,7 @@ public class GermlineController
     }
 
     @PostMapping
-    public GermlineDTO createGermline(@RequestParam("dataset") String germlineStr,
+    public GermlineDTO createGermline(@RequestParam("metadata") String germlineStr,
                                       @RequestParam("file") MultipartFile file)
     {
         GermlineDTO germlineDTO;

@@ -48,7 +48,7 @@ public class DatasetController
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public DatasetDTO createDataset(@RequestParam("dataset") String datasetStr,
+    public DatasetDTO createDataset(@RequestParam("metadata") String datasetStr,
                                     @RequestParam("file") MultipartFile file)
     {
         DatasetDTO datasetDTO = null;
