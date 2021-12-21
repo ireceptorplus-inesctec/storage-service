@@ -23,6 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/germline")
+@CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class GermlineController
 {
 

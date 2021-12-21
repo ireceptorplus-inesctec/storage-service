@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/tool")
+@CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class ToolController
 {
     @Autowired

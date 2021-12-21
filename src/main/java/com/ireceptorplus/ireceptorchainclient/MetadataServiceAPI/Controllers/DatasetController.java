@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/dataset")
+@CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class DatasetController
 {
     @Autowired

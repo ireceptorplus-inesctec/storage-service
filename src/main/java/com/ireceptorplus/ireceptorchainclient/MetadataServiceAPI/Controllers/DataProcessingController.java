@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/data_processing")
+@CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class DataProcessingController
 {
     @Autowired
