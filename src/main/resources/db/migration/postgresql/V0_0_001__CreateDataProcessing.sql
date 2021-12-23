@@ -1,3 +1,3 @@
 CREATE TABLE DataProcessing (
-                              id SERIAL PRIMARY KEY
+                              ifsdd SERIAL PRIMARY KEY
 );

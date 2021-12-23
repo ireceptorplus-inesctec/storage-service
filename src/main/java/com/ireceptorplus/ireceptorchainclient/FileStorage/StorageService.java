@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage;
+package com.ireceptorplus.ireceptorchainclient.FileStorage;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -13,6 +13,8 @@ public interface StorageService {
 	void init();
 
 	void store(MultipartFile file);
+
+	void store(MultipartFile file, String customName);
 
 	Stream<Path> loadAll();
 

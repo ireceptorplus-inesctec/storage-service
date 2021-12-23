@@ -15,11 +15,11 @@ ADD pom.xml /storage
 ADD mvnw /storage
 ADD mvnw.cmd /storage
 
-RUN ./mvn clean install
-RUN ./mvnw spring-boot:run
+RUN ./mvnw clean install -DskipTests
 #RUN mv ./build/libs/*.jar ./storage.jar
 
-#FROM openjdk:11-jre-slim
+
+ENTRYPOINT ["./mvnw", "spring-boot:run"]
 
 #WORKDIR /storage
 

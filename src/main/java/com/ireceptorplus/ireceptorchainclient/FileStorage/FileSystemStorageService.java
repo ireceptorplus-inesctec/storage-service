@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage;
+package com.ireceptorplus.ireceptorchainclient.FileStorage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,31 +9,33 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
 public class FileSystemStorageService implements StorageService {
 
 	private final Path rootLocation;
 
-	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
 		this.rootLocation = Paths.get(properties.getLocation());
 	}
 
 	@Override
-	public void store(MultipartFile file) {
+	public void store(MultipartFile file)
+	{
+		store(file, file.getOriginalFilename());
+	}
+
+	@Override
+	public void store(MultipartFile file, String customName) {
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
 			}
 			Path destinationFile = this.rootLocation.resolve(
-					Paths.get(file.getOriginalFilename()))
+					Paths.get(customName))
 					.normalize().toAbsolutePath();
 			if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
 				// This is a security check

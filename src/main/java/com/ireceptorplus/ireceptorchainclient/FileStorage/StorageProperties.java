@@ -1,16 +1,15 @@
-package com.ireceptorplus.ireceptorchainclient.DatasetStorage.storage;
+package com.ireceptorplus.ireceptorchainclient.FileStorage;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties("storage")
-@Component
+
 public class StorageProperties {
 
 	/**
 	 * Folder location for storing files
 	 */
-	private String location = "datasets";
+	private String location = null;
 
 	public String getLocation() {
 		return location;
