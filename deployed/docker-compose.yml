@@ -1,8 +1,6 @@
 version: '3'
 
 services:
-
-
   db:
     image: postgres:12
     volumes:
@@ -17,7 +15,6 @@ services:
     networks:
       - default
 
-
   storage-service:
     build: .
     expose:
@@ -28,6 +25,13 @@ services:
     networks:
       - default
       - apache_ireceptor-network
+
+networks:
+  default:
+
+  apache_ireceptor-network:
+    external: true
+
 
 volumes:
   middleware_db:
