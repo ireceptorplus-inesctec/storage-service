@@ -7,12 +7,13 @@ services:
     image: postgres:12
     volumes:
       - middleware_db:/var/lib/postgresql/data:delegated
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     environment:
       # default user is 'postgres'
       POSTGRES_DB: ireceptorchain-storage-service
       POSTGRES_PASSWORD: password
+    restart: always
 
   storage-service:
     build: .
@@ -20,6 +21,7 @@ services:
       - 8080:8080
     depends_on:
       - db
+    restart: always
 
 volumes:
   middleware_db:
