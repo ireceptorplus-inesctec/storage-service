@@ -16,7 +16,7 @@ services:
       - default
 
   storage-service:
-    build: .
+    build: ../
     expose:
       - 8080
     depends_on:
