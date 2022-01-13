@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+
+  db:
+    image: postgres:12
+    volumes:
+      - middleware_db:/var/lib/postgresql/data:delegated
+    expose:
+      - 5432
+    environment:
+      # default user is 'postgres'
+      POSTGRES_DB: ireceptorchain-storage-service
+      POSTGRES_PASSWORD: password
+    restart: always
+    networks:
+      - default
+
+
+  storage-service:
+    build: .
+    expose:
+      - 8080
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - default
+      - apache_ireceptor-network
+
+volumes:
+  middleware_db:
