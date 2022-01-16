@@ -1,12 +1,10 @@
 version: '3'
 
 services:
-
-
   db:
     image: postgres:12
     volumes:
-      - middleware_db:/var/lib/postgresql/data:delegated
+      - ireceptorchain-storage-service-db:/var/lib/postgresql/data:delegated
     expose:
       - 5432
     environment:
@@ -22,6 +20,3 @@ services:
     depends_on:
       - db
     restart: always
-
-volumes:
-  middleware_db:
