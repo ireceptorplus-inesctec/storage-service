@@ -30,6 +30,5 @@ networks:
   apache_ireceptor-network:
     external: true
 
-
 volumes:
-  middleware_db:
+  ireceptorchain-storage-service-db:

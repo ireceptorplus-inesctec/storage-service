@@ -20,3 +20,6 @@ services:
     depends_on:
       - db
     restart: always
+
+volumes:
+  middleware_db:
