@@ -1,6 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ToolDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Tool;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.ToolService;
 import com.sun.istack.NotNull;
@@ -48,8 +50,12 @@ public class ToolController
      */
     @GetMapping("/{id}")
     @Operation(summary = "Returns a specific Tool, with the id received as parameter")
-    public Optional<Tool> getTool(@PathVariable @NotNull Long id) {
-        return toolService.readById(id);
+    public Tool getTool(@PathVariable @NotNull Long id) {
+        Tool tool = toolService.readById(id).get();
+        if (tool == null)
+            throw new UnExistantEntity("Dataset", id);
+        else
+            return tool;
     }
 
     /**

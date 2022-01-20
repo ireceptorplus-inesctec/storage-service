@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageService;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.GermlineStorageService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.GermlineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Germline;
@@ -65,8 +66,12 @@ public class GermlineController
      */
     @GetMapping("/{id}")
     @Operation(summary = "Returns a specific Germline, with the id received as parameter.")
-    public Optional<Germline> getGermline(@PathVariable @NotNull Long id) {
-        return germlineService.readById(id);
+    public Germline getGermline(@PathVariable @NotNull Long id) {
+        Germline germline = germlineService.readById(id).get();
+        if (germline == null)
+            throw new UnExistantEntity("Germline", id);
+        else
+            return germline;
     }
 
     /**

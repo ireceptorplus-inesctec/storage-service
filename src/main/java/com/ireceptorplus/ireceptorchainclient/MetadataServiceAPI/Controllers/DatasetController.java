@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageService;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Germline;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DatasetService;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,8 +58,12 @@ public class DatasetController
      */
     @GetMapping("/{id}")
     @Operation(summary = "Returns a specific Dataset, with the id received as parameter")
-    public Optional<Dataset> getDataset(@PathVariable @NotNull Long id) {
-        return datasetService.readById(id);
+    public Dataset getDataset(@PathVariable @NotNull Long id) {
+        Dataset dataset = datasetService.readById(id).get();
+        if (dataset == null)
+            throw new UnExistantEntity("Dataset", id);
+        else
+            return dataset;
     }
 
     /**
