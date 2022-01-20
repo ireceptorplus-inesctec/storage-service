@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageService;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ErrorParsingJsonObject;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
@@ -86,8 +87,7 @@ public class DatasetController
             datasetDTO = objectMapper.readValue(datasetStr, DatasetDTO.class);
         } catch (JsonProcessingException e)
         {
-            e.printStackTrace();
-            return null;
+            throw new ErrorParsingJsonObject("Error parsing Json object sent.");
         }
         String originalFileName = file.getOriginalFilename();
         UUID uuid = UUID.randomUUID();
