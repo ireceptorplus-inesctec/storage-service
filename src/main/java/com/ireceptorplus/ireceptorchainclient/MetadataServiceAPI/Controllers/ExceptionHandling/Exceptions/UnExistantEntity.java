@@ -2,9 +2,9 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.Ex
 
 public class UnExistantEntity extends ApiRequestException
 {
-    private final Integer id;
+    private final Long id;
 
-    public UnExistantEntity(String entityName, Integer id)
+    public UnExistantEntity(String entityName, Long id)
     {
         super("Can't get " + entityName + " with id " + id);
         this.id = id;
