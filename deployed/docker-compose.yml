@@ -14,7 +14,7 @@ services:
     restart: always
 
   storage-service:
-    build: .
+    build: ../
     volumes:
       - ../src:/storage/src
     depends_on:
