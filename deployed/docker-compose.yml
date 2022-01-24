@@ -17,6 +17,9 @@ services:
     build: ../
     volumes:
       - ../src:/storage/src
+      - ./config:/storage/config
+    environment:
+      - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:
       - db
     restart: always
