@@ -15,12 +15,11 @@ ADD pom.xml /storage
 ADD mvnw /storage
 ADD mvnw.cmd /storage
 
-RUN ./mvnw clean install -DskipTests
+RUN ./mvnw clean install -DskipTests -T4
 
 #RUN mv ./build/libs/*.jar ./storage.jar
 
-
-ENTRYPOINT ["./mvnw", "spring-boot:run", "-Dspring.config.location=classpath:/application.properties,$PROPERTIES_PATH"]
+CMD ./mvnw spring-boot:run -Dspring.config.location=classpath:/application.properties,$PROPERTIES_PATH
 
 #WORKDIR /storage
 
