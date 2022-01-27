@@ -89,6 +89,9 @@
     </dependencies>
 
     <build>
+
+        <finalName>ireceptorchain-storage-service-1.0-SNAPSHOT</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
