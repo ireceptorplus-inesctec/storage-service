@@ -19,7 +19,10 @@ RUN ./mvnw clean install -DskipTests -T4
 
 #RUN mv ./build/libs/*.jar ./storage.jar
 
-CMD ./mvnw spring-boot:run -Dspring.config.location=classpath:/application.properties,$PROPERTIES_PATH
+RUN ./mvnw package -DskipTests
+RUN mv ./target/*.jar ./ireceptorchain-storage-service.jar
+
+CMD java -jar ireceptorchain-storage-service.jar --spring.config.location=classpath:/application.properties
 
 #WORKDIR /storage
 
