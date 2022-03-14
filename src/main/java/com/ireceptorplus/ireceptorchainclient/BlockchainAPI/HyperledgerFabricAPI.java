@@ -30,12 +30,19 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         System.setProperty("org.hyperledger.fabric.sdk.service_discovery.as_localhost", "true");
     }
 
+    String blockchainDirectoryPath = "../ireceptorchain/";
+
+    private String resolveBlockchainDirPath(String relativePath)
+    {
+        return blockchainDirectoryPath + relativePath;
+    }
+
     private void enrollAdmin() throws IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvalidArgumentException, CryptoException, CertificateException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException, EnrollmentException
     {
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                "../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem");
+                resolveBlockchainDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
@@ -66,7 +73,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                "../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem");
+                resolveBlockchainDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
@@ -149,7 +156,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         Path walletPath = Paths.get("wallet");
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
-        Path networkConfigPath = Paths.get("..", "ireceptorchain", "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
+        Path networkConfigPath = Paths.get(resolveBlockchainDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
 
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, "appUser").networkConfig(networkConfigPath).discovery(true);
@@ -181,13 +188,6 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     public static void main(String[] args) throws Exception {
         HyperledgerFabricAPI api = new HyperledgerFabricAPI();
         api.enrollAdmin();
-    }
-
-    String blockchainDirectoryPath = "../ireceptorchain/";
-
-    public String resolveBlockchainDirPath(String relativePath)
-    {
-        return blockchainDirectoryPath + relativePath;
     }
 
     @Override
