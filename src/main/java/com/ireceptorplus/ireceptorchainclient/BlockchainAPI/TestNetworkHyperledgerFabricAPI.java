@@ -30,6 +30,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     public static void main(String[] args) throws Exception {
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
         api.enrollAdmin();
+        api.registerUser();
+        api.clientApp();
     }
 
     private String resolveBlockchainCertsDirPath(String relativePath)
