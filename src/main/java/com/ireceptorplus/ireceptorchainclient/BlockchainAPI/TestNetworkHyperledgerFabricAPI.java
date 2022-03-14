@@ -168,7 +168,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
             // get the network and contract
             Network network = gateway.getNetwork("mychannel");
-            Contract contract = network.getContract("fabcar");
+            Contract contract = network.getContract("ireceptorchain");
 
             byte[] result;
 
