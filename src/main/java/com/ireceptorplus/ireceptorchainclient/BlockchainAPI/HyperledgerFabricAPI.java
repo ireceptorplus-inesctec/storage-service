@@ -15,7 +15,6 @@ import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
@@ -32,7 +31,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
     String blockchainDirectoryPath = "../ireceptorchain/";
 
-    private String resolveBlockchainDirPath(String relativePath)
+    private String resolveBlockchainCertsDirPath(String relativePath)
     {
         return blockchainDirectoryPath + relativePath;
     }
@@ -42,7 +41,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
+                resolveBlockchainCertsDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
@@ -73,7 +72,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
+                resolveBlockchainCertsDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
@@ -156,7 +155,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         Path walletPath = Paths.get("wallet");
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
-        Path networkConfigPath = Paths.get(resolveBlockchainDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
+        Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
 
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, "appUser").networkConfig(networkConfigPath).discovery(true);
