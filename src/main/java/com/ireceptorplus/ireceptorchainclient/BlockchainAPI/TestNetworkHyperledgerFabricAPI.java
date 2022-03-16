@@ -27,11 +27,23 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     String blockchainDirectoryPath = "../ireceptorchain/";
 
+    public TestNetworkHyperledgerFabricAPI()
+    {
+        super(null, null);
+        HyperledgerNetworkDetails hyperledgerNetworkDetails = new HyperledgerNetworkDetails("", "myChannel", "ireceptorchain");
+        this.hyperledgerNetworkDetails = hyperledgerNetworkDetails;
+    }
+
     public static void main(String[] args) throws Exception {
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
+        initBlockchainTestAccounts(api);
+        api.clientApp();
+    }
+
+    private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api) throws Exception
+    {
         api.enrollAdmin();
         api.registerUser();
-        api.clientApp();
     }
 
     private String resolveBlockchainCertsDirPath(String relativePath)
