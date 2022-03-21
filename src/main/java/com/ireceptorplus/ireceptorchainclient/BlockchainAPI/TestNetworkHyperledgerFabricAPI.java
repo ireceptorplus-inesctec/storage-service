@@ -32,8 +32,6 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         super(new HyperledgerNetworkDetails("test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
                 "mychannel", "ireceptorchain"),
                 new HyperledgerWalletDetails("wallet", "appUser"));
-        HyperledgerNetworkDetails hyperledgerNetworkDetails = new HyperledgerNetworkDetails("", "myChannel", "ireceptorchain");
-        this.hyperledgerNetworkDetails = hyperledgerNetworkDetails;
     }
 
     public static void main(String[] args) throws Exception {
