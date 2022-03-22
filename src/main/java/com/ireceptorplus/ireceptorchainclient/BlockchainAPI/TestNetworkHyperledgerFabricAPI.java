@@ -29,15 +29,14 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     public TestNetworkHyperledgerFabricAPI()
     {
-        super(new HyperledgerNetworkDetails("test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
+        super(new HyperledgerNetworkDetails("../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
                 "mychannel", "ireceptorchain"),
                 new HyperledgerWalletDetails("wallet", "appUser"));
     }
 
     public static void main(String[] args) throws Exception {
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
-        initBlockchainTestAccounts(api);
-        api.clientApp();
+        api.getTraceabilityDataAwaitingValidation();
     }
 
     private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api) throws Exception
