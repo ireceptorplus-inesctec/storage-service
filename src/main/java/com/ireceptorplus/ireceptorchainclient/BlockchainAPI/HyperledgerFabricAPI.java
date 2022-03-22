@@ -28,7 +28,15 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation()
     {
-        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
+        Gateway.Builder builder = null;
+        try
+        {
+            builder = setupHyperledgerFabricGatewayBuilder();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
         Contract contract = setupContract(builder);
 
         byte[] result;
@@ -46,6 +54,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
             e.printStackTrace();
+            return null;
         }
 
         return null;
@@ -57,7 +66,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
     }
 
-    private Gateway.Builder setupHyperledgerFabricGatewayBuilder()
+    private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws IOException
     {
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
@@ -69,6 +78,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error setting up Hyperledger Fabric connection: opening wallet files failed");
             e.printStackTrace();
+            throw e;
         }
         // load a CCP
         Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.networkConfigPath);
@@ -81,6 +91,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error setting up Hyperledger Fabric connection: failed creation of builder");
             e.printStackTrace();
+            throw e;
         }
         return builder;
     }
