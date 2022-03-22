@@ -25,27 +25,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation()
     {
-        // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
-        Wallet wallet = null;
-        try
-        {
-            wallet = Wallets.newFileSystemWallet(walletPath);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        // load a CCP
-        Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.networkConfigPath);
-
-        Gateway.Builder builder = Gateway.createBuilder();
-        try
-        {
-            builder.identity(wallet, hyperledgerWalletDetails.userId).networkConfig(networkConfigPath).discovery(true);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
 
         // create a gateway connection
         try (Gateway gateway = builder.connect()) {
@@ -68,6 +48,32 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         }
 
         return null;
+    }
+
+    private Gateway.Builder setupHyperledgerFabricGatewayBuilder()
+    {
+        // Load a file system based wallet for managing identities.
+        Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
+        Wallet wallet = null;
+        try
+        {
+            wallet = Wallets.newFileSystemWallet(walletPath);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // load a CCP
+        Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.networkConfigPath);
+
+        Gateway.Builder builder = Gateway.createBuilder();
+        try
+        {
+            builder.identity(wallet, hyperledgerWalletDetails.userId).networkConfig(networkConfigPath).discovery(true);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return builder;
     }
 
     @Override
