@@ -51,6 +51,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         return null;
     }
 
+    @Override
+    public void submitVote(TraceabilityDataAwaitingValidation data)
+    {
+
+    }
+
     private Gateway.Builder setupHyperledgerFabricGatewayBuilder()
     {
         // Load a file system based wallet for managing identities.
@@ -87,12 +93,6 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         Contract contract = network.getContract(hyperledgerNetworkDetails.chaincodeId);
 
         return contract;
-    }
-
-    @Override
-    public void submitVote(TraceabilityDataAwaitingValidation data)
-    {
-
     }
 
 }
