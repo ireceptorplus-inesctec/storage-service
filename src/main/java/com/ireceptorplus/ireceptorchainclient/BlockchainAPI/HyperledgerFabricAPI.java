@@ -57,6 +57,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             byte[] result;
 
             result = contract.evaluateTransaction("getAllAwaitingValidationTraceabilityDataEntries");
+            System.out.println("Result from blockchain:");
             System.out.println(new String(result));
 
             //TODO parse result to class
