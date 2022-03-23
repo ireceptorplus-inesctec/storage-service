@@ -1,14 +1,12 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData.TraceabilityDataAwaitingValidation;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 
 public class HyperledgerFabricAPI implements BlockchainAPI
 {
@@ -61,7 +59,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public void submitVote(TraceabilityDataAwaitingValidation data)
+    public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType)
     {
 
     }

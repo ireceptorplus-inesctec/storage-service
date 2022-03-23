@@ -6,5 +6,5 @@ public interface BlockchainAPI
 {
     TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation();
 
-    void submitVote(TraceabilityDataAwaitingValidation data);
+    void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType);
 }
