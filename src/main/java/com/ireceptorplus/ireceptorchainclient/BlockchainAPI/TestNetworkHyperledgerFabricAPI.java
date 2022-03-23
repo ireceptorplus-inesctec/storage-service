@@ -1,5 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.EntityID;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.TraceabilityDataAwaitingValidation;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
@@ -43,6 +45,16 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         api.enrollAdmin();
         api.registerUser();
+    }
+
+    private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api)
+    {
+        TraceabilityDataAwaitingValidation data = new TraceabilityDataAwaitingValidation(
+                "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487",
+                new EntityID("appUser"),
+                0.0);
+        );
     }
 
     private String resolveBlockchainCertsDirPath(String relativePath)

@@ -3,7 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorFetchingData;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorSettingUpConnection;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData.TraceabilityDataAwaitingValidation;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.TraceabilityDataAwaitingValidation;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 

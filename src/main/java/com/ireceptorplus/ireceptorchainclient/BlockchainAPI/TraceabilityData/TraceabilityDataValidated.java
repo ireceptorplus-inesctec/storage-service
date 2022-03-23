@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData;
 
 import java.util.ArrayList;
 
