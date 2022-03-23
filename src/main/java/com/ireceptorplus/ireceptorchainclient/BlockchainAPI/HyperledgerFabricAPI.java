@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorSettingUpConnection;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData.TraceabilityDataAwaitingValidation;
 import org.apache.commons.logging.LogFactory;
@@ -61,7 +62,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType)
+    public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException
     {
         Gateway.Builder builder = null;
         try
