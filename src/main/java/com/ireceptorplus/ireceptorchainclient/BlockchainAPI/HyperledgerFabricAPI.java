@@ -7,6 +7,7 @@ import org.hyperledger.fabric.gateway.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeoutException;
 
 public class HyperledgerFabricAPI implements BlockchainAPI
 {
@@ -61,7 +62,50 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType)
     {
+        Gateway.Builder builder = null;
+        try
+        {
+            builder = setupHyperledgerFabricGatewayBuilder();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        Contract contract = setupContract(builder);
 
+        byte[] result;
+
+        try
+        {
+            if (voteType == VoteType.YES)
+            {
+                result = contract.submitTransaction("registerYesVoteForTraceabilityEntryInVotingRound");
+
+                LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully submitted yes vote for traceability data entry awaiting validation: ");
+                LogFactory.getLog(HyperledgerFabricAPI.class).debug(new String(result));
+            }
+            else if (voteType == VoteType.NO)
+            {
+                result = contract.submitTransaction("registerNoVoteForTraceabilityEntryInVotingRound");
+
+                LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully submitted no vote for traceability data entry awaiting validation: ");
+                LogFactory.getLog(HyperledgerFabricAPI.class).debug(new String(result));
+            }
+
+            //TODO parse result to class
+
+        } catch (ContractException e)
+        {
+            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
+            e.printStackTrace();
+            return;
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        } catch (TimeoutException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws IOException
