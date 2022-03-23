@@ -5,7 +5,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.Traceabili
 
 public interface BlockchainAPI
 {
-    TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation();
+    TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation() throws BlockchainAPIException;
 
     void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException;
 }

@@ -27,7 +27,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation()
+    public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
         Gateway.Builder builder = null;
         try
