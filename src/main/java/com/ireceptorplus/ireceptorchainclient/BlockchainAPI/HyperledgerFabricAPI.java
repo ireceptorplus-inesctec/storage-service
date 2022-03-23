@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorSettingUpConnection;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData.TraceabilityDataAwaitingValidation;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
@@ -108,7 +109,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         }
     }
 
-    private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws IOException
+    private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws IOException, ErrorSettingUpConnection
     {
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
@@ -120,7 +121,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error setting up Hyperledger Fabric connection: opening wallet files failed");
             e.printStackTrace();
-            throw e;
+            throw new ErrorSettingUpConnection("Error setting up Hyperledger Fabric connection: opening wallet files failed");
         }
         // load a CCP
         Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.networkConfigPath);
@@ -133,7 +134,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error setting up Hyperledger Fabric connection: failed creation of builder");
             e.printStackTrace();
-            throw e;
+            throw new ErrorSettingUpConnection("Error setting up Hyperledger Fabric connection: failed creation of builder");
         }
         return builder;
     }
