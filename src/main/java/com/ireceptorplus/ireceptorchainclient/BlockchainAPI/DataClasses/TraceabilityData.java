@@ -67,7 +67,6 @@ public abstract class TraceabilityData
         this.value = value;
     }
 
-
     public String getInputDatasetHashValue()
     {
         return inputDatasetHashValue;

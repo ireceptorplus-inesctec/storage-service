@@ -19,6 +19,4 @@ public class TraceabilityDataAwaitingValidation extends TraceabilityData
         rejecters = new ArrayList<>();
         this.value = value;
     }
-
-
 }
