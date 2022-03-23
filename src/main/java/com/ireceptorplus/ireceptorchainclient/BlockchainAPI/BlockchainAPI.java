@@ -1,7 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.TraceabilityDataAwaitingValidation;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataAwaitingValidation;
 
 public interface BlockchainAPI
 {

@@ -1,7 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.EntityID;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.TraceabilityData.TraceabilityDataAwaitingValidation;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.EntityID;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataAwaitingValidation;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
