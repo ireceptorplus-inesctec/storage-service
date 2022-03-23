@@ -30,8 +30,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
-        Gateway.Builder builder = null;
-        builder = setupHyperledgerFabricGatewayBuilder();
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
 
         byte[] result;
@@ -58,8 +57,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException
     {
-        Gateway.Builder builder = null;
-        builder = setupHyperledgerFabricGatewayBuilder();
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
 
         byte[] result;
