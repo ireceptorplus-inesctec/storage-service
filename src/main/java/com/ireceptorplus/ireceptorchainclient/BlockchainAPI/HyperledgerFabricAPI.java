@@ -1,6 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorFetchingData;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorSettingUpConnection;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.TraceabilityData.TraceabilityDataAwaitingValidation;
 import org.apache.commons.logging.LogFactory;
@@ -30,14 +31,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
         Gateway.Builder builder = null;
-        try
-        {
-            builder = setupHyperledgerFabricGatewayBuilder();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
 
         byte[] result;
@@ -55,7 +49,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
             e.printStackTrace();
-            return null;
+            throw new ErrorFetchingData("Error fetching data awaiting validation from blockchain");
         }
 
         return null;
@@ -65,14 +59,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException
     {
         Gateway.Builder builder = null;
-        try
-        {
-            builder = setupHyperledgerFabricGatewayBuilder();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-            return;
-        }
+        builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
 
         byte[] result;
@@ -110,7 +97,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         }
     }
 
-    private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws IOException, ErrorSettingUpConnection
+    private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws ErrorSettingUpConnection
     {
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
