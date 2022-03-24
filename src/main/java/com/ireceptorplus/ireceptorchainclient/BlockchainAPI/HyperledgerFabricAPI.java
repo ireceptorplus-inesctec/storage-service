@@ -1,5 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorFetchingData;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorSettingUpConnection;
@@ -25,6 +28,44 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     {
         this.hyperledgerNetworkDetails = hyperledgerNetworkDetails;
         this.hyperledgerWalletDetails = hyperledgerWalletDetails;
+    }
+
+    @Override
+    public TraceabilityDataAwaitingValidation createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
+    {
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
+        Contract contract = setupContract(builder);
+
+        byte[] result;
+
+        try
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String dataJson = objectMapper.writeValueAsString(data);
+
+            result = contract.submitTransaction("createTraceabilityDataEntryByObject", dataJson);
+
+            LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully traceability data: ");
+            LogFactory.getLog(HyperledgerFabricAPI.class).debug(new String(result));
+
+            //TODO parse result to class
+
+        } catch (ContractException | InterruptedException e)
+        {
+            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating traceability data: blockchain returned " + e.getMessage());
+            e.printStackTrace();
+            throw new ErrorFetchingData("Error creating traceability data: blockchain returned " + e.getMessage());
+        } catch (JsonProcessingException e)
+        {
+            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating JSON object that represents traceability data to be created.");
+            e.printStackTrace();
+            throw new ErrorFetchingData("Error creating JSON object that represents traceability data to be created.");
+        } catch (TimeoutException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
