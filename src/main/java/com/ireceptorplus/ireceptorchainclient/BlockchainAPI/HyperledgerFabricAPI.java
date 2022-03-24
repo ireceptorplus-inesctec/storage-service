@@ -124,7 +124,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
         } catch (ContractException e)
         {
-            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
+            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error submitting vote for traceability data: ");
             e.printStackTrace();
             return;
         } catch (InterruptedException e)
