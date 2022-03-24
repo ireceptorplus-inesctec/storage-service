@@ -13,5 +13,5 @@ public interface BlockchainAPI
 
     List<TraceabilityDataAwaitingValidationReturnType> getTraceabilityDataAwaitingValidation() throws BlockchainAPIException;
 
-    void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException;
+    void submitVote(TraceabilityDataAwaitingValidationReturnType data, VoteType voteType) throws BlockchainAPIException;
 }
