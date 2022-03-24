@@ -2,6 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ChaincodeReturnDataTypes.TraceabilityDataAwaitingValidationReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.ErrorFetchingData;
@@ -13,6 +14,7 @@ import org.hyperledger.fabric.gateway.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class HyperledgerFabricAPI implements BlockchainAPI
@@ -69,7 +71,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public TraceabilityDataAwaitingValidation getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
+    public List<TraceabilityDataAwaitingValidationReturnType> getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
@@ -96,7 +98,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public void submitVote(TraceabilityDataAwaitingValidation data, VoteType voteType) throws BlockchainAPIException
+    public void submitVote(TraceabilityDataAwaitingValidationReturnType data, VoteType voteType) throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
@@ -107,7 +109,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         {
             if (voteType == VoteType.YES)
             {
-                result = contract.submitTransaction("registerYesVoteForTraceabilityEntryInVotingRound");
+                result = contract.submitTransaction("registerYesVoteForTraceabilityEntryInVotingRound", data.getUuid());
 
                 LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully submitted yes vote for traceability data entry awaiting validation: ");
                 LogFactory.getLog(HyperledgerFabricAPI.class).debug(new String(result));
