@@ -2,6 +2,8 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.EntityID;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataAwaitingValidation;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
@@ -38,7 +40,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     public static void main(String[] args) throws Exception {
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
-        api.getTraceabilityDataAwaitingValidation();
+        initBlockchainTestAccounts(api);
+        createTestTraceabilityDataEntry(api);
     }
 
     private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api) throws Exception
@@ -47,14 +50,12 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         api.registerUser();
     }
 
-    private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api)
+    private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
     {
-        TraceabilityDataAwaitingValidation data = new TraceabilityDataAwaitingValidation(
+        TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
                 "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487",
-                new EntityID("appUser"),
-                0.0);
-        );
+                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487");
+        api.createTraceabilityDataEntry(data);
     }
 
     private String resolveBlockchainCertsDirPath(String relativePath)
