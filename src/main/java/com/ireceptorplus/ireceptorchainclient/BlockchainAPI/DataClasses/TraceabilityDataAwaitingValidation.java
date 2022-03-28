@@ -14,7 +14,7 @@ public class TraceabilityDataAwaitingValidation extends TraceabilityData
                                               EntityID creatorID,
                                               Double value)
     {
-        super(inputDatasetHashValue, outputDatasetHashValue, creatorID, value);
+        super(inputDatasetHashValue, outputDatasetHashValue, processingDetails, creatorID, value);
         approvers = new ArrayList<>();
         rejecters = new ArrayList<>();
         this.value = value;

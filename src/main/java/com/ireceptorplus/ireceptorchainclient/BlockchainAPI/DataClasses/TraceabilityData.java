@@ -24,6 +24,12 @@ public abstract class TraceabilityData
     protected final String outputDatasetHashValue;
 
     /**
+     * This is an instance of the class ProcessingDetails which contains information regarding the steps taken to perform the data transformation.
+     * These steps are necessary in order to check the veracity of the traceability information.
+     */
+    protected final ProcessingDetails processingDetails;
+
+    /**
      * An instance of class EntityID containing information about the id of the entity that created the traceability data entry.
      */
     protected final EntityID creatorID;
@@ -49,20 +55,22 @@ public abstract class TraceabilityData
 
     public TraceabilityData(String inputDatasetHashValue,
                             String outputDatasetHashValue,
-                            EntityID creatorID)
+                            ProcessingDetails processingDetails, EntityID creatorID)
     {
         this.inputDatasetHashValue = inputDatasetHashValue;
         this.outputDatasetHashValue = outputDatasetHashValue;
+        this.processingDetails = processingDetails;
         this.creatorID = creatorID;
     }
 
     public TraceabilityData(String inputDatasetHashValue,
                             String outputDatasetHashValue,
-                            EntityID creatorID,
+                            ProcessingDetails processingDetails, EntityID creatorID,
                             Double value)
     {
         this.inputDatasetHashValue = inputDatasetHashValue;
         this.outputDatasetHashValue = outputDatasetHashValue;
+        this.processingDetails = processingDetails;
         this.creatorID = creatorID;
         this.value = value;
     }

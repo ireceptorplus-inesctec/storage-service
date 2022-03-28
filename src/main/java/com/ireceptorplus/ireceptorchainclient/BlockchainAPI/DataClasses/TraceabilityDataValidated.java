@@ -17,7 +17,7 @@ public class TraceabilityDataValidated extends TraceabilityData
 
     public TraceabilityDataValidated(String inputDatasetHashValue, String outputDatasetHashValue, EntityID creatorID, ArrayList<EntityID> corroborators)
     {
-        super(inputDatasetHashValue, outputDatasetHashValue, creatorID);
+        super(inputDatasetHashValue, outputDatasetHashValue, processingDetails, creatorID);
         this.corroborators = corroborators;
     }
 
