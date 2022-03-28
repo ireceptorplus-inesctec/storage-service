@@ -52,7 +52,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             TraceabilityDataAwaitingValidation resultTraceabilityData = objectMapper.readValue(resultStr, TraceabilityDataAwaitingValidation.class);
 
             return resultTraceabilityData;
-        } catch (ContractException | InterruptedException e)
+        } catch (ContractException | InterruptedException | TimeoutException e)
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating traceability data: blockchain returned " + e.getMessage());
             e.printStackTrace();
@@ -62,12 +62,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating JSON object that represents traceability data to be created.");
             e.printStackTrace();
             throw new ErrorFetchingData("Error creating JSON object that represents traceability data to be created.");
-        } catch (TimeoutException e)
-        {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
     @Override
@@ -89,7 +84,6 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             List<TraceabilityDataAwaitingValidationReturnType> dataList = Arrays.asList(dataArray);
 
             return dataList;
-
         } catch (ContractException e)
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
@@ -138,27 +132,15 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             VoteResultReturnType voteResult = objectMapper.readValue(resultStr, VoteResultReturnType.class);
 
             return voteResult;
-        } catch (ContractException e)
+        } catch (ContractException | InterruptedException | TimeoutException e)
         {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned ContractException.";
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
-            throw new ErrorSubmittingVote(message);
-        } catch (InterruptedException e)
-        {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned InterruptedException.";
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
-            throw new ErrorSubmittingVote(message);
-        } catch (TimeoutException e)
-        {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned TimeoutException.";
+            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
             LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Error parsing result message.";
+            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
             LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
             throw new ErrorSubmittingVote(message);
