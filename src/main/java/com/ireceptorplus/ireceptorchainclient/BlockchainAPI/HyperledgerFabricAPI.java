@@ -54,14 +54,16 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             return resultTraceabilityData;
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
-            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating traceability data: blockchain returned " + e.getMessage());
+            String message = "Error creating traceability data: blockchain returned " + e.getMessage();
+            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData("Error creating traceability data: blockchain returned " + e.getMessage());
+            throw new ErrorFetchingData(message);
         } catch (JsonProcessingException e)
         {
-            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error creating JSON object that represents traceability data to be created.");
+            String message = "Error creating JSON object that represents traceability data to be created.";
+            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData("Error creating JSON object that represents traceability data to be created.");
+            throw new ErrorFetchingData(message);
         }
     }
 
@@ -86,14 +88,16 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             return dataList;
         } catch (ContractException e)
         {
-            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain");
+            String message = "Error fetching data awaiting validation from blockchain";
+            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData("Error fetching data awaiting validation from blockchain");
+            throw new ErrorFetchingData(message);
         } catch (JsonProcessingException e)
         {
-            LogFactory.getLog(HyperledgerFabricAPI.class).error("Error fetching data awaiting validation from blockchain: error parsing result from blockchain");
+            String message = "Error fetching data awaiting validation from blockchain: error parsing result from blockchain";
+            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData("Error fetching data awaiting validation from blockchain: error parsing result from blockchain");
+            throw new ErrorFetchingData(message);
         }
     }
 
