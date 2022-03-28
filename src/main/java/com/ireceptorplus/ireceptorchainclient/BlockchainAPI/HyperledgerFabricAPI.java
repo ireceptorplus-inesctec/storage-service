@@ -11,6 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -55,16 +57,22 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error creating traceability data: blockchain returned " + e.getMessage();
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorSubmittingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error creating JSON object that represents traceability data to be created.";
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorSubmittingData(message);
         }
+    }
+
+    private void writeLogMessages(Exception e, String message) {
+        LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
+        StringWriter stackTrace = new StringWriter();
+        PrintWriter stackTracePw = new PrintWriter(stackTrace);
+        e.printStackTrace(stackTracePw);
+        LogFactory.getLog(HyperledgerFabricAPI.class).debug(stackTrace);
     }
 
     @Override
@@ -89,14 +97,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException e)
         {
             String message = "Error fetching data awaiting validation from blockchain";
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorFetchingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error fetching data awaiting validation from blockchain: error parsing result from blockchain";
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorFetchingData(message);
         }
     }
@@ -139,14 +145,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
-            LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-            e.printStackTrace();
+            writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         }
     }
