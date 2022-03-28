@@ -57,13 +57,13 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             String message = "Error creating traceability data: blockchain returned " + e.getMessage();
             LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData(message);
+            throw new ErrorSubmittingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error creating JSON object that represents traceability data to be created.";
             LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
             e.printStackTrace();
-            throw new ErrorFetchingData(message);
+            throw new ErrorSubmittingData(message);
         }
     }
 
