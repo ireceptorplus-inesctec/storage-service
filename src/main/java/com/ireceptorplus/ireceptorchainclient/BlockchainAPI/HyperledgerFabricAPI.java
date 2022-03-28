@@ -67,14 +67,6 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         }
     }
 
-    private void writeLogMessages(Exception e, String message) {
-        LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
-        StringWriter stackTrace = new StringWriter();
-        PrintWriter stackTracePw = new PrintWriter(stackTrace);
-        e.printStackTrace(stackTracePw);
-        LogFactory.getLog(HyperledgerFabricAPI.class).debug(stackTrace);
-    }
-
     @Override
     public List<TraceabilityDataAwaitingValidationReturnType> getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
@@ -194,5 +186,14 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
         return contract;
     }
+
+    private void writeLogMessages(Exception e, String message) {
+        LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
+        StringWriter stackTrace = new StringWriter();
+        PrintWriter stackTracePw = new PrintWriter(stackTrace);
+        e.printStackTrace(stackTracePw);
+        LogFactory.getLog(HyperledgerFabricAPI.class).debug(stackTrace);
+    }
+
 
 }
