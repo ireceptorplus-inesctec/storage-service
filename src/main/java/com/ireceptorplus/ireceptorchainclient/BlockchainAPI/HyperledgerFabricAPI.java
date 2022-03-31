@@ -2,11 +2,10 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ChaincodeReturnDataTypes.TraceabilityDataAwaitingValidationReturnType;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ChaincodeReturnDataTypes.VoteResultReturnType;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataAwaitingValidation;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 
@@ -35,7 +34,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public TraceabilityDataAwaitingValidation createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
+    public TraceabilityDataReturnType createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
@@ -51,7 +50,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully created traceability data: ");
             LogFactory.getLog(HyperledgerFabricAPI.class).debug(resultStr);
 
-            TraceabilityDataAwaitingValidation resultTraceabilityData = objectMapper.readValue(resultStr, TraceabilityDataAwaitingValidation.class);
+            TraceabilityDataReturnType resultTraceabilityData = objectMapper.readValue(resultStr, TraceabilityDataReturnType.class);
 
             return resultTraceabilityData;
         } catch (ContractException | InterruptedException | TimeoutException e)
@@ -68,7 +67,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public List<TraceabilityDataAwaitingValidationReturnType> getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
+    public List<TraceabilityDataReturnType> getTraceabilityDataAwaitingValidation() throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
@@ -82,8 +81,8 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             LogFactory.getLog(HyperledgerFabricAPI.class).debug(resultStr);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            TraceabilityDataAwaitingValidationReturnType[] dataArray = objectMapper.readValue(resultStr, TraceabilityDataAwaitingValidationReturnType[].class);
-            List<TraceabilityDataAwaitingValidationReturnType> dataList = Arrays.asList(dataArray);
+            TraceabilityDataReturnType[] dataArray = objectMapper.readValue(resultStr, TraceabilityDataReturnType[].class);
+            List<TraceabilityDataReturnType> dataList = Arrays.asList(dataArray);
 
             return dataList;
         } catch (ContractException e)
@@ -100,7 +99,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public VoteResultReturnType submitVote(TraceabilityDataAwaitingValidationReturnType data, VoteType voteType) throws BlockchainAPIException
+    public VoteResultReturnType submitVote(TraceabilityDataReturnType data, VoteType voteType) throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);

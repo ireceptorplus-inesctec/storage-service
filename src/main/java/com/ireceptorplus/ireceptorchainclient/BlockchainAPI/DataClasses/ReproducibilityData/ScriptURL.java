@@ -1,6 +1,5 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData;
 
-
 public class ScriptURL implements ScriptSource
 {
     /**

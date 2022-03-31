@@ -1,4 +1,4 @@
-package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ChaincodeReturnDataTypes;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes;
 
 public class VoteResultReturnType extends ChaincodeReturnDataType
 {

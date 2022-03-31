@@ -2,7 +2,6 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
 
-
 import java.util.Objects;
 
 /**
@@ -58,6 +57,7 @@ public class ProcessingDetails
     {
         return softwareConfigParams;
     }
+
 
     public ProcessingDetails(String softwareId, String softwareVersion, String softwareBinaryExecutableHashValue, String softwareConfigParams, ReproducibilityData reproducibilityData)
     {

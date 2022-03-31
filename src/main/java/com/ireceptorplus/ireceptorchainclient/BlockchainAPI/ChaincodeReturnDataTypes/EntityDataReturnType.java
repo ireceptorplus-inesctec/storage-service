@@ -1,13 +1,14 @@
-package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes;
 
 import java.util.Objects;
 
-/**
- * This class represents an entity.
- * Is used to store information about the entities who have validated a traceability information entry.
- */
-public class EntityData
+public class EntityDataReturnType extends ChaincodeReturnDataType
 {
+    /**
+     * The uuid used to reference the Entity's data.
+     */
+    protected String uuid;
+
     /**
      * An instance of class ClientIdentity that hyperledger fabric uses to represent the identity of a client (peer).
      * This contains the its certificate, an id, an msp id (id of the organization it belongs to) and may contain additional attributes created upon creation of the peers' certificate.
@@ -29,32 +30,9 @@ public class EntityData
      */
     private final Double reputationAtStake;
 
-    public String getId()
+    public EntityDataReturnType(String uuid, String id, Double reputation, Double reputationAtStake)
     {
-        return id;
-    }
-
-    public Double getReputation()
-    {
-        return reputation;
-    }
-
-    public Double getReputationAtStake()
-    {
-        return reputationAtStake;
-    }
-
-    /**
-     * Constructor used to create a representation of the entity's data that is already stored in the blockchain database.
-     * It receives all attributes of an entity.
-     * @param id A String representing the id of the peer.
-     * @param reputation The current reputation of the entity.
-     * @param reputationAtStake The current amount of reputation of the entity that is at stake.
-     */
-    public EntityData(String id,
-                      Double reputation,
-                      Double reputationAtStake)
-    {
+        this.uuid = uuid;
         this.id = id;
         this.reputation = reputation;
         this.reputationAtStake = reputationAtStake;
@@ -65,15 +43,13 @@ public class EntityData
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EntityData that = (EntityData) o;
-        return id.equals(that.id) &&
-                reputation.equals(that.reputation) &&
-                reputationAtStake.equals(that.reputationAtStake);
+        EntityDataReturnType that = (EntityDataReturnType) o;
+        return uuid.equals(that.uuid) && id.equals(that.id) && reputation.equals(that.reputation) && reputationAtStake.equals(that.reputationAtStake);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, reputation, reputationAtStake);
+        return Objects.hash(uuid, id, reputation, reputationAtStake);
     }
 }

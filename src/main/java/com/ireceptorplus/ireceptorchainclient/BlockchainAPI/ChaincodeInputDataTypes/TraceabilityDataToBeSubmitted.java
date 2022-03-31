@@ -1,4 +1,6 @@
-package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes;
+
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 
 import java.util.ArrayList;
 

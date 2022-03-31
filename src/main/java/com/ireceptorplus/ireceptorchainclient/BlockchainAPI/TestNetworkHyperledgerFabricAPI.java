@@ -1,8 +1,10 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.EntityID;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataAwaitingValidation;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.NextFlowScript;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ScriptURL;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -22,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
@@ -52,9 +55,16 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
     {
+        ReproducibilityData reproducibilityData = new ReproducibilityData(new ArrayList<>(),
+                new NextFlowScript(new ScriptURL("https://repository.com/script.sh")),
+                new ArrayList<>());
         TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
                 "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487");
+                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487",
+                new ProcessingDetails("igblast", "1.0",
+                        "52da1b1b9e707c38e7e158422aa1ffb5bd8b71d29e66e6a1b8bf6da541cb0f3d",
+                        "--config a",
+                        reproducibilityData));
         api.createTraceabilityDataEntry(data);
     }
 
