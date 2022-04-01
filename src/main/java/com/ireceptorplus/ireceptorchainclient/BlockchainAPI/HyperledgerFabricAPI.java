@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 public class HyperledgerFabricAPI implements BlockchainAPI
@@ -44,7 +45,8 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             ObjectMapper objectMapper = new ObjectMapper();
             String dataJson = objectMapper.writeValueAsString(data);
 
-            byte[] result = contract.submitTransaction("createTraceabilityDataEntryByObject", dataJson);
+            UUID uuid = UUID.randomUUID();
+            byte[] result = contract.submitTransaction("createTraceabilityDataEntryByObject", uuid.toString(), dataJson);
             String resultStr = new String(result);
 
             LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully created traceability data: ");
