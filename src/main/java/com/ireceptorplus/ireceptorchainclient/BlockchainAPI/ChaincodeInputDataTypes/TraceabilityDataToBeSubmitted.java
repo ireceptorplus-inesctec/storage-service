@@ -45,4 +45,24 @@ public class TraceabilityDataToBeSubmitted
         this.processingDetails = processingDetails;
         this.value = value;
     }
+
+    public String getInputDatasetHashValue()
+    {
+        return inputDatasetHashValue;
+    }
+
+    public String getOutputDatasetHashValue()
+    {
+        return outputDatasetHashValue;
+    }
+
+    public ProcessingDetails getProcessingDetails()
+    {
+        return processingDetails;
+    }
+
+    public Double getValue()
+    {
+        return value;
+    }
 }
