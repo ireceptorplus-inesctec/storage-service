@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
@@ -27,6 +28,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
     protected HyperledgerNetworkDetails hyperledgerNetworkDetails;
     protected HyperledgerWalletDetails hyperledgerWalletDetails;
+    private ProcessingDetails processingDetails;
 
     public HyperledgerFabricAPI(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails)
     {
@@ -46,7 +48,8 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             String dataJson = objectMapper.writeValueAsString(data);
 
             UUID uuid = UUID.randomUUID();
-            byte[] result = contract.submitTransaction("createTraceabilityDataEntryByObject", uuid.toString(), dataJson);
+            processingDetails = data.getProcessingDetails();
+            byte[] result = contract.submitTransaction("createTraceabilityDataEntryByObject", uuid.toString(), data.getInputDatasetHashValue(), data.getOutputDatasetHashValue(), processingDetails.getSoftwareId(), processingDetails.getSoftwareVersion(), processingDetails.getSoftwareBinaryExecutableHashValue(), processingDetails.getSoftwareConfigParams(), data.getValue().toString());
             String resultStr = new String(result);
 
             LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully created traceability data: ");
