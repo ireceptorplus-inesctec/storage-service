@@ -36,6 +36,7 @@ public class TraceabilityDataToBeSubmitted
         this.inputDatasetHashValue = inputDatasetHashValue;
         this.outputDatasetHashValue = outputDatasetHashValue;
         this.processingDetails = processingDetails;
+        this.additionalValue = 0.0;
     }
 
     public TraceabilityDataToBeSubmitted(String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, Double additionalValue)
