@@ -51,6 +51,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         api.enrollAdmin();
         api.registerUser();
+        api.clientApp();
     }
 
     private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
