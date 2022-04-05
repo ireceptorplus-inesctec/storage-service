@@ -2,7 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reprodu
 
 import java.util.Objects;
 
-public abstract class ReproducibleScript
+public class ReproducibleScript
 {
     /**
      * The URL from which the script can be fetched.
