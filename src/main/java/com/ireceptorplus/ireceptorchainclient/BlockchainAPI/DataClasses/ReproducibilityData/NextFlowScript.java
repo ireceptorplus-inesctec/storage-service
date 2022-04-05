@@ -7,4 +7,9 @@ public class NextFlowScript extends ReproducibleScript
     {
         super(url);
     }
+
+    public NextFlowScript()
+    {
+        super(new ScriptURL(""));
+    }
 }

@@ -28,4 +28,9 @@ public abstract class ReproducibleScript
     {
         return Objects.hash(url);
     }
+
+    public ScriptURL getUrl()
+    {
+        return url;
+    }
 }
