@@ -14,6 +14,11 @@ public abstract class ReproducibleScript
         this.url = url;
     }
 
+    public ReproducibleScript()
+    {
+        this.url = new ScriptURL("");
+    }
+
     @Override
     public boolean equals(Object o)
     {
