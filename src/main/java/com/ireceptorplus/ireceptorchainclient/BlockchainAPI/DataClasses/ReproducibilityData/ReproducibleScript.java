@@ -2,21 +2,21 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reprodu
 
 import java.util.Objects;
 
-public abstract class ReproducibleScript
+public class ReproducibleScript
 {
     /**
      * The URL from which the script can be fetched.
      */
-    private final ScriptURL url;
+    private final String url;
 
-    public ReproducibleScript(ScriptURL url)
+    public ReproducibleScript(String url)
     {
         this.url = url;
     }
 
     public ReproducibleScript()
     {
-        this.url = new ScriptURL("");
+        this.url = "";
     }
 
     @Override
@@ -34,7 +34,7 @@ public abstract class ReproducibleScript
         return Objects.hash(url);
     }
 
-    public ScriptURL getUrl()
+    public String getUrl()
     {
         return url;
     }

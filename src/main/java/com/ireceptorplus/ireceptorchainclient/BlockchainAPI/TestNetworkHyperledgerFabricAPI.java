@@ -2,9 +2,8 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.NextFlowScript;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ScriptURL;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -89,7 +88,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
     {
         ReproducibilityData reproducibilityData = new ReproducibilityData(new ArrayList<>(),
-                new NextFlowScript(new ScriptURL("https://repository.com/script.sh")),
+                new ReproducibleScript("https://repository.com/script.sh"),
                 new ArrayList<>());
         TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
                 "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
