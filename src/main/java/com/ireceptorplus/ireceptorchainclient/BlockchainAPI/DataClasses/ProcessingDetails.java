@@ -58,6 +58,10 @@ public class ProcessingDetails
         return softwareConfigParams;
     }
 
+    public ReproducibilityData getReproducibilityData()
+    {
+        return reproducibilityData;
+    }
 
     public ProcessingDetails(String softwareId, String softwareVersion, String softwareBinaryExecutableHashValue, String softwareConfigParams, ReproducibilityData reproducibilityData)
     {
