@@ -47,11 +47,43 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         createTestTraceabilityDataEntry(api);
     }
 
-    private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api) throws Exception
+    private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api)
     {
-        api.enrollAdmin();
-        api.registerUser();
-        api.clientApp();
+        try {
+            api.enrollAdmin();
+            api.registerUser();
+            api.clientApp();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ContractException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (InvalidArgumentException e) {
+            e.printStackTrace();
+        } catch (org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException e) {
+            e.printStackTrace();
+        } catch (EnrollmentException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (CryptoException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
