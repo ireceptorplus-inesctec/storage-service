@@ -13,30 +13,33 @@ public class ProcessingDetails
      * An unique identifier of the software used to perform the data transformation.
      * For the nodes to be able to validate the traceability information, a corresponding and valid entry in the software list config file must exist.
      */
-    private final String softwareId;
+    private String softwareId;
 
     /**
      * The version of the software used to perform the data transformation.
      */
-    private final String softwareVersion;
+    private String softwareVersion;
 
     /**
      * The hash value of the binary executable used to perform the data transformation.
      * This is used to validate the integrity of the binary used, in case a verification of the information is desired.
      * Only by trusting the executable can the traceability information be trusted.
      */
-    private final String softwareBinaryExecutableHashValue;
+    private String softwareBinaryExecutableHashValue;
 
     /**
      * The configuration parameters of the software used to perform the data transformation.
      * This should be a string containing the command line arguments, ready to be passed to the executable binary file.
      */
-    private final String softwareConfigParams;
+    private String softwareConfigParams;
 
     /**
      * An instance of class ReproducibilityData containing the necessary data to reproduce the processing.
      */
-    private final ReproducibilityData reproducibilityData;
+    private ReproducibilityData reproducibilityData;
+
+    public ProcessingDetails() {
+    }
 
     public String getSoftwareId()
     {
@@ -57,6 +60,8 @@ public class ProcessingDetails
     {
         return softwareConfigParams;
     }
+
+
 
 
     public ProcessingDetails(String softwareId, String softwareVersion, String softwareBinaryExecutableHashValue, String softwareConfigParams, ReproducibilityData reproducibilityData)

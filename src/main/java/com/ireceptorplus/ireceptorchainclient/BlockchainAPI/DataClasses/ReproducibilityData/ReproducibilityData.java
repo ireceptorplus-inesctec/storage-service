@@ -8,17 +8,20 @@ public class ReproducibilityData
     /**
      * The source from which the input dataset(s) can be fetched so that the processing may be performed.
      */
-    private final ArrayList<DatasetURL> inputDatasets;
+    private ArrayList<DatasetURL> inputDatasets;
 
     /**
      * An executable script that allows to reproduce the processing made to the data.
      */
-    private final ReproducibleScript script;
+    private ReproducibleScript script;
 
     /**
      * The source from which the output dataset(s) can be fetched to validate the output of the processing.
      */
-    private final ArrayList<DatasetURL> outputDatasets;
+    private ArrayList<DatasetURL> outputDatasets;
+
+    public ReproducibilityData() {
+    }
 
     public ReproducibilityData(ArrayList<DatasetURL> inputDatasets, ReproducibleScript script, ArrayList<DatasetURL> outputDatasets)
     {
