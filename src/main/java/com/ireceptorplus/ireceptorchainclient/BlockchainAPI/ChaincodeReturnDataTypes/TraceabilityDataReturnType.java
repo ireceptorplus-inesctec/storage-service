@@ -16,24 +16,24 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      * The hash value of the input dataset used to perform the data transformation.
      * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
      */
-    protected final String inputDatasetHashValue;
+    protected String inputDatasetHashValue;
 
     /**
      * The hash value of the output dataset used to perform the data transformation.
      * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
      */
-    protected final String outputDatasetHashValue;
+    protected String outputDatasetHashValue;
 
     /**
      * This is an instance of the class ProcessingDetails which contains information regarding the steps taken to perform the data transformation.
      * These steps are necessary in order to check the veracity of the traceability information.
      */
-    protected final ProcessingDetails processingDetails;
+    protected ProcessingDetails processingDetails;
 
     /**
      * An instance of class EntityID containing information about the id of the entity that created the traceability data entry.
      */
-    protected final String creatorID;
+    protected String creatorID;
 
     /**
      * An array of entities who have submitted a YES vote for the validity of the traceability information.
@@ -53,6 +53,9 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      * The double representing the reward will be available to be consulted even after the traceability data is registered as validated.
      */
     protected Double value;
+
+    public TraceabilityDataReturnType() {
+    }
 
     public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, String creatorID, ArrayList<String> approvers, ArrayList<String> rejecters, Double value)
     {
@@ -119,5 +122,37 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     public Double getValue()
     {
         return value;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setInputDatasetHashValue(String inputDatasetHashValue) {
+        this.inputDatasetHashValue = inputDatasetHashValue;
+    }
+
+    public void setOutputDatasetHashValue(String outputDatasetHashValue) {
+        this.outputDatasetHashValue = outputDatasetHashValue;
+    }
+
+    public void setProcessingDetails(ProcessingDetails processingDetails) {
+        this.processingDetails = processingDetails;
+    }
+
+    public void setCreatorID(String creatorID) {
+        this.creatorID = creatorID;
+    }
+
+    public void setApprovers(ArrayList<String> approvers) {
+        this.approvers = approvers;
+    }
+
+    public void setRejecters(ArrayList<String> rejecters) {
+        this.rejecters = rejecters;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
     }
 }
