@@ -1,6 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
@@ -44,6 +46,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
         initBlockchainTestAccounts(api);
         createTestTraceabilityDataEntry(api);
+        List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
+        System.out.println("stuff");
     }
 
     private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api)
