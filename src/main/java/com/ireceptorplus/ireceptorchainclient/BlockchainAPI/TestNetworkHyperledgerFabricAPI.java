@@ -233,7 +233,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         String userId = hyperledgerWalletDetails.userId;
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get("wallet");
+        Path walletPath = Paths.get(hyperledgerWalletDetails.walletPath);
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
         Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
