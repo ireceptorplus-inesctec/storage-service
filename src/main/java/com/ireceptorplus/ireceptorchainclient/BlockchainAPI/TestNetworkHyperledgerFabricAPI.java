@@ -35,28 +35,30 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     String blockchainDirectoryPath = "../ireceptorchain/";
 
-    public TestNetworkHyperledgerFabricAPI()
+    public TestNetworkHyperledgerFabricAPI(HyperledgerWalletDetails walletDetails)
     {
         super(new HyperledgerNetworkDetails("../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
                 "mychannel", "ireceptorchain"),
-                new HyperledgerWalletDetails("wallet", "appUser"));
+                walletDetails);
     }
 
     public static void main(String[] args) throws Exception {
-        TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
-        api.initBlockchainTestAccounts();
+        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
+        TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
+        initBlockchainTestAccounts(api);
         createTestTraceabilityDataEntry(api);
         List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
         api.submitVote(dataReturnTypeList.get(0), VoteType.YES);
+
         System.out.println("stuff");
     }
 
-    private void initBlockchainTestAccounts()
+    private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api)
     {
         try {
-            enrollAdmin();
-            registerUser();
-            clientApp();
+            api.enrollAdmin();
+            api.registerUser(api.hyperledgerWalletDetails.userId);
+            api.clientApp(api.hyperledgerWalletDetails.userId);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
@@ -140,9 +142,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
     }
 
-    public void registerUser() throws Exception
+    public void registerUser(String userId) throws Exception
     {
-        String userId = hyperledgerWalletDetails.userId;
+
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
@@ -223,9 +225,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     }
 
-    public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
+    public void clientApp(String userId) throws IOException, ContractException, InterruptedException, TimeoutException
     {
-        String userId = hyperledgerWalletDetails.userId;
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get("wallet");
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
