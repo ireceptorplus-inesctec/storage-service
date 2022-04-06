@@ -44,13 +44,18 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     public static void main(String[] args) throws Exception {
         HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
-        TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
-        api.initBlockchainTestAccounts();
-        createTestTraceabilityDataEntry(api);
-        List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
-        api.submitVote(dataReturnTypeList.get(0), VoteType.YES);
+        TestNetworkHyperledgerFabricAPI apiForCreator = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
+        apiForCreator.initBlockchainTestAccounts();
+        createTestTraceabilityDataEntry(apiForCreator);
+        List<TraceabilityDataReturnType> dataReturnTypeList = apiForCreator.getTraceabilityDataAwaitingValidation();
 
-        System.out.println("stuff");
+
+        HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter");
+        TestNetworkHyperledgerFabricAPI apiForVoter = new TestNetworkHyperledgerFabricAPI(walletDetailsVoter);
+        apiForVoter.initBlockchainTestAccounts();
+        apiForVoter.submitVote(dataReturnTypeList.get(0), VoteType.YES);
+
+
     }
 
     private void initBlockchainTestAccounts()
