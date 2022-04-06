@@ -63,7 +63,6 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         try {
             enrollAdmin();
             registerUser();
-            clientApp();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
@@ -129,7 +128,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get("wallet"));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.walletPath));
 
         // Check to see if we've already enrolled the admin user.
         if (wallet.get("admin") != null) {
