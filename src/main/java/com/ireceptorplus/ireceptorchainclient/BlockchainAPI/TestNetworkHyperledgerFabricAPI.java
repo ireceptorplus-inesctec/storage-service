@@ -35,19 +35,21 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     String blockchainDirectoryPath = "../ireceptorchain/";
 
-    public TestNetworkHyperledgerFabricAPI()
+    public TestNetworkHyperledgerFabricAPI(HyperledgerWalletDetails walletDetails)
     {
         super(new HyperledgerNetworkDetails("../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
                 "mychannel", "ireceptorchain"),
-                new HyperledgerWalletDetails("wallet", "appUser"));
+                walletDetails);
     }
 
     public static void main(String[] args) throws Exception {
-        TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI();
+        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "appUser");
+        TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
         initBlockchainTestAccounts(api);
         createTestTraceabilityDataEntry(api);
         List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
         api.submitVote(dataReturnTypeList.get(0), VoteType.YES);
+
         System.out.println("stuff");
     }
 
