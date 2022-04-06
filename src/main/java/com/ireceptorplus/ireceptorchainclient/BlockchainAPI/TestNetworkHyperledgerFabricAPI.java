@@ -47,6 +47,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         initBlockchainTestAccounts(api);
         createTestTraceabilityDataEntry(api);
         List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
+        api.submitVote(dataReturnTypeList.get(0), VoteType.YES);
         System.out.println("stuff");
     }
 
