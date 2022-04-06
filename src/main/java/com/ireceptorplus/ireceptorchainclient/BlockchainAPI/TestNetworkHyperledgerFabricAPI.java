@@ -157,7 +157,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
         // Check to see if we've already enrolled the user.
         if (wallet.get(userId) != null) {
-            System.out.println("An identity for the user \"appUser\" already exists in the wallet");
+            System.out.println("An identity for the user " + userId + " already exists in the wallet");
             return;
         }
 
@@ -219,7 +219,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         Enrollment enrollment = caClient.enroll(userId, enrollmentSecret);
         Identity user = Identities.newX509Identity("Org1MSP", enrollment);
         wallet.put(userId, user);
-        System.out.println("Successfully enrolled user \"appUser\" and imported it into the wallet");
+        System.out.println("Successfully enrolled user " + userId + " and imported it into the wallet");
 
     }
 
