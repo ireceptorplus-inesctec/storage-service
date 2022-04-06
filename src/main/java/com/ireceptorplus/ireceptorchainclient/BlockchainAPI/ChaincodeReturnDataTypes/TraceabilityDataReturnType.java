@@ -57,7 +57,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     public TraceabilityDataReturnType() {
     }
 
-    public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, String creatorID, ArrayList<String> approvers, ArrayList<String> rejecters, Double value)
+    public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, EntityID creatorID, ArrayList<String> approvers, ArrayList<String> rejecters, Double value)
     {
         this.uuid = uuid;
         this.inputDatasetHashValue = inputDatasetHashValue;
@@ -104,7 +104,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         return processingDetails;
     }
 
-    public String getCreatorID()
+    public EntityID getCreatorID()
     {
         return creatorID;
     }
@@ -140,7 +140,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         this.processingDetails = processingDetails;
     }
 
-    public void setCreatorID(String creatorID) {
+    public void setCreatorID(EntityID creatorID) {
         this.creatorID = creatorID;
     }
 
