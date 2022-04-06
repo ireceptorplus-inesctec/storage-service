@@ -55,8 +55,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         try {
             api.enrollAdmin();
-            api.registerUser();
-            api.clientApp();
+            api.registerUser("appUser");
+            api.clientApp("appUser");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
@@ -140,7 +140,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
     }
 
-    public void registerUser() throws Exception
+    public void registerUser(String userId) throws Exception
     {
 
         // Create a CA client for interacting with the CA.
@@ -156,7 +156,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         Wallet wallet = Wallets.newFileSystemWallet(Paths.get("wallet"));
 
         // Check to see if we've already enrolled the user.
-        if (wallet.get("appUser") != null) {
+        if (wallet.get(userId) != null) {
             System.out.println("An identity for the user \"appUser\" already exists in the wallet");
             return;
         }
@@ -212,18 +212,18 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         };
 
         // Register the user, enroll the user, and import the new identity into the wallet.
-        RegistrationRequest registrationRequest = new RegistrationRequest("appUser");
+        RegistrationRequest registrationRequest = new RegistrationRequest(userId);
         registrationRequest.setAffiliation("org1.department1");
-        registrationRequest.setEnrollmentID("appUser");
+        registrationRequest.setEnrollmentID(userId);
         String enrollmentSecret = caClient.register(registrationRequest, admin);
-        Enrollment enrollment = caClient.enroll("appUser", enrollmentSecret);
+        Enrollment enrollment = caClient.enroll(userId, enrollmentSecret);
         Identity user = Identities.newX509Identity("Org1MSP", enrollment);
-        wallet.put("appUser", user);
+        wallet.put(userId, user);
         System.out.println("Successfully enrolled user \"appUser\" and imported it into the wallet");
 
     }
 
-    public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
+    public void clientApp(String userId) throws IOException, ContractException, InterruptedException, TimeoutException
     {
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get("wallet");
@@ -232,7 +232,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
 
         Gateway.Builder builder = Gateway.createBuilder();
-        builder.identity(wallet, "appUser").networkConfig(networkConfigPath).discovery(true);
+        builder.identity(wallet, userId).networkConfig(networkConfigPath).discovery(true);
 
         // create a gateway connection
         try (Gateway gateway = builder.connect()) {
