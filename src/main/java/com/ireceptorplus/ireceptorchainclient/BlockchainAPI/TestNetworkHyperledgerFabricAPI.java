@@ -45,7 +45,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     public static void main(String[] args) throws Exception {
         HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
-        initBlockchainTestAccounts(api);
+        api.initBlockchainTestAccounts();
         createTestTraceabilityDataEntry(api);
         List<TraceabilityDataReturnType> dataReturnTypeList = api.getTraceabilityDataAwaitingValidation();
         api.submitVote(dataReturnTypeList.get(0), VoteType.YES);
@@ -53,12 +53,12 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         System.out.println("stuff");
     }
 
-    private static void initBlockchainTestAccounts(TestNetworkHyperledgerFabricAPI api)
+    private void initBlockchainTestAccounts()
     {
         try {
-            api.enrollAdmin();
-            api.registerUser(api.hyperledgerWalletDetails.userId);
-            api.clientApp(api.hyperledgerWalletDetails.userId);
+            enrollAdmin();
+            registerUser();
+            clientApp();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
@@ -142,9 +142,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
     }
 
-    public void registerUser(String userId) throws Exception
+    public void registerUser() throws Exception
     {
-
+        String userId = hyperledgerWalletDetails.userId;
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
@@ -225,8 +225,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     }
 
-    public void clientApp(String userId) throws IOException, ContractException, InterruptedException, TimeoutException
+    public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
     {
+        String userId = hyperledgerWalletDetails.userId;
         // Load a file system based wallet for managing identities.
         Path walletPath = Paths.get("wallet");
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
