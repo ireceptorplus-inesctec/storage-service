@@ -33,7 +33,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     /**
      * An instance of class EntityID containing information about the id of the entity that created the traceability data entry.
      */
-    protected String creatorID;
+    protected EntityID creatorID;
 
     /**
      * An array of entities who have submitted a YES vote for the validity of the traceability information.
