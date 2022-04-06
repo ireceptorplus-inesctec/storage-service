@@ -43,7 +43,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     }
 
     public static void main(String[] args) throws Exception {
-        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "appUser");
+        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
         TestNetworkHyperledgerFabricAPI api = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
         initBlockchainTestAccounts(api);
         createTestTraceabilityDataEntry(api);
@@ -57,8 +57,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         try {
             api.enrollAdmin();
-            api.registerUser("appUser");
-            api.clientApp("appUser");
+            api.registerUser(api.hyperledgerWalletDetails.userId);
+            api.clientApp(api.hyperledgerWalletDetails.userId);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
