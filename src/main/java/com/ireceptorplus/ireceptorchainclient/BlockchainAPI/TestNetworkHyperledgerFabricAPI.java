@@ -50,10 +50,10 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         List<TraceabilityDataReturnType> dataReturnTypeList = apiForCreator.getTraceabilityDataAwaitingValidation();
 
 
-        HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter2");
+        HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter");
         TestNetworkHyperledgerFabricAPI apiForVoter = new TestNetworkHyperledgerFabricAPI(walletDetailsVoter);
-        List<TraceabilityDataReturnType> dataAwaitingValidation = apiForVoter.getTraceabilityDataAwaitingValidation();
         apiForVoter.initBlockchainTestAccounts();
+        List<TraceabilityDataReturnType> dataAwaitingValidation = apiForVoter.getTraceabilityDataAwaitingValidation();
         apiForVoter.submitVote(dataAwaitingValidation.get(0), VoteType.YES);
 
 
