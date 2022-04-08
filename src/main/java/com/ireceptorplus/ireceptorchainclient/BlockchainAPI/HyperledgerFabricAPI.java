@@ -145,7 +145,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
+            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Error parsing JSON response returned from the blockchain.";
             writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         }
