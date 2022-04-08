@@ -12,6 +12,10 @@ public class VoteResultReturnType extends ChaincodeReturnDataType
      */
     boolean stateChange;
 
+    public VoteResultReturnType()
+    {
+    }
+
     public VoteResultReturnType(String message, boolean stateChange)
     {
         this.message = message;
@@ -26,5 +30,15 @@ public class VoteResultReturnType extends ChaincodeReturnDataType
     public boolean isStateChange()
     {
         return stateChange;
+    }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
+
+    public void setStateChange(boolean stateChange)
+    {
+        this.stateChange = stateChange;
     }
 }
