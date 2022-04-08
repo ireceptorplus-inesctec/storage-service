@@ -53,7 +53,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter");
         TestNetworkHyperledgerFabricAPI apiForVoter = new TestNetworkHyperledgerFabricAPI(walletDetailsVoter);
         apiForVoter.initBlockchainTestAccounts();
-        apiForVoter.submitVote(dataReturnTypeList.get(0), VoteType.YES);
+        List<TraceabilityDataReturnType> dataAwaitingValidation = apiForVoter.getTraceabilityDataAwaitingValidation();
+        apiForVoter.submitVote(dataAwaitingValidation.get(0), VoteType.YES);
 
 
     }
@@ -63,7 +64,6 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         try {
             enrollAdmin();
             registerUser();
-            clientApp();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ContractException e) {
@@ -129,7 +129,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get("wallet"));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.walletPath));
 
         // Check to see if we've already enrolled the admin user.
         if (wallet.get("admin") != null) {
@@ -160,7 +160,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get("wallet"));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.walletPath));
 
         // Check to see if we've already enrolled the user.
         if (wallet.get(userId) != null) {
@@ -234,7 +234,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         String userId = hyperledgerWalletDetails.userId;
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get("wallet");
+        Path walletPath = Paths.get(hyperledgerWalletDetails.walletPath);
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
         Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
