@@ -39,13 +39,13 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      * An array of entities who have submitted a YES vote for the validity of the traceability information.
      * Each entry contains information about each entity that voted for the traceability information that corresponds to this class.
      */
-    protected ArrayList<String> approvers;
+    protected ArrayList<EntityID> approvers;
 
     /**
      * An array of entities who have submitted a NO vote for the validity of the traceability information.
      * Each entry contains information about each entity that voted for the traceability information that corresponds to this class.
      */
-    protected ArrayList<String> rejecters;
+    protected ArrayList<EntityID> rejecters;
 
     /**
      * The value of this traceability data that will be used to calculate rewards and penalties for the voters.
@@ -57,7 +57,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     public TraceabilityDataReturnType() {
     }
 
-    public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, EntityID creatorID, ArrayList<String> approvers, ArrayList<String> rejecters, Double value)
+    public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, EntityID creatorID, ArrayList<EntityID> approvers, ArrayList<EntityID> rejecters, Double value)
     {
         this.uuid = uuid;
         this.inputDatasetHashValue = inputDatasetHashValue;
@@ -109,12 +109,12 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         return creatorID;
     }
 
-    public ArrayList<String> getApprovers()
+    public ArrayList<EntityID> getApprovers()
     {
         return approvers;
     }
 
-    public ArrayList<String> getRejecters()
+    public ArrayList<EntityID> getRejecters()
     {
         return rejecters;
     }
@@ -144,11 +144,11 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         this.creatorID = creatorID;
     }
 
-    public void setApprovers(ArrayList<String> approvers) {
+    public void setApprovers(ArrayList<EntityID> approvers) {
         this.approvers = approvers;
     }
 
-    public void setRejecters(ArrayList<String> rejecters) {
+    public void setRejecters(ArrayList<EntityID> rejecters) {
         this.rejecters = rejecters;
     }
 
