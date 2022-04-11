@@ -2,6 +2,8 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
@@ -9,6 +11,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Processi
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,6 +33,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     protected HyperledgerWalletDetails hyperledgerWalletDetails;
     private ProcessingDetails processingDetails;
 
+    @Autowired
     public HyperledgerFabricAPI(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails)
     {
         this.hyperledgerNetworkDetails = hyperledgerNetworkDetails;
@@ -154,7 +158,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws ErrorSettingUpConnection
     {
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get(this.hyperledgerWalletDetails.walletPath);
+        Path walletPath = Paths.get(this.hyperledgerWalletDetails.getWalletPath());
         Wallet wallet = null;
         try
         {
@@ -166,12 +170,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             throw new ErrorSettingUpConnection("Error setting up Hyperledger Fabric connection: opening wallet files failed");
         }
         // load a CCP
-        Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.networkConfigPath);
+        Path networkConfigPath = Paths.get(this.hyperledgerNetworkDetails.getNetworkConfigPath());
 
         Gateway.Builder builder = Gateway.createBuilder();
         try
         {
-            builder.identity(wallet, hyperledgerWalletDetails.userId).networkConfig(networkConfigPath).discovery(true);
+            builder.identity(wallet, hyperledgerWalletDetails.getUserId()).networkConfig(networkConfigPath).discovery(true);
         } catch (IOException e)
         {
             LogFactory.getLog(HyperledgerFabricAPI.class).error("Error setting up Hyperledger Fabric connection: failed creation of builder");
@@ -185,8 +189,8 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     {
         Gateway gateway = builder.connect();
         // get the network and contract
-        Network network = gateway.getNetwork(hyperledgerNetworkDetails.networkName);
-        Contract contract = network.getContract(hyperledgerNetworkDetails.chaincodeId);
+        Network network = gateway.getNetwork(hyperledgerNetworkDetails.getNetworkName());
+        Contract contract = network.getContract(hyperledgerNetworkDetails.getChaincodeId());
 
         return contract;
     }

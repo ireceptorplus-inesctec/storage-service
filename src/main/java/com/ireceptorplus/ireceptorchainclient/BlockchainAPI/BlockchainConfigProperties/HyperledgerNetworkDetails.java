@@ -1,12 +1,20 @@
-package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
-
+@ConfigurationProperties("blockchain-api.hyperledger-fabric.blockchain")
+@Component
 public class HyperledgerNetworkDetails
 {
-    String networkConfigPath;
-    String networkName;
-    String chaincodeId;
+    protected String networkConfigPath;
+    protected String networkName;
+    protected String chaincodeId;
+
+    public HyperledgerNetworkDetails()
+    {
+    }
 
     public HyperledgerNetworkDetails(String networkConfigPath, String networkName, String chaincodeId)
     {

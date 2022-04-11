@@ -1,5 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
@@ -129,7 +131,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.walletPath));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getWalletPath()));
 
         // Check to see if we've already enrolled the admin user.
         if (wallet.get("admin") != null) {
@@ -149,7 +151,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     public void registerUser() throws Exception
     {
-        String userId = hyperledgerWalletDetails.userId;
+        String userId = hyperledgerWalletDetails.getUserId();
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
@@ -160,7 +162,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.walletPath));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getWalletPath()));
 
         // Check to see if we've already enrolled the user.
         if (wallet.get(userId) != null) {
@@ -232,9 +234,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
     {
-        String userId = hyperledgerWalletDetails.userId;
+        String userId = hyperledgerWalletDetails.getUserId();
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get(hyperledgerWalletDetails.walletPath);
+        Path walletPath = Paths.get(hyperledgerWalletDetails.getWalletPath());
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
         Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
