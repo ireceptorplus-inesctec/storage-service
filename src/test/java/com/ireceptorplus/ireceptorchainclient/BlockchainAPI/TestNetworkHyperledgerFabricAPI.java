@@ -4,6 +4,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProp
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
@@ -19,6 +20,8 @@ import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +35,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
+@SpringBootTest
 public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 {
 
@@ -44,24 +48,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
                 walletDetails);
     }
 
-    public static void main(String[] args) throws Exception {
-        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
-        TestNetworkHyperledgerFabricAPI apiForCreator = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
-        apiForCreator.initBlockchainTestAccounts();
-        createTestTraceabilityDataEntry(apiForCreator);
-        List<TraceabilityDataReturnType> dataReturnTypeList = apiForCreator.getTraceabilityDataAwaitingValidation();
-
-
-        HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter");
-        TestNetworkHyperledgerFabricAPI apiForVoter = new TestNetworkHyperledgerFabricAPI(walletDetailsVoter);
-        apiForVoter.initBlockchainTestAccounts();
-        List<TraceabilityDataReturnType> dataAwaitingValidation = apiForVoter.getTraceabilityDataAwaitingValidation();
-        apiForVoter.submitVote(dataAwaitingValidation.get(0), VoteType.YES);
-
-
-    }
-
-    private void initBlockchainTestAccounts()
+    @Test
+    public void initBlockchainTestAccounts()
     {
         try {
             enrollAdmin();
@@ -99,7 +87,29 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         }
     }
 
-    private static void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
+    @Test
+    public void createTraceabilityDataEntry() throws BlockchainAPIException
+    {
+        HyperledgerWalletDetails walletDetailsCreator = new HyperledgerWalletDetails("wallet-creator", "creator");
+        TestNetworkHyperledgerFabricAPI apiForCreator = new TestNetworkHyperledgerFabricAPI(walletDetailsCreator);
+        apiForCreator.initBlockchainTestAccounts();
+        createTestTraceabilityDataEntry(apiForCreator);
+        List<TraceabilityDataReturnType> dataReturnTypeList = apiForCreator.getTraceabilityDataAwaitingValidation();
+        System.out.println(dataReturnTypeList);
+    }
+
+    @Test
+    public void submitTestVote() throws BlockchainAPIException
+    {
+        HyperledgerWalletDetails walletDetailsVoter = new HyperledgerWalletDetails("wallet-voter", "voter");
+        TestNetworkHyperledgerFabricAPI apiForVoter = new TestNetworkHyperledgerFabricAPI(walletDetailsVoter);
+        apiForVoter.initBlockchainTestAccounts();
+        List<TraceabilityDataReturnType> dataAwaitingValidation = apiForVoter.getTraceabilityDataAwaitingValidation();
+        VoteResultReturnType voteResultReturnType = apiForVoter.submitVote(dataAwaitingValidation.get(0), VoteType.YES);
+        System.out.println(voteResultReturnType);
+    }
+
+    private void createTestTraceabilityDataEntry(TestNetworkHyperledgerFabricAPI api) throws BlockchainAPIException
     {
         ReproducibilityData reproducibilityData = new ReproducibilityData(new ArrayList<>(),
                 new ReproducibleScript("https://repository.com/script.sh"),
