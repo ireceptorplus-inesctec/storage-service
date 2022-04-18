@@ -8,6 +8,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.Blockchai
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Returns all traceability data entries awaiting validation on the blockchain.")
-    @GetMapping("/all")
+    @GetMapping()
     public List<TraceabilityDataReturnType> getAllTraceabilityDataAwaitingValidationFromBlokchain() throws BlockchainAPIException
     {
         try
@@ -56,6 +57,10 @@ public class TraceabilityDataController
         }
     }
 
+    @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")
+    @Parameter(name = "dataUuid", description = "The uuid of the traceability data entry to vote for")
+    @Parameter(name = "voteType", description = "A string representing the vote type: can be either \"YES\" or \"NO\"")
+    @PostMapping("/submit_vote")
     VoteResultReturnType submitVote(String dataUuid, String voteType) throws BlockchainAPIException
     {
         VoteType voteType_ = voteType.toUpperCase(Locale.ROOT).equals("YES") ? VoteType.YES : VoteType.NO;
