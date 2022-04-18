@@ -41,6 +41,7 @@ public class TraceabilityDataController
         } catch (BlockchainAPIException e)
         {
             handleBlockchainAPIException(e);
+            throw e;
         }
     }
 
@@ -54,6 +55,7 @@ public class TraceabilityDataController
         } catch (BlockchainAPIException e)
         {
             handleBlockchainAPIException(e);
+            throw e;
         }
     }
 
@@ -69,18 +71,18 @@ public class TraceabilityDataController
             return blockchainAPI.submitVote(dataUuid, voteType_);
         } catch (BlockchainAPIException e)
         {
-            return handleBlockchainAPIException(e);
+            handleBlockchainAPIException(e);
+            throw e;
         }
     }
 
-    private VoteResultReturnType handleBlockchainAPIException(BlockchainAPIException e) throws BlockchainAPIException
+    private void handleBlockchainAPIException(BlockchainAPIException e) throws BlockchainAPIException
     {
         LogFactory.getLog(TraceabilityDataController.class).error(e.getMessage());
         StringWriter stackTrace = new StringWriter();
         PrintWriter stackTracePw = new PrintWriter(stackTrace);
         e.printStackTrace(stackTracePw);
         LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
-        throw e;
     }
 
 }
