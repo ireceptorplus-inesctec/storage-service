@@ -29,4 +29,14 @@ public class HyperledgerWalletDetails
     {
         return userId;
     }
+
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
 }

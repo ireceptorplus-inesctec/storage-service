@@ -37,4 +37,19 @@ public class HyperledgerNetworkDetails
     {
         return chaincodeId;
     }
+
+    public void setNetworkConfigPath(String networkConfigPath)
+    {
+        this.networkConfigPath = networkConfigPath;
+    }
+
+    public void setNetworkName(String networkName)
+    {
+        this.networkName = networkName;
+    }
+
+    public void setChaincodeId(String chaincodeId)
+    {
+        this.chaincodeId = chaincodeId;
+    }
 }
