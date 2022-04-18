@@ -158,7 +158,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     private Gateway.Builder setupHyperledgerFabricGatewayBuilder() throws ErrorSettingUpConnection
     {
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get(this.hyperledgerWalletDetails.getWalletPath());
+        Path walletPath = Paths.get(this.hyperledgerWalletDetails.getPath());
         Wallet wallet = null;
         try
         {

@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class HyperledgerWalletDetails
 {
-    protected String walletPath;
+    protected String path;
     protected String userId;
 
     public HyperledgerWalletDetails()
     {
     }
 
-    public HyperledgerWalletDetails(String walletPath, String userId)
+    public HyperledgerWalletDetails(String path, String userId)
     {
-        this.walletPath = walletPath;
+        this.path = path;
         this.userId = userId;
     }
 
-    public String getWalletPath()
+    public String getPath()
     {
-        return walletPath;
+        return path;
     }
 
     public String getUserId()

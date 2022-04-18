@@ -143,7 +143,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getWalletPath()));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getPath()));
 
         // Check to see if we've already enrolled the admin user.
         if (wallet.get("admin") != null) {
@@ -174,7 +174,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         caClient.setCryptoSuite(cryptoSuite);
 
         // Create a wallet for managing identities
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getWalletPath()));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(hyperledgerWalletDetails.getPath()));
 
         // Check to see if we've already enrolled the user.
         if (wallet.get(userId) != null) {
@@ -248,7 +248,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         String userId = hyperledgerWalletDetails.getUserId();
         // Load a file system based wallet for managing identities.
-        Path walletPath = Paths.get(hyperledgerWalletDetails.getWalletPath());
+        Path walletPath = Paths.get(hyperledgerWalletDetails.getPath());
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
         Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
