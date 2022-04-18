@@ -23,10 +23,10 @@ import java.util.Locale;
 @CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class TraceabilityDataController
 {
-    BlockchainAPI blockchainAPI;
+    HyperledgerFabricAPI blockchainAPI;
 
     @Autowired
-    public TraceabilityDataController(BlockchainAPI blockchainAPI)
+    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI)
     {
         this.blockchainAPI = blockchainAPI;
     }

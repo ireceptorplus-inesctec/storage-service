@@ -12,6 +12,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
+@Component
 public class HyperledgerFabricAPI implements BlockchainAPI
 {
     static {
