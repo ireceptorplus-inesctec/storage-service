@@ -39,12 +39,7 @@ public class TraceabilityDataController
             return blockchainAPI.createTraceabilityDataEntry(data);
         } catch (BlockchainAPIException e)
         {
-            LogFactory.getLog(TraceabilityDataController.class).error(e.getMessage());
-            StringWriter stackTrace = new StringWriter();
-            PrintWriter stackTracePw = new PrintWriter(stackTrace);
-            e.printStackTrace(stackTracePw);
-            LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
-            throw e;
+            handleBlockchainAPIException(e);
         }
     }
 
@@ -57,12 +52,7 @@ public class TraceabilityDataController
             return blockchainAPI.getTraceabilityDataAwaitingValidation();
         } catch (BlockchainAPIException e)
         {
-            LogFactory.getLog(TraceabilityDataController.class).error(e.getMessage());
-            StringWriter stackTrace = new StringWriter();
-            PrintWriter stackTracePw = new PrintWriter(stackTrace);
-            e.printStackTrace(stackTracePw);
-            LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
-            throw e;
+            handleBlockchainAPIException(e);
         }
     }
 
@@ -74,13 +64,18 @@ public class TraceabilityDataController
             return blockchainAPI.submitVote(dataUuid, voteType_);
         } catch (BlockchainAPIException e)
         {
-            LogFactory.getLog(TraceabilityDataController.class).error(e.getMessage());
-            StringWriter stackTrace = new StringWriter();
-            PrintWriter stackTracePw = new PrintWriter(stackTrace);
-            e.printStackTrace(stackTracePw);
-            LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
-            throw e;
+            return handleBlockchainAPIException(e);
         }
+    }
+
+    private VoteResultReturnType handleBlockchainAPIException(BlockchainAPIException e) throws BlockchainAPIException
+    {
+        LogFactory.getLog(TraceabilityDataController.class).error(e.getMessage());
+        StringWriter stackTrace = new StringWriter();
+        PrintWriter stackTracePw = new PrintWriter(stackTrace);
+        e.printStackTrace(stackTracePw);
+        LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
+        throw e;
     }
 
 }
