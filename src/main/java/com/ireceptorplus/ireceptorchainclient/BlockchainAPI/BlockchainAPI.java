@@ -4,9 +4,11 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTy
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface BlockchainAPI
 {
     TraceabilityDataReturnType createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException;
