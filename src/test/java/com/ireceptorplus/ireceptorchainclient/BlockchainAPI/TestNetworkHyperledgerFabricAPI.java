@@ -21,7 +21,9 @@ import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +38,7 @@ import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 {
 
