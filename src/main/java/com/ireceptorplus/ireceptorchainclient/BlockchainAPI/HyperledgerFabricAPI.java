@@ -108,7 +108,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public VoteResultReturnType submitVote(TraceabilityDataReturnType data, VoteType voteType) throws BlockchainAPIException
+    public VoteResultReturnType submitVote(String uuid, VoteType voteType) throws BlockchainAPIException
     {
         Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
         Contract contract = setupContract(builder);
@@ -118,7 +118,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             String resultStr;
             if (voteType == VoteType.YES)
             {
-                byte[] result = contract.submitTransaction("registerYesVoteForTraceabilityEntryInVotingRound", data.getUuid());
+                byte[] result = contract.submitTransaction("registerYesVoteForTraceabilityEntryInVotingRound", uuid);
                 resultStr = new String(result);
 
                 LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully submitted yes vote for traceability data entry awaiting validation: ");
@@ -144,12 +144,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             return voteResult;
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Blockchain returned: " + e.getMessage();
+            String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Blockchain returned: " + e.getMessage();
             writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
-            String message = "Error submitting " + voteType + " vote for traceability data " + data + ". Error parsing JSON response returned from the blockchain.";
+            String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Error parsing JSON response returned from the blockchain.";
             writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         }
