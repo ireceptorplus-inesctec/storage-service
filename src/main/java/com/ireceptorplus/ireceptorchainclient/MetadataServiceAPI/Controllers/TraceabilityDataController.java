@@ -31,7 +31,7 @@ public class TraceabilityDataController
         this.blockchainAPI = blockchainAPI;
     }
 
-    @Operation(summary = "Returns all traceability data entries awaiting validation on the blockchain.")
+    @Operation(summary = "Creates a traceability data entry on the blockchain.")
     @PostMapping("/all")
     public TraceabilityDataReturnType createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
     {
@@ -62,7 +62,7 @@ public class TraceabilityDataController
     @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")
     @Parameter(name = "dataUuid", description = "The uuid of the traceability data entry to vote for")
     @Parameter(name = "voteType", description = "A string representing the vote type: can be either \"YES\" or \"NO\"")
-    @PostMapping("/submit_vote")
+    @PostMapping("submit_vote")
     VoteResultReturnType submitVote(String dataUuid, String voteType) throws BlockchainAPIException
     {
         VoteType voteType_ = voteType.toUpperCase(Locale.ROOT).equals("YES") ? VoteType.YES : VoteType.NO;
