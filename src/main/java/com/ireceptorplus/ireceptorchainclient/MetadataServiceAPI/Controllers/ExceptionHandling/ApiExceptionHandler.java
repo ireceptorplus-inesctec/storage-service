@@ -15,7 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @ControllerAdvice
-public class ApiExceptionHandler extends ResponseEntityExceptionHandler
+public class ApiExceptionHandler
 {
     @ExceptionHandler
     public ResponseEntity<ApiException> handleApiRequestException(ApiRequestException apiRequestException)
