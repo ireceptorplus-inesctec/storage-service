@@ -47,4 +47,9 @@ public class ReproducibleScript
     {
         return url;
     }
+
+    public ScriptType getScriptType()
+    {
+        return scriptType;
+    }
 }
