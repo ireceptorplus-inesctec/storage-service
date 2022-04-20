@@ -4,6 +4,6 @@ public class ReproducibleScriptUnavailable extends ReproducibleScript
 {
     public ReproducibleScriptUnavailable()
     {
-        super("");
+        super("", null);
     }
 }
