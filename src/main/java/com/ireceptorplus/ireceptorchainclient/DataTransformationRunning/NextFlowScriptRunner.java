@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class NextFlowScriptRunner extends DataTransformationRunner
 {
-    public NextFlowScriptRunner(ArrayList<Dataset> inputs, NextFlowScript script)
+    public NextFlowScriptRunner(ArrayList<DatasetFile> inputs, NextFlowScript script)
     {
         super(inputs, script);
     }
@@ -32,9 +32,9 @@ public class NextFlowScriptRunner extends DataTransformationRunner
             e.printStackTrace();
         }
 
-        for (Dataset dataset : inputs)
+        for (DatasetFile datasetFile : inputs)
         {
-            downloadDatasetAndPlaceItOnDir(dataset);
+            downloadDatasetAndPlaceItOnDir(datasetFile);
         }
 
         NextFlowScript nextFlowScript = (NextFlowScript) script;
@@ -44,7 +44,7 @@ public class NextFlowScriptRunner extends DataTransformationRunner
     }
 
     @Override
-    boolean verifyIfOutputsMatch(Dataset dataset)
+    boolean verifyIfOutputsMatch(DatasetFile datasetFile)
     {
         return false;
     }

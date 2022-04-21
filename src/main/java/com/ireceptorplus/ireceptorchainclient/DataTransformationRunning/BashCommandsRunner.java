@@ -9,7 +9,7 @@ public class BashCommandsRunner extends DataTransformationRunner
 {
     private static String workingDir;
 
-    public BashCommandsRunner(ArrayList<Dataset> inputs, Script script)
+    public BashCommandsRunner(ArrayList<DatasetFile> inputs, Script script)
     {
         super(inputs, script);
     }
@@ -84,7 +84,7 @@ public class BashCommandsRunner extends DataTransformationRunner
     }
 
     @Override
-    boolean verifyIfOutputsMatch(Dataset dataset)
+    boolean verifyIfOutputsMatch(DatasetFile datasetFile)
     {
         return false;
     }
