@@ -14,7 +14,7 @@ public class NextFlowScript extends Script
 
     public NextFlowScript(String content, String name)
     {
-        super(commandPrefixToRunScript + name, name);
+        super(name, commandPrefixToRunScript + name);
     }
 
 }

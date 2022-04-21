@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Script
 {
-    protected String content;
     protected String name;
+    protected String content;
 
     public Script(ArrayList<String> commands)
     {
@@ -15,19 +15,19 @@ public class Script
         }
     }
 
-    public Script(String content, String name)
+    public Script( String name, String content)
     {
-        this.content = content;
         this.name = name;
-    }
-
-    public String getContent()
-    {
-        return content;
+        this.content = content;
     }
 
     public String getName()
     {
         return name;
+    }
+
+    public String getContent()
+    {
+        return content;
     }
 }
