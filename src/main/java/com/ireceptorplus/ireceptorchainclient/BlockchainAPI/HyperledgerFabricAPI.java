@@ -9,6 +9,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataT
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
+import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +68,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error creating traceability data: blockchain returned " + e.getMessage();
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorSubmittingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error creating JSON object that represents traceability data to be created.";
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorSubmittingData(message);
         }
     }
@@ -99,12 +100,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException e)
         {
             String message = "Error fetching data awaiting validation from blockchain";
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorFetchingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error fetching data awaiting validation from blockchain: error parsing result from blockchain";
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorFetchingData(message);
         }
     }
@@ -147,12 +148,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Blockchain returned: " + e.getMessage();
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Error parsing JSON response returned from the blockchain.";
-            writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessages(e, message);
             throw new ErrorSubmittingVote(message);
         }
     }
