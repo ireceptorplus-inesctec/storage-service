@@ -35,7 +35,7 @@ public class FileDownloader
             {
                 URL url = new URL(file.getUrl());
                 ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-                FileOutputStream fileOutputStream = new FileOutputStream(destinationPath + "/" + file.getName());
+                FileOutputStream fileOutputStream = new FileOutputStream(destinationPath + "/" + file.getUuid());
                 fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
             } catch (MalformedURLException e)
             {

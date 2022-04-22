@@ -5,18 +5,18 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
  */
 public class File
 {
-    private String name;
+    private String uuid;
     private String url;
 
-    public File(String name, String url)
+    public File(String uuid, String url)
     {
-        this.name = name;
+        this.uuid = uuid;
         this.url = url;
     }
 
-    public String getName()
+    public String getUuid()
     {
-        return name;
+        return uuid;
     }
 
     public String getUrl()
