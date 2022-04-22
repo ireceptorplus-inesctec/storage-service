@@ -9,41 +9,44 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileDownloader
 {
 
-    ArrayList<File> files;
+    List<DownloadbleFile> downloadbleFiles;
     String destinationPath;
 
-    public FileDownloader(File file)
+    public FileDownloader(DownloadbleFile downloadbleFile, String destinationPath)
     {
-        this.files = new ArrayList<>();
-        this.files.add(file);
+        this.downloadbleFiles = new ArrayList<>();
+        this.downloadbleFiles.add(downloadbleFile);
+        this.destinationPath = destinationPath;
     }
 
-    public FileDownloader(ArrayList<File> files)
+    public FileDownloader(List<DownloadbleFile> downloadbleFiles, String destinationPath)
     {
-        this.files = files;
+        this.downloadbleFiles = downloadbleFiles;
+        this.destinationPath = destinationPath;
     }
 
     public void downloadFilesToDir()
     {
-        for (File file : files)
+        for (DownloadbleFile downloadbleFile : downloadbleFiles)
         {
             try
             {
-                URL url = new URL(file.getUrl());
+                URL url = new URL(downloadbleFile.getUrl());
                 ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-                FileOutputStream fileOutputStream = new FileOutputStream(destinationPath + "/" + file.getUuid());
+                FileOutputStream fileOutputStream = new FileOutputStream(destinationPath + "/" + downloadbleFile.getUuid());
                 fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
             } catch (MalformedURLException e)
             {
-                String message = "Error downloading file from URL " + file.getUrl() + ", due to malformed URL exception. Reason: ";
+                String message = "Error downloading file from URL " + downloadbleFile.getUrl() + ", due to malformed URL exception. Reason: ";
                 iReceptorStorageServiceLogging.writeLogMessages(e, message);
             } catch (IOException e)
             {
-                String message = "Error downloading file from URL " + file.getUrl() + ", due to exception when writing to disk. Reason: ";
+                String message = "Error downloading file from URL " + downloadbleFile.getUrl() + ", due to exception when writing to disk. Reason: ";
                 iReceptorStorageServiceLogging.writeLogMessages(e, message);
             }
         }

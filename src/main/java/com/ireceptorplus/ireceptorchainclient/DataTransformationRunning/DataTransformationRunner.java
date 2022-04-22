@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public abstract class DataTransformationRunner
@@ -7,24 +8,25 @@ public abstract class DataTransformationRunner
     /**
      * The inputs datasets that when applied the processing yield the outputs.
      */
-    protected ArrayList<DatasetFile> inputs;
+    protected ArrayList<DownloadbleFile> inputs;
 
     /**
      * The script that when applied to the inputs yields the outputs.
      */
-    protected Script script;
+    protected DownloadbleFile scriptFile;
 
     /**
      * The outputs which are yield when the script is applied to the inputs.
      */
-    protected ArrayList<DatasetFile> outputs;
+    protected ArrayList<DownloadbleFile> outputs;
 
-    public DataTransformationRunner(ArrayList<DatasetFile> inputs, Script script) {
+    public DataTransformationRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile scriptFile)
+    {
         this.inputs = inputs;
-        this.script = script;
+        this.scriptFile = scriptFile;
     }
 
-    public ArrayList<DatasetFile> getOutputs() {
+    public ArrayList<DownloadbleFile> getOutputs() {
         return outputs;
     }
 
@@ -32,9 +34,18 @@ public abstract class DataTransformationRunner
 
     abstract boolean verifyIfOutputsMatch(DatasetFile datasetFile);
 
-    protected void downloadDatasetAndPlaceItOnDir(DatasetFile datasetFile)
+    protected void downloadDatasetsAndScriptToProcessingDir()
     {
-        //TODO
+        String processingFilesPath = "./" + scriptFile.getUuid();
+        new File(processingFilesPath).mkdirs();
+        FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath + "/inputs");
+        inputsDownloader.downloadFilesToDir();
+        FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");
+        outputsDownloader.downloadFilesToDir();
+        FileDownloader scriptDownloader = new FileDownloader(scriptFile, processingFilesPath);
+        scriptDownloader.downloadFilesToDir();
     }
+
+
 
 }

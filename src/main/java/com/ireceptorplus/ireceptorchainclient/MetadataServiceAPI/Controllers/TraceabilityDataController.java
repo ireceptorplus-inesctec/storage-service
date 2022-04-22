@@ -5,9 +5,11 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTy
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.NextFlowScriptRunner;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.logging.LogFactory;
@@ -61,6 +63,19 @@ public class TraceabilityDataController
         }
     }
 
+    @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
+    @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
+    @PostMapping("run")
+    public VoteResultReturnType runDataProcessingPipeline(TraceabilityDataReturnType data)
+    {
+        ReproducibilityData reproducibilityData = data.getProcessingDetails().getReproducibilityData();
+        ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
+        if (scriptType.equals(ReproducibleScript.ScriptType.NEXTFLOW))
+        {
+            NextFlowScriptRunner runner = new NextFlowScriptRunner(data)
+        }
+
+    }
 
     @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")
     @Parameter(name = "dataUuid", description = "The uuid of the traceability data entry to vote for")

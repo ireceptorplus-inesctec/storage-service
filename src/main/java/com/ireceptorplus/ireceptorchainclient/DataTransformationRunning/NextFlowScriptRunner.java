@@ -7,38 +7,17 @@ import java.util.ArrayList;
 
 public class NextFlowScriptRunner extends DataTransformationRunner
 {
-    public NextFlowScriptRunner(ArrayList<DatasetFile> inputs, NextFlowScript script)
+    public NextFlowScriptRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile script)
     {
         super(inputs, script);
-    }
-
-    protected void createNextFlowScript() throws IOException
-    {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(script.getName()));
-        writer.write(script.getContent());
-
-        writer.close();
     }
 
     @Override
     void run()
     {
-        try
-        {
-            createNextFlowScript();
-        } catch (IOException e)
-        {
-            System.out.println("Failed to create next flow script on disk.");
-            e.printStackTrace();
-        }
 
-        for (DatasetFile datasetFile : inputs)
-        {
-            downloadDatasetAndPlaceItOnDir(datasetFile);
-        }
-
-        NextFlowScript nextFlowScript = (NextFlowScript) script;
-        BashCommandsRunner bashCommandsRunner = new BashCommandsRunner(inputs, script);
+        NextFlowScript nextFlowScript = (NextFlowScript) scriptFile;
+        BashCommandsRunner bashCommandsRunner = new BashCommandsRunner(inputs, scriptFile);
         bashCommandsRunner.runBashCommand(nextFlowScript.getContent());
 
     }
