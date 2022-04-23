@@ -38,7 +38,7 @@ public abstract class DataTransformationRunner
     {
         String processingFilesPath = "./" + scriptFile.getUuid();
         new File(processingFilesPath).mkdirs();
-        FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath + "/inputs");
+        FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath);
         inputsDownloader.downloadFilesToDir();
         FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");
         outputsDownloader.downloadFilesToDir();
