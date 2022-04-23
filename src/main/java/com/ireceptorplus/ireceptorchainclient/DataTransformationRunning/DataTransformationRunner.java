@@ -1,9 +1,12 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public abstract class DataTransformationRunner
+public class DataTransformationRunner
 {
     /**
      * The inputs datasets that when applied the processing yield the outputs.
@@ -20,19 +23,28 @@ public abstract class DataTransformationRunner
      */
     protected ArrayList<DownloadbleFile> outputs;
 
-    public DataTransformationRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile scriptFile)
+    public DataTransformationRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile scriptFile,
+                                    ArrayList<DownloadbleFile> outputs)
     {
         this.inputs = inputs;
         this.scriptFile = scriptFile;
+        this.outputs = outputs;
     }
 
     public ArrayList<DownloadbleFile> getOutputs() {
         return outputs;
     }
 
-    abstract void run();
+    void run()
+    {
+        runBashCommand("./" + scriptFile.getUuid());
+    }
 
-    abstract boolean verifyIfOutputsMatch(DatasetFile datasetFile);
+    boolean verifyIfOutputsMatch(DatasetFile datasetFile)
+    {
+        //TODO
+        return false;
+    }
 
     protected void downloadDatasetsAndScriptToProcessingDir()
     {
@@ -45,7 +57,62 @@ public abstract class DataTransformationRunner
         FileDownloader scriptDownloader = new FileDownloader(scriptFile, processingFilesPath);
         scriptDownloader.downloadFilesToDir();
     }
+    void runBashCommand(String command)
+    {
+        try
+        {
 
+            // -- Linux --
 
+            // Run a shell command
+            // Process process = Runtime.getRuntime().exec("ls /home/mkyong/");
+
+            // Run a shell script
+            // Process process = Runtime.getRuntime().exec("path/to/hello.sh");
+
+            // -- Windows --
+
+            // Run a command
+            //Process process = Runtime.getRuntime().exec("cmd /c dir C:\\Users\\mkyong");
+            Process process;
+            String operatingSystemName = System.getProperty("os.name");
+            if (operatingSystemName.contains("Windows"))
+            {
+                process = Runtime.getRuntime().exec("cmd /c " + command);
+            } else
+            {
+                process = Runtime.getRuntime().exec(command);
+            }
+
+            StringBuilder output = new StringBuilder();
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                output.append(line + "\n");
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0)
+            {
+                System.out.println("Success!");
+                System.out.println(output);
+                System.exit(0);
+            } else
+            {
+                //abnormal...
+            }
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }

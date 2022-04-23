@@ -1,6 +1,5 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
@@ -9,12 +8,12 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.NextFlowScriptRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
@@ -72,7 +71,7 @@ public class TraceabilityDataController
         ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
         if (scriptType.equals(ReproducibleScript.ScriptType.NEXTFLOW))
         {
-            NextFlowScriptRunner runner = new NextFlowScriptRunner(data)
+            DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(), reproducibilityData.getScript(), reproducibilityData.getOutputDatasets())
         }
 
     }
