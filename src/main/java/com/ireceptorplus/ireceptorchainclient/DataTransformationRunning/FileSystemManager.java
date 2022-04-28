@@ -50,7 +50,7 @@ public class FileSystemManager
         return getExpectedOutputsRelativePath() + getExpectedOutputFileName(expectedOutput);
     }
 
-    public String getProcessedOutputsRelativePath(DownloadbleFile processedOutput)
+    public String getProcessedOutputRelativePath(DownloadbleFile processedOutput)
     {
         return getProcessedOutputsRelativePath() + getProcessedOutputFileName(processedOutput);
     }
