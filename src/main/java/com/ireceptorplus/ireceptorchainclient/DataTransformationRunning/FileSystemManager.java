@@ -37,22 +37,22 @@ public class FileSystemManager
 
     public String getInputRelativePath(DownloadbleFile input)
     {
-        return getInputsRelativePath() + getFileName(input);
+        return getInputsRelativePath() + getInputFileName(input);
     }
 
     public String getScriptRelativePath(ReproducibleScript script)
     {
-        return getScriptRelativePath() + getFileName(script);
+        return getScriptRelativePath() + getScriptFileName(script);
     }
 
     public String getExpectedOutputRelativePath(DownloadbleFile expectedOutput)
     {
-        return getExpectedOutputsRelativePath() + getFileName(expectedOutput);
+        return getExpectedOutputsRelativePath() + getExpectedOutputFileName(expectedOutput);
     }
 
     public String getProcessedOutputsRelativePath(DownloadbleFile processedOutput)
     {
-        return getProcessedOutputsRelativePath() + getFileName(processedOutput);
+        return getProcessedOutputsRelativePath() + getProcessedOutputFileName(processedOutput);
     }
 
     private String getInputFileName(DownloadbleFile file)
