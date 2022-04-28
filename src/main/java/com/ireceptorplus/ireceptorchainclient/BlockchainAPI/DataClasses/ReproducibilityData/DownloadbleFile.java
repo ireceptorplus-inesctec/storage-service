@@ -1,12 +1,12 @@
-package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
+package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData;
 
 /**
  * This class represents a downloadable file. Can be either a dataset or a script.
  */
 public class DownloadbleFile
 {
-    private String uuid;
-    private String url;
+    protected String uuid;
+    protected String url;
 
     public DownloadbleFile(String uuid, String url)
     {

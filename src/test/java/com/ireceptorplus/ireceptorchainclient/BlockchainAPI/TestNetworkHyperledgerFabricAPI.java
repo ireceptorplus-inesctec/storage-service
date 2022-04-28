@@ -114,7 +114,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     private void createTestTraceabilityDataEntry() throws BlockchainAPIException
     {
         ReproducibilityData reproducibilityData = new ReproducibilityData(new ArrayList<>(),
-                new ReproducibleScript("https://repository.com/script.sh", ReproducibleScript.ScriptType.NEXTFLOW),
+                new ReproducibleScript("uuid", "https://repository.com/script.sh", ReproducibleScript.ScriptType.NEXTFLOW),
                 new ArrayList<>());
         TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
                 "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",

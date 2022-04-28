@@ -1,5 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

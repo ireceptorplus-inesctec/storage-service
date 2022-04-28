@@ -1,5 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+
 public class DatasetFile extends DownloadbleFile
 {
 
