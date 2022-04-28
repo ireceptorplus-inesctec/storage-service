@@ -5,18 +5,18 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reprodu
  */
 public class DownloadbleFile
 {
-    protected String uuid;
+    protected String hashValue;
     protected String url;
 
-    public DownloadbleFile(String uuid, String url)
+    public DownloadbleFile(String hashValue, String url)
     {
-        this.uuid = uuid;
+        this.hashValue = hashValue;
         this.url = url;
     }
 
-    public String getUuid()
+    public String getHashValue()
     {
-        return uuid;
+        return hashValue;
     }
 
     public String getUrl()

@@ -39,7 +39,7 @@ public class DataTransformationRunner
 
     void run()
     {
-        runBashCommand("./" + scriptFile.getUuid());
+        runBashCommand("./" + scriptFile.getHashValue());
     }
 
     boolean verifyIfOutputsMatch(DatasetFile datasetFile)
@@ -50,7 +50,7 @@ public class DataTransformationRunner
 
     protected void downloadDatasetsAndScriptToProcessingDir()
     {
-        String processingFilesPath = "./" + scriptFile.getUuid();
+        String processingFilesPath = "./" + scriptFile.getHashValue();
         new File(processingFilesPath).mkdirs();
         FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath);
         inputsDownloader.downloadFilesToDir();
