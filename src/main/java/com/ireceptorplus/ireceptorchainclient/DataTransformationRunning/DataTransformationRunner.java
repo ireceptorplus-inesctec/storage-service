@@ -1,6 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
+import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,9 +44,23 @@ public class DataTransformationRunner
         runBashCommand("./" + scriptFile.getHashValue());
     }
 
-    boolean verifyIfOutputsMatch(DatasetFile datasetFile)
+    boolean verifyIfOutputsMatch() throws ErrorComparingOutputs
     {
-        //TODO
+        for (DownloadbleFile output : outputs)
+        {
+            FileSystemManager fileSystemManager = FileSystemManager.getInstance();
+            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(output);
+            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(output);
+            FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
+            try
+            {
+                return comparator.compare();
+            } catch (IOException e)
+            {
+                throw new ErrorComparingOutputs();
+            }
+        }
+
         return false;
     }
 
