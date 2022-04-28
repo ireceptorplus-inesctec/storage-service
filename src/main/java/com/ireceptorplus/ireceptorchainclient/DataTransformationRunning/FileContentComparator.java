@@ -5,11 +5,12 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-public class CompareFileContents {
+public class FileContentComparator
+{
 
     private String file1, file2;
 
-    public CompareFileContents(String file1, String file2)
+    public FileContentComparator(String file1, String file2)
     {
         this.file1 = file1;
         this.file2 = file2;
