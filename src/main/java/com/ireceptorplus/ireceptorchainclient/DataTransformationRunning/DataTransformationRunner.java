@@ -37,7 +37,7 @@ public class DataTransformationRunner
         return outputs;
     }
 
-    void run()
+    public void run()
     {
         runBashCommand("./" + scriptFile.getHashValue());
     }
