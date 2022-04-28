@@ -5,6 +5,16 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 
 public class FileSystemManager
 {
+    private static FileSystemManager instance;
+
+    public static FileSystemManager getInstance()
+    {
+        if (instance == null)
+            instance = new FileSystemManager();
+
+        return instance;
+    }
+
     public String getInputsRelativePath()
     {
         return "./";
