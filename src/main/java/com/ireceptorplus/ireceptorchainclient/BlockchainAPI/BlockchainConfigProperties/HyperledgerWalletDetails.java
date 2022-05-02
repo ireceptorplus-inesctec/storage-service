@@ -3,6 +3,9 @@ package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigPro
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class contains the hyperledger fabric wallet configuration details the information related to the peer, necessary to authenticate the peer in the blockchain network.
+ */
 @ConfigurationProperties("blockchain-api.hyperledger-fabric.wallet")
 @Component
 public class HyperledgerWalletDetails
