@@ -2,4 +2,8 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Excepti
 
 public class DataTransformationRunningException extends Exception
 {
+    public DataTransformationRunningException(String message)
+    {
+        super(message);
+    }
 }
