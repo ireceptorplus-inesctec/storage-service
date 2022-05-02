@@ -5,6 +5,10 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * This class implements the logic to compare files.
+ * It is used to compare the outputs of the processing, to check whether they match the expected outputs, registered with the blockchain traceability entry.
+ */
 public class FileContentComparator
 {
 
