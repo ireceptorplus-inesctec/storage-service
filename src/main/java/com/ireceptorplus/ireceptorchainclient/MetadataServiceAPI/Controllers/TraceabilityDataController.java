@@ -9,7 +9,9 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.Blockchai
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
+import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.logging.LogFactory;
@@ -65,15 +67,27 @@ public class TraceabilityDataController
     @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
     @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
     @PostMapping("run")
-    public VoteResultReturnType runDataProcessingPipeline(TraceabilityDataReturnType data)
+    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException
     {
         ReproducibilityData reproducibilityData = data.getProcessingDetails().getReproducibilityData();
         ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
-        if (scriptType.equals(ReproducibleScript.ScriptType.NEXTFLOW))
-        {
-            DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(), reproducibilityData.getScript(), reproducibilityData.getOutputDatasets())
-        }
+            DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(),
+                    reproducibilityData.getScript(), reproducibilityData.getOutputDatasets());
+            runner.run();
+            boolean outputsMatch;
+            try
+            {
+                outputsMatch = runner.verifyIfOutputsMatch();
+            } catch (ErrorComparingOutputs e)
+            {
+                String message = "Error verifying if outputs of processing match with expected outputs of traceablity data entry: ";
+                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                e.printStackTrace();
+                throw new ErrorComparingOutputs(message);
+            }
 
+            VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;
+            return submitVoteToBlockchain(data.getUuid(), voteType);
     }
 
     @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")
@@ -83,6 +97,11 @@ public class TraceabilityDataController
     VoteResultReturnType submitVote(String dataUuid, String voteType) throws BlockchainAPIException
     {
         VoteType voteType_ = voteType.toUpperCase(Locale.ROOT).equals("YES") ? VoteType.YES : VoteType.NO;
+        return submitVoteToBlockchain(dataUuid, voteType_);
+    }
+
+    private VoteResultReturnType submitVoteToBlockchain(String dataUuid, VoteType voteType_) throws BlockchainAPIException
+    {
         try
         {
             return blockchainAPI.submitVote(dataUuid, voteType_);
