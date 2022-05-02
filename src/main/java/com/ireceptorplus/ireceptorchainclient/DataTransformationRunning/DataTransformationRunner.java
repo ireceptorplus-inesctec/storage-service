@@ -44,7 +44,7 @@ public class DataTransformationRunner
         runBashCommand("./" + scriptFile.getHashValue());
     }
 
-    boolean verifyIfOutputsMatch() throws ErrorComparingOutputs
+    public boolean verifyIfOutputsMatch() throws ErrorComparingOutputs
     {
         for (DownloadbleFile output : outputs)
         {
