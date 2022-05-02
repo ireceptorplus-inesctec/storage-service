@@ -44,6 +44,12 @@ public class DataTransformationRunner
         runBashCommand("./" + scriptFile.getHashValue());
     }
 
+    /**
+     * This method verifies if the outputs of the data processing match.
+     * It uses the logic and values defined in class FileSystemManager to determine the file system path structure.
+     * @return A boolean value identifying whether the outputs match or not.
+     * @throws ErrorComparingOutputs Exception thrown when an error comparing the outputs occurs.
+     */
     public boolean verifyIfOutputsMatch() throws ErrorComparingOutputs
     {
         for (DownloadbleFile output : outputs)
@@ -64,6 +70,10 @@ public class DataTransformationRunner
         return false;
     }
 
+    /**
+     * This method downloads the datasets and the script necessary to run the data processing.
+     * The scripts are downloaded from their respective URLs which should point to other peers, instances of the iReceptorChain Storage Service (this application).
+     */
     protected void downloadDatasetsAndScriptToProcessingDir()
     {
         String processingFilesPath = "./" + scriptFile.getHashValue();
@@ -75,6 +85,11 @@ public class DataTransformationRunner
         FileDownloader scriptDownloader = new FileDownloader(scriptFile, processingFilesPath);
         scriptDownloader.downloadFilesToDir();
     }
+
+    /**
+     * This method runs a bash command. It can be a command to call a bash or nextflow script.
+     * @param command A String representing the command to be run.
+     */
     void runBashCommand(String command)
     {
         try
