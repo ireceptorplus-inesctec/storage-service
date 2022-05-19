@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageService;
 import com.ireceptorplus.ireceptorchainclient.FileStorage.StorageService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ErrorEncodingReturnValue;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ErrorParsingJsonObject;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
@@ -19,10 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/dataset")
@@ -47,9 +45,17 @@ public class DatasetController
      */
     @GetMapping
     @Operation(summary = "Returns all Dataset objects stored")
-    public List<Dataset> getDatasets()
+    public List<DatasetDTO> getDatasets()
     {
-        return datasetService.readAll();
+        List<Dataset> datasets = datasetService.readAll();
+        ArrayList<DatasetDTO> datasetDTOs = new ArrayList<>();
+
+        for (Dataset dataset : datasets)
+        {
+            datasetDTOs.add(modelMapper.map(dataset, DatasetDTO.class));
+        }
+
+        return datasetDTOs;
     }
 
     /**
@@ -59,12 +65,18 @@ public class DatasetController
      */
     @GetMapping("/{id}")
     @Operation(summary = "Returns a specific Dataset, with the id received as parameter")
-    public Dataset getDataset(@PathVariable @NotNull Long id) {
+    public DatasetDTO getDataset(@PathVariable @NotNull Long id)
+    {
         Dataset dataset = datasetService.readById(id).get();
         if (dataset == null)
             throw new UnExistantEntity("Dataset", id);
         else
-            return dataset;
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DatasetDTO datasetDto = modelMapper.map(dataset, DatasetDTO.class);
+
+            return datasetDto;
+        }
     }
 
     /**
