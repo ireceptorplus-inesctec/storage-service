@@ -22,6 +22,8 @@ public class GermlineDTO extends DTOWithId
 
     private Date creationDate;
 
+    private String url;
+
     public GermlineDTO()
     {
     }
@@ -64,5 +66,15 @@ public class GermlineDTO extends DTOWithId
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl(String url)
+    {
+        this.url = url;
     }
 }

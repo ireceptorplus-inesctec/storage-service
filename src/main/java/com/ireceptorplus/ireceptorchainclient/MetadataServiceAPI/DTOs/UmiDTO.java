@@ -1,11 +1,10 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
-public class DatasetDTO extends DTOWithId
+public class UmiDTO
 {
     /**
      * This identifies the file in the file system and, therefore, defines the file name.
@@ -21,8 +20,18 @@ public class DatasetDTO extends DTOWithId
 
     private String url;
 
-    public DatasetDTO()
+    public UmiDTO()
     {
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid)
+    {
+        this.uuid = uuid;
     }
 
     public String getName()
@@ -43,16 +52,6 @@ public class DatasetDTO extends DTOWithId
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-    public UUID getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid)
-    {
-        this.uuid = uuid;
     }
 
     public Date getCreationDate()
