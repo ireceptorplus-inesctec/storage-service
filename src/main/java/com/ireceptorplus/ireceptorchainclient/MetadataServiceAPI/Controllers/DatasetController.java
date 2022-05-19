@@ -71,12 +71,7 @@ public class DatasetController
         if (dataset == null)
             throw new UnExistantEntity("Dataset", id);
         else
-        {
-            ObjectMapper objectMapper = new ObjectMapper();
-            DatasetDTO datasetDto = modelMapper.map(dataset, DatasetDTO.class);
-
-            return datasetDto;
-        }
+            return modelMapper.map(dataset, DatasetDTO.class);
     }
 
     /**

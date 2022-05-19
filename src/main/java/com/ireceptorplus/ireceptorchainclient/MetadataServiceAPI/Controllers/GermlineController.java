@@ -8,6 +8,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.Exc
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.GermlineDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Germline;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.GermlineService;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.GermlineService;
@@ -20,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/germline")
@@ -55,9 +53,15 @@ public class GermlineController
      */
     @GetMapping
     @Operation(summary = "Returns all Germline objects stored.")
-    public List<Germline> getGermlines()
+    public List<GermlineDTO> getGermlines()
     {
-        return germlineService.readAll();
+        List<Germline> germlines = germlineService.readAll();
+        ArrayList<GermlineDTO> germlineDTOs = new ArrayList<>();
+        for (Germline germline : germlines)
+        {
+            germlineDTOs.add(modelMapper.map(germline, GermlineDTO.class));
+        }
+        return germlineDTOs;
     }
 
     /**
@@ -67,12 +71,12 @@ public class GermlineController
      */
     @GetMapping("/{id}")
     @Operation(summary = "Returns a specific Germline, with the id received as parameter.")
-    public Germline getGermline(@PathVariable @NotNull Long id) {
+    public GermlineDTO getGermline(@PathVariable @NotNull Long id) {
         Germline germline = germlineService.readById(id).get();
         if (germline == null)
             throw new UnExistantEntity("Germline", id);
         else
-            return germline;
+            return modelMapper.map(germline, GermlineDTO.class);
     }
 
     /**
