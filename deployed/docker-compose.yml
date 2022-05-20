@@ -18,6 +18,7 @@ services:
     volumes:
       - ../src:/storage/src
       - ./config:/storage/config
+      - ./files:/storage/files
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:
