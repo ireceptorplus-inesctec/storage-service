@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/file/{uuid}")
+@RequestMapping("api/file")
 @CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class FileStorageController
 {
@@ -22,7 +22,7 @@ public class FileStorageController
     @Autowired
     private DatasetStorageService storageService;
 
-    @GetMapping
+    @GetMapping("/{uuid}")
     @Operation(summary = "Returns all Dataset objects stored")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename)
     {
