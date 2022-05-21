@@ -32,7 +32,7 @@ public class FileStorageController
     }
 
     @GetMapping("/{uuid}/getFirstLines")
-    public @ResponseBody String[] getFirstLinesOfFile(@PathVariable String uuid, @RequestParam int numberOfLines) throws IOException
+    public @ResponseBody String[] getFirstLines(@PathVariable String uuid, @RequestParam int numberOfLines) throws IOException
     {
         Path path = storageService.load(uuid);
         BufferedReader reader;
