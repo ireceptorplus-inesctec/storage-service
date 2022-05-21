@@ -19,8 +19,6 @@ public class DatasetDTO extends DTOWithId
 
     private Date creationDate;
 
-    private String url;
-
     public DatasetDTO()
     {
     }
@@ -63,15 +61,5 @@ public class DatasetDTO extends DTOWithId
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
-    }
-
-    public String getUrl()
-    {
-        return url;
-    }
-
-    public void setUrl(String url)
-    {
-        this.url = url;
     }
 }
