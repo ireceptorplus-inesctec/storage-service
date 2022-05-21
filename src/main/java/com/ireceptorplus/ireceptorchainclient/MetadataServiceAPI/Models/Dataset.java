@@ -33,6 +33,9 @@ public class Dataset
     @Column
     private Date creationDate;
 
+    @Column
+    private String url;
+
     public Long getId()
     {
         return id;
@@ -91,5 +94,15 @@ public class Dataset
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl(String url)
+    {
+        this.url = url;
     }
 }
