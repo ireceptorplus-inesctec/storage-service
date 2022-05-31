@@ -1,0 +1,50 @@
+package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table
+public class CreatedPipeline
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    private List<Dataset> inputDatasets;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "created_pipeline_id")
+    Script script;
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public List<Dataset> getInputDatasets()
+    {
+        return inputDatasets;
+    }
+
+    public void setInputDatasets(List<Dataset> inputDatasets)
+    {
+        this.inputDatasets = inputDatasets;
+    }
+
+    public Script getScript()
+    {
+        return script;
+    }
+
+    public void setScript(Script script)
+    {
+        this.script = script;
+    }
+}
