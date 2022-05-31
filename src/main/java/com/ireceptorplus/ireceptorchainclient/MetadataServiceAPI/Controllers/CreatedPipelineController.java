@@ -5,6 +5,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Created
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.DataProcessingMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipeline;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.CreateAndReadService;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.CreatedPipelineService;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DataProcessingService;
@@ -47,8 +48,15 @@ public class CreatedPipelineController
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
+        newCreatedPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
         return newCreatedPipelineDTO;
+    }
+
+    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline)
+    {
+        createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
+        //TODO launch spring job
     }
 }
