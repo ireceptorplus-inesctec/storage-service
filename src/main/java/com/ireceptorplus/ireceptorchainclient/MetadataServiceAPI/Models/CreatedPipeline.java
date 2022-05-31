@@ -18,6 +18,9 @@ public class CreatedPipeline
     @JoinColumn(name = "created_pipeline_id")
     Script script;
 
+    @Enumerated(EnumType.STRING)
+    CreatedPipelineState state;
+
     public Long getId()
     {
         return id;
@@ -46,5 +49,15 @@ public class CreatedPipeline
     public void setScript(Script script)
     {
         this.script = script;
+    }
+
+    public CreatedPipelineState getState()
+    {
+        return state;
+    }
+
+    public void setState(CreatedPipelineState state)
+    {
+        this.state = state;
     }
 }
