@@ -18,7 +18,7 @@ public class CreatedPipeline
     @JoinColumn(name = "created_pipeline_id")
     Script script;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     CreatedPipelineState state;
 
     public Long getId()
