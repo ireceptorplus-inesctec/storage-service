@@ -72,7 +72,7 @@ public class TraceabilityDataController
         ReproducibilityData reproducibilityData = data.getProcessingDetails().getReproducibilityData();
         ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
             DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(),
-                    reproducibilityData.getScript(), reproducibilityData.getOutputDatasets());
+                    reproducibilityData.getScript(), reproducibilityData.getOutputDatasets(), false);
             runner.run();
             boolean outputsMatch;
             try

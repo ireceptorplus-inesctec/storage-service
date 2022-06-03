@@ -27,12 +27,15 @@ public class DataTransformationRunner
      */
     protected ArrayList<DownloadbleFile> outputs;
 
+    protected boolean filesAreAvailableLocally;
+
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile scriptFile,
-                                    ArrayList<DownloadbleFile> outputs)
+                                    ArrayList<DownloadbleFile> outputs, boolean filesAreAvailableLocally)
     {
         this.inputs = inputs;
         this.scriptFile = scriptFile;
         this.outputs = outputs;
+        this.filesAreAvailableLocally = filesAreAvailableLocally;
     }
 
     public ArrayList<DownloadbleFile> getOutputs() {
@@ -41,7 +44,16 @@ public class DataTransformationRunner
 
     public void run()
     {
+        if (!filesAreAvailableLocally)
+            downloadDatasetsAndScriptToProcessingDir();
         runBashCommand("./" + scriptFile.getHashValue());
+        try
+        {
+            verifyIfOutputsMatch();
+        } catch (ErrorComparingOutputs e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
+        }
     }
 
     /**
