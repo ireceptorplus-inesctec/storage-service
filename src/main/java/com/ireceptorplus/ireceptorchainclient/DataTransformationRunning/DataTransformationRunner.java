@@ -46,7 +46,7 @@ public class DataTransformationRunner
     {
         if (!filesAreAvailableLocally)
             downloadDatasetsAndScriptToProcessingDir();
-        runBashCommand("./" + scriptFile.getHashValue());
+        runBashCommand("./" + scriptFile.getUuid());
         try
         {
             verifyIfOutputsMatch();
@@ -88,7 +88,7 @@ public class DataTransformationRunner
      */
     protected void downloadDatasetsAndScriptToProcessingDir()
     {
-        String processingFilesPath = "./" + scriptFile.getHashValue();
+        String processingFilesPath = "./" + scriptFile.getUuid();
         new File(processingFilesPath).mkdirs();
         FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath);
         inputsDownloader.downloadFilesToDir();

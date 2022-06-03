@@ -81,6 +81,6 @@ public class FileSystemManager
 
     private String getFileName(DownloadbleFile file)
     {
-        return file.getHashValue();
+        return file.getUuid();
     }
 }
