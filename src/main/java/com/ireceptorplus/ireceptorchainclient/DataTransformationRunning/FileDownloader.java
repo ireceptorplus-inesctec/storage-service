@@ -1,6 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 
 import java.io.FileOutputStream;
@@ -15,26 +17,30 @@ import java.util.List;
 public class FileDownloader
 {
 
-    List<DownloadbleFile> downloadbleFiles;
+    List<File> downloadbleFiles;
     String destinationPath;
 
-    public FileDownloader(DownloadbleFile downloadbleFile, String destinationPath)
+    public FileDownloader(File downloadbleFile, String destinationPath)
     {
         this.downloadbleFiles = new ArrayList<>();
         this.downloadbleFiles.add(downloadbleFile);
         this.destinationPath = destinationPath;
     }
 
-    public FileDownloader(List<DownloadbleFile> downloadbleFiles, String destinationPath)
+    public FileDownloader(List<File> downloadbleFiles, String destinationPath)
     {
         this.downloadbleFiles = downloadbleFiles;
         this.destinationPath = destinationPath;
     }
 
-    public void downloadFilesToDir()
+    public void downloadFilesToDir() throws TryingToDownloadFileWithoutUrl
     {
-        for (DownloadbleFile downloadbleFile : downloadbleFiles)
+        for (File file : downloadbleFiles)
         {
+            if (!(file instanceof DownloadbleFile))
+                throw new TryingToDownloadFileWithoutUrl("Error trying to download file without url. Uuid is " + file.getUuid());
+
+            DownloadbleFile downloadbleFile = (DownloadbleFile) file;
             try
             {
                 URL url = new URL(downloadbleFile.getUrl());

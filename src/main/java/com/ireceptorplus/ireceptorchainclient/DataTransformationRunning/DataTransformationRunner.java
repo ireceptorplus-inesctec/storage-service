@@ -1,11 +1,13 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,22 +17,22 @@ public class DataTransformationRunner
     /**
      * The inputs datasets that when applied the processing yield the outputs.
      */
-    protected ArrayList<DownloadbleFile> inputs;
+    protected ArrayList<File> inputs;
 
     /**
      * The script that when applied to the inputs yields the outputs.
      */
-    protected DownloadbleFile scriptFile;
+    protected File scriptFile;
 
     /**
      * The outputs which are yield when the script is applied to the inputs.
      */
-    protected ArrayList<DownloadbleFile> outputs;
+    protected ArrayList<File> outputs;
 
     protected boolean filesAreAvailableLocally;
 
-    public DataTransformationRunner(ArrayList<DownloadbleFile> inputs, DownloadbleFile scriptFile,
-                                    ArrayList<DownloadbleFile> outputs, boolean filesAreAvailableLocally)
+    public DataTransformationRunner(ArrayList<File> inputs, File scriptFile,
+                                    ArrayList<File> outputs, boolean filesAreAvailableLocally)
     {
         this.inputs = inputs;
         this.scriptFile = scriptFile;
@@ -38,11 +40,18 @@ public class DataTransformationRunner
         this.filesAreAvailableLocally = filesAreAvailableLocally;
     }
 
-    public ArrayList<DownloadbleFile> getOutputs() {
+    public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, ReproducibleScript script, ArrayList<DownloadbleFile> outputDatasets, boolean filesAreAvailableLocally)
+    {
+        this.inputs = new ArrayList<File>(inputDatasets);
+        this.scriptFile = script;
+        this.outputs = new ArrayList<>(outputDatasets);
+    }
+
+    public ArrayList<File> getOutputs() {
         return outputs;
     }
 
-    public void run()
+    public void run() throws TryingToDownloadFileWithoutUrl
     {
         if (!filesAreAvailableLocally)
             downloadDatasetsAndScriptToProcessingDir();
@@ -64,7 +73,7 @@ public class DataTransformationRunner
      */
     public boolean verifyIfOutputsMatch() throws ErrorComparingOutputs
     {
-        for (DownloadbleFile output : outputs)
+        for (File output : outputs)
         {
             FileSystemManager fileSystemManager = FileSystemManager.getInstance();
             String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(output);
@@ -86,10 +95,10 @@ public class DataTransformationRunner
      * This method downloads the datasets and the script necessary to run the data processing.
      * The scripts are downloaded from their respective URLs which should point to other peers, instances of the iReceptorChain Storage Service (this application).
      */
-    protected void downloadDatasetsAndScriptToProcessingDir()
+    protected void downloadDatasetsAndScriptToProcessingDir() throws TryingToDownloadFileWithoutUrl
     {
         String processingFilesPath = "./" + scriptFile.getUuid();
-        new File(processingFilesPath).mkdirs();
+        new java.io.File(processingFilesPath).mkdirs();
         FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath);
         inputsDownloader.downloadFilesToDir();
         FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");

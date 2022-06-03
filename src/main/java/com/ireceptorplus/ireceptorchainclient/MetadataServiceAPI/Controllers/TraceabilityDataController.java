@@ -10,7 +10,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -67,16 +67,17 @@ public class TraceabilityDataController
     @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
     @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
     @PostMapping("run")
-    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException
+    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl
     {
         ReproducibilityData reproducibilityData = data.getProcessingDetails().getReproducibilityData();
         ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
             DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(),
                     reproducibilityData.getScript(), reproducibilityData.getOutputDatasets(), false);
-            runner.run();
+
             boolean outputsMatch;
             try
             {
+                runner.run();
                 outputsMatch = runner.verifyIfOutputsMatch();
             } catch (ErrorComparingOutputs e)
             {
@@ -84,9 +85,14 @@ public class TraceabilityDataController
                 iReceptorStorageServiceLogging.writeLogMessages(e, message);
                 e.printStackTrace();
                 throw new ErrorComparingOutputs(message);
+            } catch (TryingToDownloadFileWithoutUrl e)
+            {
+                iReceptorStorageServiceLogging.writeLogMessages(e, e.getMessage());
+                e.printStackTrace();
+                throw new TryingToDownloadFileWithoutUrl(e.getMessage());
             }
 
-            VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;
+        VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;
             return submitVoteToBlockchain(data.getUuid(), voteType);
     }
 
