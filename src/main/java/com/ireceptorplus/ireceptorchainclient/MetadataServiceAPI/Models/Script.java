@@ -21,6 +21,7 @@ public class Script
     /**
      * An enum type that describes the type of script. Can be either NEXTFLOW or BASH.
      */
+    @Column
     private ReproducibleScript.ScriptType scriptType;
 
     /**
