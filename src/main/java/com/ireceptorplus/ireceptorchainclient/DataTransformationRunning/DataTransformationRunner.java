@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 public class DataTransformationRunner
 {
+    public enum RunningMode
+    {VERIFY, COMPUTE_OUTPUTS}
+
     /**
      * The inputs datasets that when applied the processing yield the outputs.
      */
@@ -29,45 +32,58 @@ public class DataTransformationRunner
      */
     protected ArrayList<File> outputs;
 
-    protected boolean filesAreAvailableLocally;
+    protected RunningMode runningMode;
 
-    public DataTransformationRunner(ArrayList<File> inputs, File scriptFile,
-                                    ArrayList<File> outputs, boolean filesAreAvailableLocally)
+    public DataTransformationRunner(ArrayList<File> inputs, File scriptFile, RunningMode runningMode)
     {
         this.inputs = inputs;
         this.scriptFile = scriptFile;
-        this.outputs = outputs;
-        this.filesAreAvailableLocally = filesAreAvailableLocally;
+        this.runningMode = runningMode;
     }
 
-    public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, ReproducibleScript script, ArrayList<DownloadbleFile> outputDatasets, boolean filesAreAvailableLocally)
+    /**
+     * This constructor should be used to run a pipeline using datasets that are not stored locally and need to be downloaded from other peers of the network.
+     *
+     * @param inputDatasets  An ArrayList containing metadata of the input datasets.
+     * @param script         An instance of class ReproducibleScript containing metadata of the script using to run the processing.
+     * @param outputDatasets An ArrayList containing metadata of the output datasets.
+     */
+    public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, ReproducibleScript script,
+                                    ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.scriptFile = script;
         this.outputs = new ArrayList<>(outputDatasets);
+        this.runningMode = runningMode;
     }
 
-    public ArrayList<File> getOutputs() {
+    public ArrayList<File> getOutputs()
+    {
         return outputs;
     }
 
     public void run() throws TryingToDownloadFileWithoutUrl
     {
-        if (!filesAreAvailableLocally)
+        if (runningMode == RunningMode.VERIFY)
             downloadDatasetsAndScriptToProcessingDir();
         runBashCommand("./" + scriptFile.getUuid());
-        try
+        if (runningMode == RunningMode.VERIFY)
         {
-            verifyIfOutputsMatch();
-        } catch (ErrorComparingOutputs e)
-        {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
+            try
+            {
+                verifyIfOutputsMatch();
+            } catch (ErrorComparingOutputs e)
+            {
+                iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
+            }
         }
+
     }
 
     /**
      * This method verifies if the outputs of the data processing match.
      * It uses the logic and values defined in class FileSystemManager to determine the file system path structure.
+     *
      * @return A boolean value identifying whether the outputs match or not.
      * @throws ErrorComparingOutputs Exception thrown when an error comparing the outputs occurs.
      */
@@ -109,6 +125,7 @@ public class DataTransformationRunner
 
     /**
      * This method runs a bash command. It can be a command to call a bash or nextflow script.
+     *
      * @param command A String representing the command to be run.
      */
     void runBashCommand(String command)
