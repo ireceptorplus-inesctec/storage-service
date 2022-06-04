@@ -1,6 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,7 @@ public class CreatedPipeline
     private Long id;
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    private List<Dataset> inputDatasets;
+    private ArrayList<Dataset> inputDatasets;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "created_pipeline_id")
@@ -31,12 +32,12 @@ public class CreatedPipeline
         this.id = id;
     }
 
-    public List<Dataset> getInputDatasets()
+    public ArrayList<Dataset> getInputDatasets()
     {
         return inputDatasets;
     }
 
-    public void setInputDatasets(List<Dataset> inputDatasets)
+    public void setInputDatasets(ArrayList<Dataset> inputDatasets)
     {
         this.inputDatasets = inputDatasets;
     }
