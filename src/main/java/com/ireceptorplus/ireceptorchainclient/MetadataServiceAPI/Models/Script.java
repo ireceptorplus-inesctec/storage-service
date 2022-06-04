@@ -75,4 +75,14 @@ public class Script
     {
         this.url = url;
     }
+
+    public ReproducibleScript.ScriptType getScriptType()
+    {
+        return scriptType;
+    }
+
+    public void setScriptType(ReproducibleScript.ScriptType scriptType)
+    {
+        this.scriptType = scriptType;
+    }
 }
