@@ -1,8 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
+import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class implements the logic to determine the file system path structure.
@@ -10,14 +10,12 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
  */
 public class FileSystemManager
 {
-    private static FileSystemManager instance;
+    @Autowired
+    DatasetStorageProperties datasetStorageProperties;
 
-    public static FileSystemManager getInstance()
+    public FileSystemManager(DatasetStorageProperties datasetStorageProperties)
     {
-        if (instance == null)
-            instance = new FileSystemManager();
-
-        return instance;
+        this.datasetStorageProperties = datasetStorageProperties;
     }
 
     public String getInputsRelativePath()
@@ -32,12 +30,12 @@ public class FileSystemManager
 
     public String getExpectedOutputsRelativePath()
     {
-        return "./outputs";
+        return "./expectedOutputs";
     }
 
     public String getProcessedOutputsRelativePath()
     {
-        return "./";
+        return "./outputs";
     }
 
     public String getInputRelativePath(File input)
@@ -83,5 +81,15 @@ public class FileSystemManager
     private String getFileName(File file)
     {
         return file.getUuid();
+    }
+
+    public String getStoredFilesPath()
+    {
+        return datasetStorageProperties.getLocation();
+    }
+
+    public String getStoredFilePath(File file)
+    {
+        return getStoredFilesPath() + "/" + file.getUuid();
     }
 }
