@@ -5,12 +5,16 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class DataTransformationRunner
 {
@@ -33,6 +37,15 @@ public class DataTransformationRunner
     protected ArrayList<File> outputs;
 
     protected RunningMode runningMode;
+
+    @Value("${peer.network.ipAddress}")
+    private String peerIpAddr;
+
+    @Value("${peer.network.port}")
+    private String peerPort;
+
+    @Autowired
+    FileSystemManager fileSystemManager;
 
     public DataTransformationRunner(ArrayList<File> inputs, File scriptFile, RunningMode runningMode)
     {
@@ -77,7 +90,27 @@ public class DataTransformationRunner
                 iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
             }
         }
+        ArrayList<DownloadbleFile> outputsMetadata = getOutputsMetadata();
+        this.outputs = new ArrayList<>(outputsMetadata);
+    }
 
+    public ArrayList<DownloadbleFile> getOutputsMetadata()
+    {
+        java.io.File outputsDir = new java.io.File(fileSystemManager.getProcessedOutputsRelativePath());
+        String[] filePaths = outputsDir.list();
+        ArrayList<DownloadbleFile> outputs = new ArrayList<>();
+        for (String filePath : filePaths)
+        {
+            String uuid = UUID.randomUUID().toString();
+            String url = FileUrlBuilder.buildFromUuid(peerIpAddr, peerPort, uuid);
+            DownloadbleFile downloadbleFile = new DownloadbleFile(uuid, url);
+            outputs.add(downloadbleFile);
+            java.io.File outputFile = new java.io.File(filePath);
+            java.io.File newFile = new java.io.File(outputsDir + uuid);
+            outputFile.renameTo(newFile);
+        }
+
+        return outputs;
     }
 
     /**
@@ -91,7 +124,6 @@ public class DataTransformationRunner
     {
         for (File output : outputs)
         {
-            FileSystemManager fileSystemManager = FileSystemManager.getInstance();
             String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(output);
             String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(output);
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
