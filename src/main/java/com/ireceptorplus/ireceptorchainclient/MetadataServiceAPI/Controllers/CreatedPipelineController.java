@@ -1,21 +1,37 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.DataProcessingMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipeline;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.CreateAndReadService;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.CreatedPipelineService;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DataProcessingService;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.ScriptService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Script;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.graalvm.compiler.nodes.java.ArrayLengthNode;
+import org.jobrunr.jobs.annotations.Job;
+import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/created_pipeline")
@@ -34,12 +50,24 @@ public class CreatedPipelineController
     @Autowired
     private final CreatedPipelineMapper createdPipelineMapper;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper)
+    @Autowired
+    private JobScheduler jobScheduler;
+
+    @Autowired
+    private FileSystemManager fileSystemManager;
+
+    @Autowired
+    private final DatasetService datasetService;
+
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
         this.createdPipelineService = createdPipelineService;
         this.createdPipelineMapper = createdPipelineMapper;
+        this.jobScheduler = jobScheduler;
+        this.fileSystemManager = fileSystemManager;
+        this.datasetService = datasetService;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -57,6 +85,85 @@ public class CreatedPipelineController
     private void enqueuePipelineForExecution(CreatedPipeline createdPipeline)
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
-        //TODO launch spring job
+        jobScheduler.enqueue(() -> runPipeline(createdPipeline));
     }
+
+    @Job(name = "Job for executing pipelines", retries = 3)
+    public void runPipeline(CreatedPipeline createdPipeline)
+    {
+        ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(createdPipeline.getInputDatasets());
+        Script scriptModel = createdPipeline.getScript();
+        File script = new ReproducibleScript(scriptModel.getUuid(), scriptModel.getUrl(), scriptModel.getScriptType());
+        DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
+                script, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS);
+        ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
+        copyOutputsToDatasetsDir(outputsMetadata);
+        createDatasetsOnDb(outputsMetadata);
+    }
+
+    /**
+     * This method copies outputs to the datasets dir.
+     * This will ensure other peers can access the datasets if they want to run the pipeline.
+     *
+     * @param outputsMetadata An ArrayList containing the metadata of the outputs.
+     */
+    private void copyOutputsToDatasetsDir(ArrayList<DownloadbleFile> outputsMetadata)
+    {
+        for (DownloadbleFile downloadbleFile : outputsMetadata)
+        {
+            String outputPath = fileSystemManager.getProcessedOutputRelativePath(downloadbleFile);
+            String storedFilePath = fileSystemManager.getStoredFilesPath() + "/" + downloadbleFile.getUuid();
+            java.io.File outputFile = new java.io.File(outputPath);
+            java.io.File storedFile = new java.io.File(storedFilePath);
+            try
+            {
+                copyFileUsingChannel(outputFile, storedFile);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ArrayList<File> convertDatasetsToFiles(ArrayList<Dataset> inputDatasets)
+    {
+        ArrayList<File> inputDatasetFiles = new ArrayList<>();
+        for (Dataset dataset : inputDatasets)
+        {
+            UUID uuid = dataset.getUuid();
+            DownloadbleFile downloadbleFile = new DownloadbleFile(uuid.toString(), dataset.getUrl());
+            inputDatasetFiles.add(downloadbleFile);
+        }
+
+        return inputDatasetFiles;
+    }
+
+    private static void copyFileUsingChannel(java.io.File source, java.io.File dest) throws IOException
+    {
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+        try
+        {
+            sourceChannel = new FileInputStream(source).getChannel();
+            destChannel = new FileOutputStream(dest).getChannel();
+            destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+        } finally
+        {
+            sourceChannel.close();
+            destChannel.close();
+        }
+    }
+
+    private void createDatasetsOnDb(ArrayList<DownloadbleFile> outputsMetadata)
+    {
+        for (DownloadbleFile downloadbleFile : outputsMetadata)
+        {
+            Dataset dataset = new Dataset();
+            dataset.setCreationDate(new Date());
+            dataset.setOriginalFileName(downloadbleFile.getUuid());
+            dataset.setUuid(UUID.fromString(downloadbleFile.getUuid()));
+            datasetService.create(dataset);
+        }
+    }
+
 }
