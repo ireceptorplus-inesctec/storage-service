@@ -13,7 +13,7 @@ public class CreatedPipeline
     private Long id;
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    private ArrayList<Dataset> inputDatasets;
+    private List<Dataset> inputDatasets;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "script_id", referencedColumnName = "id")
@@ -32,12 +32,12 @@ public class CreatedPipeline
         this.id = id;
     }
 
-    public ArrayList<Dataset> getInputDatasets()
+    public List<Dataset> getInputDatasets()
     {
         return inputDatasets;
     }
 
-    public void setInputDatasets(ArrayList<Dataset> inputDatasets)
+    public void setInputDatasets(List<Dataset> inputDatasets)
     {
         this.inputDatasets = inputDatasets;
     }

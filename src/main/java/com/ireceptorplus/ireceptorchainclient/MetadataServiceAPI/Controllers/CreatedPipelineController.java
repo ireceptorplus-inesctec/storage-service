@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -88,7 +89,7 @@ public class CreatedPipelineController
     @Job(name = "Job for executing pipelines", retries = 3)
     public void runPipeline(CreatedPipeline createdPipeline)
     {
-        ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(createdPipeline.getInputDatasets());
+        ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
         Script scriptModel = createdPipeline.getScript();
         File script = new ReproducibleScript(scriptModel.getUuid(), scriptModel.getUrl(), scriptModel.getScriptType());
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
@@ -163,7 +164,7 @@ public class CreatedPipelineController
             datasetService.create(dataset);
             outputDatasets.add(dataset);
         }
-        ArrayList<Dataset> inputDatasets = createdPipeline.getInputDatasets();
+        List<Dataset> inputDatasets = createdPipeline.getInputDatasets();
         ProcessingStep processingStep = new ProcessingStep();
         processingStep.setInputDatasets(inputDatasets);
         processingStep.setScript(createdPipeline.getScript());
