@@ -16,7 +16,7 @@ public class CreatedPipeline
     private ArrayList<Dataset> inputDatasets;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "created_pipeline_id")
+    @JoinColumn(name = "script_id", referencedColumnName = "id")
     Script script;
 
     @Enumerated(EnumType.ORDINAL)

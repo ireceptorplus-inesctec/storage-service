@@ -15,7 +15,7 @@ public class Script
     private Long id;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "created_pipeline_id")
+    @JoinColumn(name = "created_pipeline_id", referencedColumnName = "id")
     private CreatedPipeline createdPipeline;
 
     /**

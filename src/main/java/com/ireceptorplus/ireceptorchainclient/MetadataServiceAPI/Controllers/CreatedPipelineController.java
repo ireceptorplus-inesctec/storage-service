@@ -6,18 +6,12 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.DataProcessingMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipeline;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Script;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.graalvm.compiler.nodes.java.ArrayLengthNode;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +21,6 @@ import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +52,10 @@ public class CreatedPipelineController
     @Autowired
     private final DatasetService datasetService;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService)
+    @Autowired
+    private final DataProcessingService dataProcessingService;
+
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -68,6 +64,7 @@ public class CreatedPipelineController
         this.jobScheduler = jobScheduler;
         this.fileSystemManager = fileSystemManager;
         this.datasetService = datasetService;
+        this.dataProcessingService = dataProcessingService;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -98,7 +95,7 @@ public class CreatedPipelineController
                 script, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS);
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
         copyOutputsToDatasetsDir(outputsMetadata);
-        createDatasetsOnDb(outputsMetadata);
+        createEntitiesOnDb(outputsMetadata, createdPipeline);
     }
 
     /**
@@ -154,8 +151,9 @@ public class CreatedPipelineController
         }
     }
 
-    private void createDatasetsOnDb(ArrayList<DownloadbleFile> outputsMetadata)
+    private void createEntitiesOnDb(ArrayList<DownloadbleFile> outputsMetadata, CreatedPipeline createdPipeline)
     {
+        ArrayList<Dataset> outputDatasets = new ArrayList<>();
         for (DownloadbleFile downloadbleFile : outputsMetadata)
         {
             Dataset dataset = new Dataset();
@@ -163,7 +161,18 @@ public class CreatedPipelineController
             dataset.setOriginalFileName(downloadbleFile.getUuid());
             dataset.setUuid(UUID.fromString(downloadbleFile.getUuid()));
             datasetService.create(dataset);
+            outputDatasets.add(dataset);
         }
+        ArrayList<Dataset> inputDatasets = createdPipeline.getInputDatasets();
+        ProcessingStep processingStep = new ProcessingStep();
+        processingStep.setInputDatasets(inputDatasets);
+        processingStep.setScript(createdPipeline.getScript());
+        processingStep.setOutputDatasets(outputDatasets);
+        ArrayList<ProcessingStep> processingSteps = new ArrayList<>();
+        processingSteps.add(processingStep);
+        DataProcessing dataProcessing = new DataProcessing();
+        dataProcessing.setProcessingSteps(processingSteps);
+        dataProcessingService.create(dataProcessing);
     }
 
 }
