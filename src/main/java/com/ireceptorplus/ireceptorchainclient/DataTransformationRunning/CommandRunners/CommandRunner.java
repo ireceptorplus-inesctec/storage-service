@@ -18,19 +18,22 @@ public abstract class CommandRunner
     /**
      * The path to the directory that was allocated for this command to be run.
      */
-    private String dirPath;
+    protected String dirPath;
 
-    private String inputsFolderPath;
+    protected String inputsFolderPath;
 
-    private ArrayList<File> inputDatasets;
+    protected ArrayList<File> inputDatasets;
 
-    private ArrayList<File> outputDatasets;
+    protected String command;
 
-    public CommandRunner(String dirPath, String inputsFolderPath, ArrayList<File> inputDatasets)
+    protected ArrayList<File> outputDatasets;
+
+    public CommandRunner(String dirPath, String inputsFolderPath, ArrayList<File> inputDatasets, String command)
     {
         this.dirPath = dirPath;
         this.inputsFolderPath = inputsFolderPath;
         this.inputDatasets = inputDatasets;
+        this.command = command;
         this.outputDatasets = new ArrayList<>();
     }
 
