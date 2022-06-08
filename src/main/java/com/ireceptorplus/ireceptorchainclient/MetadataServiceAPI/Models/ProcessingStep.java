@@ -22,8 +22,8 @@ public class ProcessingStep
     private List<Dataset> outputDatasets;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "script_id", referencedColumnName = "id")
-    Script script;
+    @JoinColumn(name = "command_id", referencedColumnName = "id")
+    Command command;
 
     @Column
     private Long stepOrder;
@@ -72,14 +72,14 @@ public class ProcessingStep
         this.outputDatasets = outputDatasets;
     }
 
-    public Script getScript()
+    public Command getCommand()
     {
-        return script;
+        return command;
     }
 
-    public void setScript(Script script)
+    public void setCommand(Command command)
     {
-        this.script = script;
+        this.command = command;
     }
 
     public Long getStepOrder()
