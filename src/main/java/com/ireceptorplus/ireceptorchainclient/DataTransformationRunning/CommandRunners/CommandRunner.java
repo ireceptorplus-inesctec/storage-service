@@ -91,6 +91,7 @@ public abstract class CommandRunner
 
     public void executeCommand()
     {
+        organizeInputs();
         runBashCommand(buildHostCommandString());
     }
 
