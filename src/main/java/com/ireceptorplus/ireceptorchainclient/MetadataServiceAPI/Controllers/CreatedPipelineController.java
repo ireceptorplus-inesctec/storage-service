@@ -90,10 +90,9 @@ public class CreatedPipelineController
     public void runPipeline(CreatedPipeline createdPipeline)
     {
         ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
-        Script scriptModel = createdPipeline.getScript();
-        File script = new ReproducibleScript(scriptModel.getUuid(), scriptModel.getUrl(), scriptModel.getScriptType());
+        Tool tool = createdPipeline.getCommand().getTool();
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
-                script, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS);
+                createdPipeline.getCommand(), DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool);
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
         copyOutputsToDatasetsDir(outputsMetadata);
         createEntitiesOnDb(outputsMetadata, createdPipeline);
@@ -167,7 +166,7 @@ public class CreatedPipelineController
         List<Dataset> inputDatasets = createdPipeline.getInputDatasets();
         ProcessingStep processingStep = new ProcessingStep();
         processingStep.setInputDatasets(inputDatasets);
-        processingStep.setScript(createdPipeline.getScript());
+        processingStep.setCommand(createdPipeline.getCommand());
         processingStep.setOutputDatasets(outputDatasets);
         ArrayList<ProcessingStep> processingSteps = new ArrayList<>();
         processingSteps.add(processingStep);
