@@ -14,7 +14,7 @@ public class CreatedPipelineDTO
     private List<String> inputDatasetsIds;
 
     @NotNull
-    private ScriptDTO script;
+    private CommandDTO commandDTO;
 
     @NotNull
     CreatedPipelineState state;
@@ -33,14 +33,14 @@ public class CreatedPipelineDTO
         this.inputDatasetsIds = inputDatasetsIds;
     }
 
-    public ScriptDTO getScript()
+    public CommandDTO getCommandDTO()
     {
-        return script;
+        return commandDTO;
     }
 
-    public void setScript(ScriptDTO script)
+    public void setCommandDTO(CommandDTO commandDTO)
     {
-        this.script = script;
+        this.commandDTO = commandDTO;
     }
 
     public CreatedPipelineState getState()

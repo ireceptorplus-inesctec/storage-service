@@ -16,8 +16,8 @@ public class CreatedPipeline
     private List<Dataset> inputDatasets;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "script_id", referencedColumnName = "id")
-    Script script;
+    @JoinColumn(name = "command_id", referencedColumnName = "id")
+    Command command;
 
     @Enumerated(EnumType.ORDINAL)
     CreatedPipelineState state;
@@ -42,14 +42,14 @@ public class CreatedPipeline
         this.inputDatasets = inputDatasets;
     }
 
-    public Script getScript()
+    public Command getCommand()
     {
-        return script;
+        return command;
     }
 
-    public void setScript(Script script)
+    public void setCommand(Command command)
     {
-        this.script = script;
+        this.command = command;
     }
 
     public CreatedPipelineState getState()
