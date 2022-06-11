@@ -56,7 +56,8 @@ public class HyperledgerFabricAPI implements BlockchainAPI
 
             UUID uuid = UUID.randomUUID();
             processingDetails = data.getProcessingDetails();
-            byte[] result = contract.submitTransaction("createTraceabilityDataEntry", uuid.toString(), data.getInputDatasetHashValue(), data.getOutputDatasetHashValue(), processingDetails.getSoftwareId(), processingDetails.getSoftwareVersion(), processingDetails.getSoftwareBinaryExecutableHashValue(), processingDetails.getSoftwareConfigParams(), data.getValue().toString());
+            String processingDetailsString = objectMapper.writeValueAsString(processingDetails);
+            byte[] result = contract.submitTransaction("createTraceabilityDataEntry", uuid.toString(), processingDetailsString, data.getValue().toString());
             String resultStr = new String(result);
 
             LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully created traceability data: ");

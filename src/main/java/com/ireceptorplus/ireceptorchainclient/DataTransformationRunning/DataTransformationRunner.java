@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.CommandRunner;
@@ -7,7 +8,6 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandR
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Tool;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,19 +48,19 @@ public class DataTransformationRunner
     @Autowired
     FileSystemManager fileSystemManager;
 
-    Tool tool;
+    String toolId;
 
     String processingFilesPath;
 
     String datasetsPath;
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
-                                    RunningMode runningMode, Tool tool)
+                                    RunningMode runningMode, String toolId)
     {
         this.inputs = inputs;
         this.command = command;
         this.runningMode = runningMode;
-        this.tool = tool;
+        this.toolId = toolId;
     }
 
     /**
@@ -72,13 +72,13 @@ public class DataTransformationRunner
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    Tool tool)
+                                    String toolId)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
         this.outputs = new ArrayList<>(outputDatasets);
         this.runningMode = runningMode;
-        this.tool = tool;
+        this.toolId = toolId;
     }
 
     public ArrayList<File> getOutputs()
@@ -90,6 +90,7 @@ public class DataTransformationRunner
     {
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
+        //TODO map to appropriate runner
         CommandRunner commandRunner = new MixcrRunner(processingFilesPath, datasetsPath,
                 inputs, command.getCommandString());
         commandRunner.executeCommand();

@@ -7,10 +7,19 @@ public class DownloadbleFile extends File
 {
     protected String url;
 
+    protected String hashValue;
+
     public DownloadbleFile(String uuid, String url)
     {
         super(uuid);
         this.url = url;
+    }
+
+    public DownloadbleFile(String uuid, String url, String hashValue)
+    {
+        super(uuid);
+        this.url = url;
+        this.hashValue = hashValue;
     }
 
     public String getUrl()

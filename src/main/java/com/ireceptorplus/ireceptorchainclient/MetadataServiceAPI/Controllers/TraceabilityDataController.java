@@ -3,8 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
@@ -69,10 +68,9 @@ public class TraceabilityDataController
     @PostMapping("run")
     public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl
     {
-        ReproducibilityData reproducibilityData = data.getProcessingDetails().getReproducibilityData();
-        ReproducibleScript.ScriptType scriptType = reproducibilityData.getScript().getScriptType();
-            DataTransformationRunner runner = new DataTransformationRunner(reproducibilityData.getInputDatasets(),
-                    reproducibilityData.getScript(), reproducibilityData.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY);
+        ProcessingDetails processingDetails = data.getProcessingDetails();
+            DataTransformationRunner runner = new DataTransformationRunner(processingDetails.getInputDatasets(),
+                    processingDetails.getCommand(), processingDetails.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY, processingDetails.getCommand().getToolId());
 
             boolean outputsMatch;
             try

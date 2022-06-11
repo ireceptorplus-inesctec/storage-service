@@ -7,18 +7,6 @@ import java.util.ArrayList;
 public class TraceabilityDataToBeSubmitted
 {
     /**
-     * The hash value of the input dataset used to perform the data transformation.
-     * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
-     */
-    protected final String inputDatasetHashValue;
-
-    /**
-     * The hash value of the output dataset used to perform the data transformation.
-     * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
-     */
-    protected final String outputDatasetHashValue;
-
-    /**
      * This is an instance of the class ProcessingDetails which contains information regarding the steps taken to perform the data transformation.
      * These steps are necessary in order to check the veracity of the traceability information.
      */
@@ -31,30 +19,16 @@ public class TraceabilityDataToBeSubmitted
      */
     protected Double additionalValue;
 
-    public TraceabilityDataToBeSubmitted(String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails)
+    public TraceabilityDataToBeSubmitted(ProcessingDetails processingDetails)
     {
-        this.inputDatasetHashValue = inputDatasetHashValue;
-        this.outputDatasetHashValue = outputDatasetHashValue;
         this.processingDetails = processingDetails;
         this.additionalValue = 0.0;
     }
 
-    public TraceabilityDataToBeSubmitted(String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, Double additionalValue)
+    public TraceabilityDataToBeSubmitted(ProcessingDetails processingDetails, Double additionalValue)
     {
-        this.inputDatasetHashValue = inputDatasetHashValue;
-        this.outputDatasetHashValue = outputDatasetHashValue;
         this.processingDetails = processingDetails;
         this.additionalValue = additionalValue;
-    }
-
-    public String getInputDatasetHashValue()
-    {
-        return inputDatasetHashValue;
-    }
-
-    public String getOutputDatasetHashValue()
-    {
-        return outputDatasetHashValue;
     }
 
     public ProcessingDetails getProcessingDetails()

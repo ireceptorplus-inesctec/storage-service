@@ -6,8 +6,8 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTy
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibilityData;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -113,16 +113,17 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 
     private void createTestTraceabilityDataEntry() throws BlockchainAPIException
     {
-        ReproducibilityData reproducibilityData = new ReproducibilityData(new ArrayList<>(),
-                new ReproducibleScript("uuid", "https://repository.com/script.sh", ReproducibleScript.ScriptType.NEXTFLOW),
-                new ArrayList<>());
-        TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
-                "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "32443b8c5b4116cccf12c517a095e39c050ce7b53858efeff48f7597c3659487",
-                new ProcessingDetails("igblast", "1.0",
-                        "52da1b1b9e707c38e7e158422aa1ffb5bd8b71d29e66e6a1b8bf6da541cb0f3d",
-                        "--config a",
-                        reproducibilityData));
+        DownloadbleFile inputDataset = new DownloadbleFile("767465ff8282385bfe1bc23a005f98ee2df325c369cefe9e89c7a42a60d22afa",
+                "71cc009c-e91b-11ec-8fea-0242ac120002", "https://213.544.435.34/dataset/71cc009c-e91b-11ec-8fea-0242ac120002");
+        ArrayList<DownloadbleFile> inputDatasets = new ArrayList<DownloadbleFile>();
+        inputDatasets.add(inputDataset);
+        DownloadbleFile outputDataset = new DownloadbleFile("7dbcd8ac1dbc8d09b57ed18f7f8229f16a1f8c46b5eaa87899c33216b21ec650",
+                "d9359bb2-e91b-11ec-8fea-0242ac120002", "https://213.544.435.34/dataset/d9359bb2-e91b-11ec-8fea-0242ac120002");
+        ArrayList<DownloadbleFile> outputDatasets = new ArrayList<DownloadbleFile>();
+        outputDatasets.add(outputDataset);
+        ProcessingDetails processingDetails = new ProcessingDetails(inputDatasets,
+                new Command("MiXCR", "align"), outputDatasets);
+        TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(processingDetails);
         createTraceabilityDataEntry(data);
     }
 

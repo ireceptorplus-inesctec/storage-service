@@ -90,9 +90,13 @@ public class CreatedPipelineController
     public void runPipeline(CreatedPipeline createdPipeline)
     {
         ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
-        Tool tool = createdPipeline.getCommand().getTool();
+        Command commandModel = createdPipeline.getCommand();
+        Tool tool = commandModel.getTool();
+        com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command command =
+                new com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command(tool.getName(), commandModel.getCommandString());
+
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
-                createdPipeline.getCommand(), DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool);
+                command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName());
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
         copyOutputsToDatasetsDir(outputsMetadata);
         createEntitiesOnDb(outputsMetadata, createdPipeline);
