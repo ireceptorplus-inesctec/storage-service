@@ -22,8 +22,19 @@ public class DownloadbleFile extends File
         this.hashValue = hashValue;
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getHashValue() {
+        return hashValue;
+    }
+
+    public void setHashValue(String hashValue) {
+        this.hashValue = hashValue;
     }
 }

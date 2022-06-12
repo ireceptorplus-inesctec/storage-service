@@ -13,4 +13,7 @@ public class File
     {
         return uuid;
     }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }
