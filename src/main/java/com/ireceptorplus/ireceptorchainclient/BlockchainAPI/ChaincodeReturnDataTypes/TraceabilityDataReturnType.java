@@ -62,6 +62,16 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         return creatorID;
     }
 
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(String uuid)
+    {
+        this.uuid = uuid;
+    }
+
     public ArrayList<EntityID> getApprovers()
     {
         return approvers;
