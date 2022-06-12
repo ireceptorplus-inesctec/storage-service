@@ -13,27 +13,15 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     protected String uuid;
 
     /**
-     * The hash value of the input dataset used to perform the data transformation.
-     * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
-     */
-    protected String inputDatasetHashValue;
-
-    /**
-     * The hash value of the output dataset used to perform the data transformation.
-     * This is used to validate the integrity of the input dataset, in order to be able to verify the traceability information.
-     */
-    protected String outputDatasetHashValue;
-
-    /**
      * This is an instance of the class ProcessingDetails which contains information regarding the steps taken to perform the data transformation.
      * These steps are necessary in order to check the veracity of the traceability information.
      */
-    protected ProcessingDetails processingDetails;
+    protected final ProcessingDetails processingDetails;
 
     /**
      * An instance of class EntityID containing information about the id of the entity that created the traceability data entry.
      */
-    protected EntityID creatorID;
+    protected final EntityID creatorID;
 
     /**
      * An array of entities who have submitted a YES vote for the validity of the traceability information.
@@ -54,49 +42,14 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      */
     protected Double value;
 
-    public TraceabilityDataReturnType() {
-    }
-
-    public TraceabilityDataReturnType(String uuid, String inputDatasetHashValue, String outputDatasetHashValue, ProcessingDetails processingDetails, EntityID creatorID, ArrayList<EntityID> approvers, ArrayList<EntityID> rejecters, Double value)
+    public TraceabilityDataReturnType(String uuid,  ProcessingDetails processingDetails, EntityID creatorID,
+                                      ArrayList<EntityID> approvers, ArrayList<EntityID> rejecters, Double value)
     {
-        this.uuid = uuid;
-        this.inputDatasetHashValue = inputDatasetHashValue;
-        this.outputDatasetHashValue = outputDatasetHashValue;
         this.processingDetails = processingDetails;
         this.creatorID = creatorID;
         this.approvers = approvers;
         this.rejecters = rejecters;
         this.value = value;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TraceabilityDataReturnType that = (TraceabilityDataReturnType) o;
-        return uuid.equals(that.uuid) && inputDatasetHashValue.equals(that.inputDatasetHashValue) && outputDatasetHashValue.equals(that.outputDatasetHashValue) && processingDetails.equals(that.processingDetails) && creatorID.equals(that.creatorID) && approvers.equals(that.approvers) && rejecters.equals(that.rejecters) && value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(uuid, inputDatasetHashValue, outputDatasetHashValue, processingDetails, creatorID, approvers, rejecters, value);
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public String getInputDatasetHashValue()
-    {
-        return inputDatasetHashValue;
-    }
-
-    public String getOutputDatasetHashValue()
-    {
-        return outputDatasetHashValue;
     }
 
     public ProcessingDetails getProcessingDetails()
@@ -114,9 +67,19 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         return approvers;
     }
 
+    public void setApprovers(ArrayList<EntityID> approvers)
+    {
+        this.approvers = approvers;
+    }
+
     public ArrayList<EntityID> getRejecters()
     {
         return rejecters;
+    }
+
+    public void setRejecters(ArrayList<EntityID> rejecters)
+    {
+        this.rejecters = rejecters;
     }
 
     public Double getValue()
@@ -124,35 +87,23 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
         return value;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setInputDatasetHashValue(String inputDatasetHashValue) {
-        this.inputDatasetHashValue = inputDatasetHashValue;
-    }
-
-    public void setOutputDatasetHashValue(String outputDatasetHashValue) {
-        this.outputDatasetHashValue = outputDatasetHashValue;
-    }
-
-    public void setProcessingDetails(ProcessingDetails processingDetails) {
-        this.processingDetails = processingDetails;
-    }
-
-    public void setCreatorID(EntityID creatorID) {
-        this.creatorID = creatorID;
-    }
-
-    public void setApprovers(ArrayList<EntityID> approvers) {
-        this.approvers = approvers;
-    }
-
-    public void setRejecters(ArrayList<EntityID> rejecters) {
-        this.rejecters = rejecters;
-    }
-
-    public void setValue(Double value) {
+    public void setValue(Double value)
+    {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TraceabilityDataReturnType that = (TraceabilityDataReturnType) o;
+        return Objects.equals(uuid, that.uuid);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(uuid);
     }
 }
