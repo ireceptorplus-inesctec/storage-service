@@ -4,6 +4,9 @@ public class File
 {
     protected String uuid;
 
+    public File() {
+    }
+
     public File(String uuid)
     {
         this.uuid = uuid;
