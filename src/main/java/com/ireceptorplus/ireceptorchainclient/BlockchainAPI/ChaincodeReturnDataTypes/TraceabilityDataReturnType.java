@@ -16,12 +16,12 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      * This is an instance of the class ProcessingDetails which contains information regarding the steps taken to perform the data transformation.
      * These steps are necessary in order to check the veracity of the traceability information.
      */
-    protected final ProcessingDetails processingDetails;
+    protected ProcessingDetails processingDetails;
 
     /**
      * An instance of class EntityID containing information about the id of the entity that created the traceability data entry.
      */
-    protected final EntityID creatorID;
+    protected EntityID creatorID;
 
     /**
      * An array of entities who have submitted a YES vote for the validity of the traceability information.
@@ -42,7 +42,10 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
      */
     protected Double value;
 
-    public TraceabilityDataReturnType(String uuid,  ProcessingDetails processingDetails, EntityID creatorID,
+    public TraceabilityDataReturnType() {
+    }
+
+    public TraceabilityDataReturnType(String uuid, ProcessingDetails processingDetails, EntityID creatorID,
                                       ArrayList<EntityID> approvers, ArrayList<EntityID> rejecters, Double value)
     {
         this.uuid = uuid;
