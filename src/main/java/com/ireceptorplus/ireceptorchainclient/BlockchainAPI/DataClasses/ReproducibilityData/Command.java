@@ -7,9 +7,12 @@ public class Command
     /**
      * A String identifying the tool used to run the data processing.
      */
-    private final String toolId;
+    private String toolId;
 
-    private final String commandString;
+    private String commandString;
+
+    public Command() {
+    }
 
     public Command(String toolId, String commandString)
     {
@@ -17,14 +20,20 @@ public class Command
         this.commandString = commandString;
     }
 
-    public String getToolId()
-    {
+    public String getToolId() {
         return toolId;
     }
 
-    public String getCommandString()
-    {
+    public void setToolId(String toolId) {
+        this.toolId = toolId;
+    }
+
+    public String getCommandString() {
         return commandString;
+    }
+
+    public void setCommandString(String commandString) {
+        this.commandString = commandString;
     }
 
     @Override
