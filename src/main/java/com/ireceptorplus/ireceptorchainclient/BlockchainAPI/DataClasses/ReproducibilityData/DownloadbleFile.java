@@ -9,6 +9,10 @@ public class DownloadbleFile extends File
 
     protected String hashValue;
 
+    public DownloadbleFile(String uuid) {
+        super(uuid);
+    }
+
     public DownloadbleFile(String uuid, String url)
     {
         super(uuid);
