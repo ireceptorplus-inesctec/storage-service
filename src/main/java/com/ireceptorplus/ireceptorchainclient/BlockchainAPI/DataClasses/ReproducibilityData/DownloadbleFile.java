@@ -9,8 +9,8 @@ public class DownloadbleFile extends File
 
     protected String hashValue;
 
-    public DownloadbleFile(String uuid) {
-        super(uuid);
+    public DownloadbleFile()
+    {
     }
 
     public DownloadbleFile(String uuid, String url)
@@ -26,19 +26,23 @@ public class DownloadbleFile extends File
         this.hashValue = hashValue;
     }
 
-    public String getUrl() {
+    public String getUrl()
+    {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(String url)
+    {
         this.url = url;
     }
 
-    public String getHashValue() {
+    public String getHashValue()
+    {
         return hashValue;
     }
 
-    public void setHashValue(String hashValue) {
+    public void setHashValue(String hashValue)
+    {
         this.hashValue = hashValue;
     }
 }
