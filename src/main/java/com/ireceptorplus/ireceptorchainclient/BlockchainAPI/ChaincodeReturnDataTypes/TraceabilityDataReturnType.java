@@ -45,6 +45,7 @@ public class TraceabilityDataReturnType extends ChaincodeReturnDataType
     public TraceabilityDataReturnType(String uuid,  ProcessingDetails processingDetails, EntityID creatorID,
                                       ArrayList<EntityID> approvers, ArrayList<EntityID> rejecters, Double value)
     {
+        this.uuid = uuid;
         this.processingDetails = processingDetails;
         this.creatorID = creatorID;
         this.approvers = approvers;
