@@ -4,7 +4,8 @@ public class File
 {
     protected String uuid;
 
-    public File() {
+    public File()
+    {
     }
 
     public File(String uuid)
@@ -16,7 +17,9 @@ public class File
     {
         return uuid;
     }
-    public void setUuid(String uuid) {
+
+    public void setUuid(String uuid)
+    {
         this.uuid = uuid;
     }
 }
