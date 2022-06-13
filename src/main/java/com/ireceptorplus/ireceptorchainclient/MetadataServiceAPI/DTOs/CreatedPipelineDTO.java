@@ -3,7 +3,6 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -11,7 +10,7 @@ public class CreatedPipelineDTO
 {
     @NotNull
     @JsonProperty("input_datasets_ids")
-    private List<String> inputDatasetsIds;
+    private List<String> inputDatasetsUuids;
 
     @NotNull
     private CommandDTO commandDTO;
@@ -23,14 +22,14 @@ public class CreatedPipelineDTO
     {
     }
 
-    public List<String> getInputDatasetsIds()
+    public List<String> getInputDatasetsUuids()
     {
-        return inputDatasetsIds;
+        return inputDatasetsUuids;
     }
 
-    public void setInputDatasetsIds(List<String> inputDatasetsIds)
+    public void setInputDatasetsUuids(List<String> inputDatasetsUuids)
     {
-        this.inputDatasetsIds = inputDatasetsIds;
+        this.inputDatasetsUuids = inputDatasetsUuids;
     }
 
     public CommandDTO getCommandDTO()
