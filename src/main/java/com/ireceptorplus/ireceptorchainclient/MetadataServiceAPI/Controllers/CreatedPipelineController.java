@@ -83,6 +83,8 @@ public class CreatedPipelineController
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
+        enqueuePipelineForExecution(createdPipeline);
+
         return newCreatedPipelineDTO;
     }
 
