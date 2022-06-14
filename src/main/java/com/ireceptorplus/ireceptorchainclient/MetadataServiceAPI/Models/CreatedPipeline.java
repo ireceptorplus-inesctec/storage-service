@@ -2,6 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,10 +18,12 @@ public class CreatedPipeline
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "command_id", referencedColumnName = "id")
-    Command command;
+    private Command command;
 
     @Enumerated(EnumType.ORDINAL)
-    CreatedPipelineState state;
+    private CreatedPipelineState state;
+
+    private Date date;
 
     public Long getId()
     {
@@ -60,5 +63,15 @@ public class CreatedPipeline
     public void setState(CreatedPipelineState state)
     {
         this.state = state;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
     }
 }

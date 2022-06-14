@@ -4,16 +4,13 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 public class CommandDTO extends DTOWithId
 {
     @NotNull
-    @JsonProperty("tool_id")
-    private Long toolId;
+    @JsonProperty("tool_name")
+    private String toolName;
 
     @NotNull
     @JsonProperty("command_string")
@@ -23,14 +20,14 @@ public class CommandDTO extends DTOWithId
     {
     }
 
-    public Long getToolId()
+    public String getToolName()
     {
-        return toolId;
+        return toolName;
     }
 
-    public void setToolId(Long toolId)
+    public void setToolName(String toolName)
     {
-        this.toolId = toolId;
+        this.toolName = toolName;
     }
 
     public String getCommandString()

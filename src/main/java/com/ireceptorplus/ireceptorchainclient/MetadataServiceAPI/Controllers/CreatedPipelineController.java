@@ -56,7 +56,10 @@ public class CreatedPipelineController
     @Autowired
     private final DataProcessingService dataProcessingService;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService)
+    @Autowired
+    private final ToolService toolService;
+
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ToolService toolService)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -66,6 +69,7 @@ public class CreatedPipelineController
         this.fileSystemManager = fileSystemManager;
         this.datasetService = datasetService;
         this.dataProcessingService = dataProcessingService;
+        this.toolService = toolService;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -73,6 +77,8 @@ public class CreatedPipelineController
     public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO)
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
+        Tool tool = this.toolService.readByName(createdPipelineDTO.getCommand().getToolName());
+        createdPipeline.getCommand().setTool(tool);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         newCreatedPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);

@@ -4,19 +4,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 public class CreatedPipelineDTO
 {
+    private String name;
+    private String description;
+
     @NotNull
-    @JsonProperty("input_datasets_ids")
+    @JsonProperty("input_datasets_uuids")
     private List<String> inputDatasetsUuids;
 
     @NotNull
-    private CommandDTO commandDTO;
+    private CommandDTO command;
 
-    @NotNull
     CreatedPipelineState state;
+
+    Date creationDate;
 
     public CreatedPipelineDTO()
     {
@@ -32,14 +37,14 @@ public class CreatedPipelineDTO
         this.inputDatasetsUuids = inputDatasetsUuids;
     }
 
-    public CommandDTO getCommandDTO()
+    public CommandDTO getCommand()
     {
-        return commandDTO;
+        return command;
     }
 
-    public void setCommandDTO(CommandDTO commandDTO)
+    public void setCommand(CommandDTO command)
     {
-        this.commandDTO = commandDTO;
+        this.command = command;
     }
 
     public CreatedPipelineState getState()
@@ -50,5 +55,35 @@ public class CreatedPipelineDTO
     public void setState(CreatedPipelineState state)
     {
         this.state = state;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

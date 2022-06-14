@@ -20,4 +20,8 @@ public class ToolService extends CreateAndReadService<Tool, Long>
         this.toolRepository = toolRepository;
     }
 
+    public Tool readByName(String name)
+    {
+        return toolRepository.findByName(name);
+    }
 }

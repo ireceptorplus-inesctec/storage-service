@@ -8,5 +8,6 @@ import java.util.List;
 public interface ToolRepository extends JpaRepository<Tool, Long>
 {
     List<Tool> findAll();
+    Tool findByName(String name);
 
 }

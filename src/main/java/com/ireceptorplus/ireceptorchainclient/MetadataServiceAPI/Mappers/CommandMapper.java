@@ -20,12 +20,12 @@ import java.util.List;
 public interface CommandMapper
 {
     @Mappings({
-            @Mapping(target="toolId", source="tool.id")
+            @Mapping(target="toolName", source="tool.name")
     })
     CommandDTO commandToCommandDTO(Command command);
 
     @Mappings({
-            @Mapping(target="tool", source="toolId")
+            @Mapping(target="tool", source="toolName")
     })
     Command commandToCommandDTO(CommandDTO command);
 
