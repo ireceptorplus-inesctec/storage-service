@@ -79,8 +79,8 @@ public class CreatedPipelineController
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
         Tool tool = this.toolService.readByName(createdPipelineDTO.getCommand().getToolName());
         createdPipeline.getCommand().setTool(tool);
+        createdPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
-        newCreatedPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
         return newCreatedPipelineDTO;
