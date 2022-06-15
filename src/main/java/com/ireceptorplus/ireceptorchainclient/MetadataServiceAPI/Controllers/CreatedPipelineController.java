@@ -4,6 +4,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
@@ -112,7 +113,15 @@ public class CreatedPipelineController
                 new com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command(tool.getName(), commandModel.getCommandString());
 
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
-                command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName());
+                command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName(),
+                createdPipeline.getId().toString());
+        try
+        {
+            runner.run();
+        } catch (TryingToDownloadFileWithoutUrl e)
+        {
+            e.printStackTrace();
+        }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
         copyOutputsToDatasetsDir(outputsMetadata);
         createEntitiesOnDb(outputsMetadata, createdPipeline);

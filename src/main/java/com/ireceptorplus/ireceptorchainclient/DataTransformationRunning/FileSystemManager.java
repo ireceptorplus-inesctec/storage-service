@@ -5,6 +5,8 @@ import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageProperti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * This class implements the logic to determine the file system path structure.
  * It determines the relative path to store the inputs, the expected outputs (the ones registered with the traceability data entry), the obtained outputs (after running the processing) and the script necessary for the data processing.
@@ -18,6 +20,11 @@ public class FileSystemManager
     public FileSystemManager(DatasetStorageProperties datasetStorageProperties)
     {
         this.datasetStorageProperties = datasetStorageProperties;
+    }
+
+    public String getProcessingPath(String processingId)
+    {
+        return "./" + processingId;
     }
 
     public String getInputsRelativePath()

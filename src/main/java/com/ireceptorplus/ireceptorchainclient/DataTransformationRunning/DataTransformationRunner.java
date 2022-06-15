@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -55,12 +58,14 @@ public class DataTransformationRunner
     String datasetsPath;
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
-                                    RunningMode runningMode, String toolId)
+                                    RunningMode runningMode, String toolId,
+                                    String processingFilesPath)
     {
         this.inputs = inputs;
         this.command = command;
         this.runningMode = runningMode;
         this.toolId = toolId;
+        this.processingFilesPath = processingFilesPath;
     }
 
     /**
@@ -72,13 +77,14 @@ public class DataTransformationRunner
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    String toolId)
+                                    String toolId, String processingFilesPath)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
         this.outputs = new ArrayList<>(outputDatasets);
         this.runningMode = runningMode;
         this.toolId = toolId;
+        this.processingFilesPath = processingFilesPath;
     }
 
     public ArrayList<File> getOutputs()
@@ -167,6 +173,29 @@ public class DataTransformationRunner
         inputsDownloader.downloadFilesToDir();
         FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");
         outputsDownloader.downloadFilesToDir();
+    }
+
+    protected void copyDatasetsFromStorageFolderToProcessingDir()
+    {
+        new java.io.File(processingFilesPath).mkdirs();
+        this.datasetsPath = processingFilesPath + "/inputDatasets";
+        for (File inputDataset : inputs)
+        {
+            String storedDatasetPath = fileSystemManager.getStoredFilePath(inputDataset);
+            Path storedFile = new java.io.File(storedDatasetPath).toPath();
+            String processingDatasetPath = fileSystemManager.getInputRelativePath(inputDataset);
+            Path processingFile = new java.io.File(processingDatasetPath).toPath();
+
+            try
+            {
+                Files.copy(storedFile, processingFile, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e)
+            {
+                String message = "Error copying file from local dataset storage folder " + inputDataset.getUuid() + ". Reason: ";
+                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            }
+        }
+
     }
 
 }
