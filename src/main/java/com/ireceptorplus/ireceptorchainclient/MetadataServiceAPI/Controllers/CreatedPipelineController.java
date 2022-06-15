@@ -79,6 +79,13 @@ public class CreatedPipelineController
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
         Tool tool = this.toolService.readByName(createdPipelineDTO.getCommand().getToolName());
         createdPipeline.getCommand().setTool(tool);
+        ArrayList<Dataset> inputDatasets = new ArrayList<>();
+        for (String datasetUuid : createdPipelineDTO.getInputDatasetsUuids())
+        {
+            Dataset dataset = datasetService.readByUuid(datasetUuid);
+            inputDatasets.add(dataset);
+        }
+        createdPipeline.setInputDatasets(inputDatasets);
         createdPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
@@ -97,6 +104,7 @@ public class CreatedPipelineController
     @Job(name = "Job for executing pipelines", retries = 3)
     public void runPipeline(CreatedPipeline createdPipeline)
     {
+        System.out.println("running pipeline");
         ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
         Command commandModel = createdPipeline.getCommand();
         Tool tool = commandModel.getTool();
