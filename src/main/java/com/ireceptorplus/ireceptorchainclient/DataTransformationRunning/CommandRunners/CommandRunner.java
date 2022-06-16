@@ -51,7 +51,7 @@ public abstract class CommandRunner
         {
             String inputDatasetPath = inputsFolderPath + "/" + inputDataset.getUuid();
             java.io.File source = new java.io.File(inputDatasetPath);
-            java.io.File destination = new java.io.File(dataDirPath + inputDataset.getUuid());
+            java.io.File destination = new java.io.File(dataDirPath + inputDataset.getUuid() + ".fasta");
             source.renameTo(destination);
         }
 
