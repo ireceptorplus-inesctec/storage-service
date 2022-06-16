@@ -18,7 +18,7 @@ public class MixcrRunner extends CommandRunner
         String datasetsString = "";
         for (File dataset : inputDatasets)
         {
-            datasetsString += dataset.getUuid() + " ";
+            datasetsString += dataset.getUuid() + ".fasta ";
         }
         String outputDatasetName = UUID.randomUUID().toString();
         datasetsString += outputDatasetName;

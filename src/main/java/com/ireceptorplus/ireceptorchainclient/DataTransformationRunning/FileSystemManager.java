@@ -97,7 +97,7 @@ public class FileSystemManager
 
     private String getFileName(File file)
     {
-        return file.getUuid();
+        return file.getUuid() + ".fasta";
     }
 
     public String getStoredFilesPath()
