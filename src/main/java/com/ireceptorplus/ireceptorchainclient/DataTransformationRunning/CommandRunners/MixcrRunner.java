@@ -30,10 +30,10 @@ public class MixcrRunner extends CommandRunner
     protected String buildHostCommandString(String dataPath)
     {
         String dataDirAbsolutePath = new java.io.File(dataPath).getAbsolutePath();
-        String mixcrHostCommand = "docker run -it --rm \\\n" +
-                "    -m 4g \\\n" +
-                "    -v " + dataDirAbsolutePath + ":/work \\\n" +
-                "    milaboratory/mixcr:latest \\\n" +
+        String mixcrHostCommand = "docker run --rm " +
+                "    -m 4g " +
+                "    -v " + dataDirAbsolutePath + ":/work " +
+                "    milaboratory/mixcr:latest " +
                 "    " + buildToolCommandString();
 
         return mixcrHostCommand;
