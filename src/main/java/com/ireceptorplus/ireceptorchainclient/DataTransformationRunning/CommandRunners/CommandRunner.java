@@ -44,11 +44,12 @@ public abstract class CommandRunner
      */
     protected void organizeInputs()
     {
+        String dataDirPath = dirPath + "/data/";
+        new java.io.File(dataDirPath).mkdirs();
         for (File inputDataset : inputDatasets)
         {
             String inputDatasetPath = inputsFolderPath + "/" + inputDataset.getUuid();
             java.io.File source = new java.io.File(inputDatasetPath);
-            String dataDirPath = dirPath + "/data/";
             java.io.File destination = new java.io.File(dataDirPath + inputDataset.getUuid());
             source.renameTo(destination);
         }
