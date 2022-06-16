@@ -4,6 +4,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -130,16 +131,8 @@ public abstract class CommandRunner
                 process = Runtime.getRuntime().exec(command);
             }
 
-            StringBuilder output = new StringBuilder();
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                output.append(line + "\n");
-            }
+            StringBuilder output = getOutputFromProcess(process.getInputStream());
+            StringBuilder errorOutput = getOutputFromProcess(process.getErrorStream());
 
             int exitVal = process.waitFor();
             if (exitVal == 0)
@@ -149,6 +142,8 @@ public abstract class CommandRunner
                 System.exit(0);
             } else
             {
+                System.out.println("Error running command");
+                System.out.println(errorOutput);
                 //abnormal...
             }
 
@@ -159,5 +154,20 @@ public abstract class CommandRunner
         {
             e.printStackTrace();
         }
+    }
+
+    private StringBuilder getOutputFromProcess(InputStream inputStream) throws IOException
+    {
+        StringBuilder output = new StringBuilder();
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(inputStream));
+
+        String line;
+        while ((line = reader.readLine()) != null)
+        {
+            output.append(line + "\n");
+        }
+        return output;
     }
 }
