@@ -139,11 +139,12 @@ public abstract class CommandRunner
             {
                 System.out.println("Success!");
                 System.out.println(output);
-                System.exit(0);
             } else
             {
+                System.out.println(command);
                 System.out.println("Error running command");
                 System.out.println(errorOutput);
+                System.out.println(output);
                 //abnormal...
             }
 

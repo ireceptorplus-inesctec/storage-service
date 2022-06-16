@@ -15,15 +15,19 @@ public class MixcrRunner extends CommandRunner
     @Override
     protected String buildToolCommandString()
     {
+        //TODO fix hard-coded values
         String datasetsString = "";
         for (File dataset : inputDatasets)
         {
             datasetsString += dataset.getUuid() + ".fasta ";
         }
-        String outputDatasetName = UUID.randomUUID().toString();
-        datasetsString += outputDatasetName;
+        String outputDatasetUuid = UUID.randomUUID().toString();
+        String outputDatasetName = outputDatasetUuid;
+        File outputFile = new File(outputDatasetUuid);
+        outputDatasets.add(outputFile);
+        datasetsString += outputDatasetName + ".vdjca";
 
-        return "mixcr " + command + " " + datasetsString;
+        return "mixcr " + command + " " + datasetsString + " --species hs";
     }
 
     @Override
