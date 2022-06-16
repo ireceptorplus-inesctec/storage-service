@@ -42,7 +42,7 @@ public abstract class CommandRunner
      * By default, the method implementation provided by this class, places the files in directory allocated for this command to run, inside a folder named "data".
      * This method can be overridden by the derived classes to place the files elsewhere and implement additional procedure to get them inside the container, if necessary.
      */
-    protected void organizeInputs()
+    protected String organizeInputs()
     {
         String dataDirPath = dirPath + "/data/";
         new java.io.File(dataDirPath).mkdirs();
@@ -53,6 +53,8 @@ public abstract class CommandRunner
             java.io.File destination = new java.io.File(dataDirPath + inputDataset.getUuid());
             source.renameTo(destination);
         }
+
+        return dataDirPath;
     }
 
     /**
@@ -67,7 +69,7 @@ public abstract class CommandRunner
      * In case the pipeline is to be run locally, the return of this method is equal to buildToolCommandString method.
      * In case the pipeline is to be run inside a container, this method returns the command that launches the container, for example.
      */
-    protected abstract String buildHostCommandString();
+    protected abstract String buildHostCommandString(String dataPath);
 
     /**
      * This method returns the path in which the output datasets are stored.
@@ -92,8 +94,8 @@ public abstract class CommandRunner
 
     public void executeCommand()
     {
-        organizeInputs();
-        runBashCommand(buildHostCommandString());
+        String inputsFolder = organizeInputs();
+        runBashCommand(buildHostCommandString(inputsFolder));
     }
 
     /**
