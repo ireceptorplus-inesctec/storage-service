@@ -120,7 +120,7 @@ public class DataTransformationRunner
 
     public ArrayList<DownloadbleFile> getOutputsMetadata()
     {
-        java.io.File outputsDir = new java.io.File(fileSystemManager.getProcessedOutputsRelativePath());
+        java.io.File outputsDir = new java.io.File(fileSystemManager.getProcessedOutputsRelativePath(processingFilesPath));
         String[] filePaths = outputsDir.list();
         ArrayList<DownloadbleFile> outputs = new ArrayList<>();
         for (String filePath : filePaths)
@@ -148,8 +148,8 @@ public class DataTransformationRunner
     {
         for (File output : outputs)
         {
-            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(output);
-            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(output);
+            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(processingFilesPath, output);
+            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(processingFilesPath, output);
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
             try
             {
@@ -182,12 +182,13 @@ public class DataTransformationRunner
     protected void copyDatasetsFromStorageFolderToProcessingDir()
     {
         new java.io.File(processingFilesPath).mkdirs();
-        this.datasetsPath = processingFilesPath + "/inputDatasets";
+        this.datasetsPath = fileSystemManager.getInputsRelativePath(processingFilesPath);
+        new java.io.File(datasetsPath).mkdirs();
         for (File inputDataset : inputs)
         {
             String storedDatasetPath = fileSystemManager.getStoredFilePath(inputDataset);
             Path storedFile = new java.io.File(storedDatasetPath).toPath();
-            String processingDatasetPath = fileSystemManager.getInputRelativePath(inputDataset);
+            String processingDatasetPath = fileSystemManager.getInputRelativePath(processingFilesPath, inputDataset);
             Path processingFile = new java.io.File(processingDatasetPath).toPath();
 
             try

@@ -27,44 +27,52 @@ public class FileSystemManager
         return "./" + processingId;
     }
 
-    public String getInputsRelativePath()
+    private String getDirPathWithSlashAtTheEnd(String path)
     {
-        return "./";
+        if (!path.substring(path.length() - 1).equals("/"))
+            path = path += "/";
+
+        return path;
     }
 
-    public String getScriptRelativePath()
+    public String getInputsRelativePath(String processingPath)
     {
-        return "./";
+        return getDirPathWithSlashAtTheEnd(processingPath);
     }
 
-    public String getExpectedOutputsRelativePath()
+    public String getScriptRelativePath(String processingPath)
     {
-        return "./expectedOutputs";
+        return getDirPathWithSlashAtTheEnd(processingPath);
     }
 
-    public String getProcessedOutputsRelativePath()
+    public String getExpectedOutputsRelativePath(String processingPath)
     {
-        return "./outputs";
+        return getDirPathWithSlashAtTheEnd(processingPath) + "expectedOutputs";
     }
 
-    public String getInputRelativePath(File input)
+    public String getProcessedOutputsRelativePath(String processingPath)
     {
-        return getInputsRelativePath() + getInputFileName(input);
+        return getDirPathWithSlashAtTheEnd(processingPath) + "outputs";
     }
 
-    public String getScriptRelativePath(File script)
+    public String getInputRelativePath(String processingPath, File input)
     {
-        return getScriptRelativePath() + getScriptFileName(script);
+        return getInputsRelativePath(processingPath) + getInputFileName(input);
     }
 
-    public String getExpectedOutputRelativePath(File expectedOutput)
+    public String getScriptRelativePath(String processingPath, File script)
     {
-        return getExpectedOutputsRelativePath() + getExpectedOutputFileName(expectedOutput);
+        return getScriptRelativePath(processingPath) + getScriptFileName(script);
     }
 
-    public String getProcessedOutputRelativePath(File processedOutput)
+    public String getExpectedOutputRelativePath(String processingPath, File expectedOutput)
     {
-        return getProcessedOutputsRelativePath() + getProcessedOutputFileName(processedOutput);
+        return getExpectedOutputsRelativePath(processingPath) + getExpectedOutputFileName(expectedOutput);
+    }
+
+    public String getProcessedOutputRelativePath(String processingPath, File processedOutput)
+    {
+        return getProcessedOutputsRelativePath(processingPath) + getProcessedOutputFileName(processedOutput);
     }
 
     private String getInputFileName(File file)

@@ -103,8 +103,10 @@ public class CreatedPipelineController
     }
 
     @Job(name = "Job for executing pipelines", retries = 3)
+    @GetMapping("runPipelines")
     public void runPipeline(CreatedPipeline createdPipeline)
     {
+        createdPipeline = createdPipelineService.readAll().get(0);
         System.out.println("running pipeline");
         ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
         Command commandModel = createdPipeline.getCommand();
@@ -114,7 +116,7 @@ public class CreatedPipelineController
 
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
                 command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName(),
-                createdPipeline.getId().toString());
+                "./" + createdPipeline.getId().toString(), fileSystemManager);
         try
         {
             runner.run();
@@ -123,7 +125,7 @@ public class CreatedPipelineController
             e.printStackTrace();
         }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
-        copyOutputsToDatasetsDir(outputsMetadata);
+        copyOutputsToDatasetsDir(createdPipeline, outputsMetadata);
         createEntitiesOnDb(outputsMetadata, createdPipeline);
     }
 
@@ -131,13 +133,15 @@ public class CreatedPipelineController
      * This method copies outputs to the datasets dir.
      * This will ensure other peers can access the datasets if they want to run the pipeline.
      *
+     * @param createdPipeline
      * @param outputsMetadata An ArrayList containing the metadata of the outputs.
      */
-    private void copyOutputsToDatasetsDir(ArrayList<DownloadbleFile> outputsMetadata)
+    private void copyOutputsToDatasetsDir(CreatedPipeline createdPipeline, ArrayList<DownloadbleFile> outputsMetadata)
     {
         for (DownloadbleFile downloadbleFile : outputsMetadata)
         {
-            String outputPath = fileSystemManager.getProcessedOutputRelativePath(downloadbleFile);
+            String processingPath = fileSystemManager.getProcessingPath(createdPipeline.getId().toString());
+            String outputPath = fileSystemManager.getProcessedOutputRelativePath(processingPath, downloadbleFile);
             String storedFilePath = fileSystemManager.getStoredFilesPath() + "/" + downloadbleFile.getUuid();
             java.io.File outputFile = new java.io.File(outputPath);
             java.io.File storedFile = new java.io.File(storedFilePath);
