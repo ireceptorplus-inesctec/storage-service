@@ -59,13 +59,14 @@ public class DataTransformationRunner
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, String toolId,
-                                    String processingFilesPath)
+                                    String processingFilesPath, FileSystemManager fileSystemManager)
     {
         this.inputs = inputs;
         this.command = command;
         this.runningMode = runningMode;
         this.toolId = toolId;
         this.processingFilesPath = processingFilesPath;
+        this.fileSystemManager = fileSystemManager;
     }
 
     /**
@@ -77,7 +78,7 @@ public class DataTransformationRunner
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    String toolId, String processingFilesPath)
+                                    String toolId, String processingFilesPath, FileSystemManager fileSystemManager)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
@@ -85,6 +86,7 @@ public class DataTransformationRunner
         this.runningMode = runningMode;
         this.toolId = toolId;
         this.processingFilesPath = processingFilesPath;
+        this.fileSystemManager = fileSystemManager;
     }
 
     public ArrayList<File> getOutputs()
@@ -96,6 +98,8 @@ public class DataTransformationRunner
     {
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
+        else
+            copyDatasetsFromStorageFolderToProcessingDir();
         //TODO map to appropriate runner
         CommandRunner commandRunner = new MixcrRunner(processingFilesPath, datasetsPath,
                 inputs, command.getCommandString());

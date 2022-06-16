@@ -10,6 +10,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,10 +30,13 @@ public class TraceabilityDataController
 {
     HyperledgerFabricAPI blockchainAPI;
 
+    FileSystemManager fileSystemManager;
+
     @Autowired
-    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI)
+    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI, FileSystemManager fileSystemManager)
     {
         this.blockchainAPI = blockchainAPI;
+        this.fileSystemManager = fileSystemManager;
     }
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
@@ -70,7 +74,7 @@ public class TraceabilityDataController
     {
         ProcessingDetails processingDetails = data.getProcessingDetails();
             DataTransformationRunner runner = new DataTransformationRunner(processingDetails.getInputDatasets(),
-                    processingDetails.getCommand(), processingDetails.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY, processingDetails.getCommand().getToolId(), data.getUuid());
+                    processingDetails.getCommand(), processingDetails.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY, processingDetails.getCommand().getToolId(), data.getUuid(), fileSystemManager);
 
             boolean outputsMatch;
             try
