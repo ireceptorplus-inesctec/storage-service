@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class MixcrRunner extends CommandRunner
 {
+    private String outputsPath;
+
     public MixcrRunner(String dirPath, String inputsFolderPath, ArrayList<File> inputDatasets, String command)
     {
         super(dirPath, inputsFolderPath, inputDatasets, command);
@@ -34,6 +36,7 @@ public class MixcrRunner extends CommandRunner
     protected String buildHostCommandString(String dataPath)
     {
         String dataDirAbsolutePath = new java.io.File(dataPath).getAbsolutePath();
+        outputsPath = dataDirAbsolutePath;
         String mixcrHostCommand = "docker run --rm " +
                 "    -m 4g " +
                 "    -v " + dataDirAbsolutePath + ":/work " +
@@ -46,6 +49,6 @@ public class MixcrRunner extends CommandRunner
     @Override
     protected String getOutputsRelativePath()
     {
-        return inputsFolderPath;
+        return outputsPath;
     }
 }
