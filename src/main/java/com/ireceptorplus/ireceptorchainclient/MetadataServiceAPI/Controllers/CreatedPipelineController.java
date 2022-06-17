@@ -160,7 +160,8 @@ public class CreatedPipelineController
         for (Dataset dataset : inputDatasets)
         {
             UUID uuid = dataset.getUuid();
-            DownloadbleFile downloadbleFile = new DownloadbleFile(uuid.toString(), dataset.getUrl());
+            String extension = dataset.getExtension();
+            DownloadbleFile downloadbleFile = new DownloadbleFile(uuid.toString(), extension, dataset.getUrl());
             inputDatasetFiles.add(downloadbleFile);
         }
 

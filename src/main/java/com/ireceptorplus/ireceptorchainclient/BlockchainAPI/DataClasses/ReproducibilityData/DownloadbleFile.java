@@ -13,15 +13,28 @@ public class DownloadbleFile extends File
     {
     }
 
-    public DownloadbleFile(String uuid, String url)
+    public DownloadbleFile(String uuid, String extension, String url)
     {
-        super(uuid);
+        super(uuid, extension);
         this.url = url;
     }
 
-    public DownloadbleFile(String uuid, String url, String hashValue)
+    public DownloadbleFile(String uuid, String extension, String url, String hashValue)
     {
-        super(uuid);
+        super(uuid, extension);
+        this.url = url;
+        this.hashValue = hashValue;
+    }
+
+    public DownloadbleFile(File file, String url)
+    {
+        super(file.getUuid(), file.getExtension());
+        this.url = url;
+    }
+
+    public DownloadbleFile(File file, String url, String hashValue)
+    {
+        super(file.getUuid(), file.getExtension());
         this.url = url;
         this.hashValue = hashValue;
     }

@@ -19,6 +19,12 @@ public class Dataset
     private UUID uuid;
 
     /**
+     * A string representing the file extension to be able to identify the file type.
+     */
+    @Column
+    private String extension;
+
+    /**
      * A String representing the original file name in the computer of the uploader.
      */
     @Column
@@ -54,6 +60,16 @@ public class Dataset
     public void setUuid(UUID uuid)
     {
         this.uuid = uuid;
+    }
+
+    public String getExtension()
+    {
+        return extension;
+    }
+
+    public void setExtension(String extension)
+    {
+        this.extension = extension;
     }
 
     public String getOriginalFileName()

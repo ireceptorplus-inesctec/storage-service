@@ -5,9 +5,9 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 public class DatasetFile extends DownloadbleFile
 {
 
-    public DatasetFile(String name, String url)
+    public DatasetFile(String name, String extension, String url)
     {
-        super(name, url);
+        super(name, extension, url);
     }
 
 }

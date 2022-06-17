@@ -11,15 +11,15 @@ public class ReproducibleScript extends DownloadbleFile
      */
     protected final ScriptType scriptType;
 
-    public ReproducibleScript(String uuid, String url, ScriptType scriptType)
+    public ReproducibleScript(String uuid, String extension, String url, ScriptType scriptType)
     {
-        super(uuid, url);
+        super(uuid, extension, url);
         this.scriptType = scriptType;
     }
 
     public ReproducibleScript()
     {
-        super("", "");
+        super("", "", "");
         this.scriptType = null;
     }
 

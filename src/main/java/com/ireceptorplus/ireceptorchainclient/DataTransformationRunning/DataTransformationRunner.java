@@ -129,7 +129,7 @@ public class DataTransformationRunner
             java.io.File outputFile = outputFiles.get(i);
             String uuid = outputDataset.getUuid();
             String url = FileUrlBuilder.buildFromUuid(peerIpAddr, peerPort, uuid);
-            DownloadbleFile downloadbleFile = new DownloadbleFile(uuid, url);
+            DownloadbleFile downloadbleFile = new DownloadbleFile(outputDataset, url);
             filesMetadata.add(downloadbleFile);
         }
 

@@ -25,9 +25,10 @@ public class MixcrRunner extends CommandRunner
         }
         String outputDatasetUuid = UUID.randomUUID().toString();
         String outputDatasetName = outputDatasetUuid;
-        File outputFile = new File(outputDatasetUuid);
+        String outputDatasetFileExtension = ".vdjca";
+        File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
         outputDatasets.add(outputFile);
-        datasetsString += outputDatasetName + ".vdjca";
+        datasetsString += outputDatasetName + outputDatasetFileExtension;
 
         return "mixcr " + command + " " + datasetsString + " --species hs";
     }
