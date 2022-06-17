@@ -5,7 +5,8 @@ import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageProperti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * This class implements the logic to determine the file system path structure.
@@ -47,32 +48,41 @@ public class FileSystemManager
 
     public String getExpectedOutputsRelativePath(String processingPath)
     {
-        return getDirPathWithSlashAtTheEnd(processingPath) + "expectedOutputs";
+        return getPathOfFileRelativeToPath(processingPath, "expectedOutputs");
     }
 
     public String getProcessedOutputsRelativePath(String processingPath)
     {
-        return getDirPathWithSlashAtTheEnd(processingPath) + "outputs";
+        return getPathOfFileRelativeToPath(processingPath, "outputs");
     }
 
     public String getInputRelativePath(String processingPath, File input)
     {
-        return getInputsRelativePath(processingPath) + getInputFileName(input);
+        return getPathOfFileRelativeToPath(processingPath, getInputFileName(input));
     }
 
     public String getScriptRelativePath(String processingPath, File script)
     {
-        return getScriptRelativePath(processingPath) + getScriptFileName(script);
+        return getPathOfFileRelativeToPath(processingPath, getScriptFileName(script));
     }
 
     public String getExpectedOutputRelativePath(String processingPath, File expectedOutput)
     {
-        return getExpectedOutputsRelativePath(processingPath) + getExpectedOutputFileName(expectedOutput);
+        return getPathOfFileRelativeToPath(processingPath, getExpectedOutputFileName(expectedOutput));
     }
 
     public String getProcessedOutputRelativePath(String processingPath, File processedOutput)
     {
-        return getProcessedOutputsRelativePath(processingPath) + getProcessedOutputFileName(processedOutput);
+        return getProcessedOutputsRelativePath(processingPath) + "/" + getProcessedOutputFileName(processedOutput);
+    }
+
+    private String getPathOfFileRelativeToPath(String dirPath, String filePath)
+    {
+        Path processing = Paths.get(dirPath);
+        Path expectedOutputPath = Paths.get(filePath);
+        Path finalPath = processing.resolve(expectedOutputPath);
+
+        return finalPath.toString();
     }
 
     private String getInputFileName(File file)
