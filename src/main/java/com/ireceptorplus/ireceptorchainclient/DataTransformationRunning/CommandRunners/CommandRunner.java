@@ -38,6 +38,11 @@ public abstract class CommandRunner
         this.outputDatasets = new ArrayList<>();
     }
 
+    public ArrayList<File> getOutputDatasets()
+    {
+        return outputDatasets;
+    }
+
     /**
      * This method places the input files in the appropriate location that will then be fed to the tool.
      * By default, the method implementation provided by this class, places the files in directory allocated for this command to run, inside a folder named "data".

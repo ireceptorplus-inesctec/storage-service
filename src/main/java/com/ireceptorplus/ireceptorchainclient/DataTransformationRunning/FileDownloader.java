@@ -17,17 +17,17 @@ import java.util.List;
 public class FileDownloader
 {
 
-    List<File> downloadbleFiles;
+    List<DownloadbleFile> downloadbleFiles;
     String destinationPath;
 
-    public FileDownloader(File downloadbleFile, String destinationPath)
+    public FileDownloader(DownloadbleFile downloadbleFile, String destinationPath)
     {
         this.downloadbleFiles = new ArrayList<>();
         this.downloadbleFiles.add(downloadbleFile);
         this.destinationPath = destinationPath;
     }
 
-    public FileDownloader(List<File> downloadbleFiles, String destinationPath)
+    public FileDownloader(List<DownloadbleFile> downloadbleFiles, String destinationPath)
     {
         this.downloadbleFiles = downloadbleFiles;
         this.destinationPath = destinationPath;
@@ -35,12 +35,8 @@ public class FileDownloader
 
     public void downloadFilesToDir() throws TryingToDownloadFileWithoutUrl
     {
-        for (File file : downloadbleFiles)
+        for (DownloadbleFile downloadbleFile : downloadbleFiles)
         {
-            if (!(file instanceof DownloadbleFile))
-                throw new TryingToDownloadFileWithoutUrl("Error trying to download file without url. Uuid is " + file.getUuid());
-
-            DownloadbleFile downloadbleFile = (DownloadbleFile) file;
             try
             {
                 URL url = new URL(downloadbleFile.getUrl());

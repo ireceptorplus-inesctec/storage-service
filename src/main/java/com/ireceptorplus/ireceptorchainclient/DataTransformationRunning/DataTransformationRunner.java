@@ -8,7 +8,6 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandR
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Tool;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 public class DataTransformationRunner
@@ -38,7 +38,7 @@ public class DataTransformationRunner
     /**
      * The outputs which are yield when the script is applied to the inputs.
      */
-    protected ArrayList<File> outputs;
+    protected ArrayList<DownloadbleFile> outputs;
 
     protected RunningMode runningMode;
 
@@ -89,7 +89,7 @@ public class DataTransformationRunner
         this.fileSystemManager = fileSystemManager;
     }
 
-    public ArrayList<File> getOutputs()
+    public ArrayList<DownloadbleFile> getOutputs()
     {
         return outputs;
     }
@@ -114,27 +114,26 @@ public class DataTransformationRunner
                 iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
             }
         }
-        ArrayList<DownloadbleFile> outputsMetadata = getOutputsMetadata();
+        ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
+        ArrayList<java.io.File> outputFiles = commandRunner.getOutputDatasetFiles();
+        ArrayList<DownloadbleFile> outputsMetadata = buildOutputMetadata(outputDatasets, outputFiles);
         this.outputs = new ArrayList<>(outputsMetadata);
     }
 
-    public ArrayList<DownloadbleFile> getOutputsMetadata()
+    public ArrayList<DownloadbleFile> buildOutputMetadata(ArrayList<File> outputDatasets, ArrayList<java.io.File> outputFiles)
     {
-        java.io.File outputsDir = new java.io.File(fileSystemManager.getProcessedOutputsRelativePath(processingFilesPath));
-        String[] filePaths = outputsDir.list();
-        ArrayList<DownloadbleFile> outputs = new ArrayList<>();
-        for (String filePath : filePaths)
+        ArrayList<DownloadbleFile> filesMetadata = new ArrayList<>();
+        for (int i = 0; i < outputDatasets.size() && i < outputFiles.size(); i++)
         {
-            String uuid = UUID.randomUUID().toString();
+            File outputDataset = outputDatasets.get(i);
+            java.io.File outputFile = outputFiles.get(i);
+            String uuid = outputDataset.getUuid();
             String url = FileUrlBuilder.buildFromUuid(peerIpAddr, peerPort, uuid);
             DownloadbleFile downloadbleFile = new DownloadbleFile(uuid, url);
-            outputs.add(downloadbleFile);
-            java.io.File outputFile = new java.io.File(filePath);
-            java.io.File newFile = new java.io.File(outputsDir + uuid);
-            outputFile.renameTo(newFile);
+            filesMetadata.add(downloadbleFile);
         }
 
-        return outputs;
+        return filesMetadata;
     }
 
     /**
@@ -173,10 +172,25 @@ public class DataTransformationRunner
         this.processingFilesPath = "./" + uuid.toString();
         this.datasetsPath = processingFilesPath + "/inputDatasets";
         new java.io.File(processingFilesPath).mkdirs();
-        FileDownloader inputsDownloader = new FileDownloader(inputs, processingFilesPath);
+        ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
+        FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, processingFilesPath);
         inputsDownloader.downloadFilesToDir();
         FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");
         outputsDownloader.downloadFilesToDir();
+    }
+
+    private ArrayList<DownloadbleFile> getDownloadbleFiles() throws TryingToDownloadFileWithoutUrl
+    {
+        ArrayList<DownloadbleFile> inputsDownloadableFiles = new ArrayList<>();
+        for (File file : inputsDownloadableFiles)
+        {
+            if (!(file instanceof DownloadbleFile))
+                throw new TryingToDownloadFileWithoutUrl("Error trying to download file without url. Uuid is " + file.getUuid());
+
+            DownloadbleFile downloadbleFile = (DownloadbleFile) file;
+            inputsDownloadableFiles.add(downloadbleFile);
+        }
+        return inputsDownloadableFiles;
     }
 
     protected void copyDatasetsFromStorageFolderToProcessingDir()

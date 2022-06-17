@@ -2,7 +2,6 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.ReproducibleScript;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
@@ -124,7 +123,7 @@ public class CreatedPipelineController
         {
             e.printStackTrace();
         }
-        ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputsMetadata();
+        ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();
         copyOutputsToDatasetsDir(createdPipeline, outputsMetadata);
         createEntitiesOnDb(outputsMetadata, createdPipeline);
     }
