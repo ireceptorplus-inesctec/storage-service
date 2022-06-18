@@ -104,6 +104,7 @@ public class CreatedPipelineController
     }
 
     @Async()
+    @GetMapping("runPipelines")
     public void runPipeline(CreatedPipeline createdPipeline)
     {
         createdPipeline = createdPipelineService.readAll().get(0);
