@@ -16,4 +16,9 @@ public class CreatedPipelineService extends CreateAndReadService<CreatedPipeline
         super(createdPipelineRepository);
         this.createdPipelineRepository = createdPipelineRepository;
     }
+
+    public void delete(CreatedPipeline createdPipeline)
+    {
+        createdPipelineRepository.delete(createdPipeline);
+    }
 }

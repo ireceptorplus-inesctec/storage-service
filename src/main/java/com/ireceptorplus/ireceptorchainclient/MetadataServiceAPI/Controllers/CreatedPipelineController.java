@@ -205,6 +205,7 @@ public class CreatedPipelineController
         processingSteps.add(processingStep);
         DataProcessing dataProcessing = new DataProcessing();
         dataProcessing.setProcessingSteps(processingSteps);
+        createdPipelineService.delete(createdPipeline);
         dataProcessingService.create(dataProcessing);
     }
 
