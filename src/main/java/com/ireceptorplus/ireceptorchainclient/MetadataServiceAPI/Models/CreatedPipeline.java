@@ -16,7 +16,7 @@ public class CreatedPipeline
     @ManyToMany()
     private List<Dataset> inputDatasets;
 
-    @OneToOne()
+    @OneToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "command_id", referencedColumnName = "id")
     private Command command;
 
