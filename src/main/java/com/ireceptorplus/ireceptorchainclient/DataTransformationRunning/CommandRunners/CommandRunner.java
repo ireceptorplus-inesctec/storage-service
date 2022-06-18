@@ -1,6 +1,9 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,12 +32,17 @@ public abstract class CommandRunner
 
     protected ArrayList<File> outputDatasets;
 
-    public CommandRunner(String dirPath, String inputsFolderPath, ArrayList<File> inputDatasets, String command)
+    FileSystemManager fileSystemManager;
+
+    public CommandRunner(String dirPath, String inputsFolderPath,
+                         ArrayList<File> inputDatasets, String command,
+                         FileSystemManager fileSystemManager)
     {
         this.dirPath = dirPath;
         this.inputsFolderPath = inputsFolderPath;
         this.inputDatasets = inputDatasets;
         this.command = command;
+        this.fileSystemManager = fileSystemManager;
         this.outputDatasets = new ArrayList<>();
     }
 
@@ -54,9 +62,10 @@ public abstract class CommandRunner
         new java.io.File(dataDirPath).mkdirs();
         for (File inputDataset : inputDatasets)
         {
-            String inputDatasetPath = inputsFolderPath + "/" + inputDataset.getUuid();
+            String inputDatasetPath = fileSystemManager.getInputRelativePath(inputsFolderPath, inputDataset);
             java.io.File source = new java.io.File(inputDatasetPath);
-            java.io.File destination = new java.io.File(dataDirPath + inputDataset.getUuid() + ".fasta");
+            String destinationPath = fileSystemManager.getPathOfFileRelativeToPath(dataDirPath, inputDataset);
+            java.io.File destination = new java.io.File(destinationPath);
             source.renameTo(destination);
         }
 
@@ -89,8 +98,8 @@ public abstract class CommandRunner
         ArrayList<java.io.File> outputDatasetFiles = new ArrayList<>();
         for (File outputDataset : outputDatasets)
         {
-            String outputsPath = dirPath + "/" + getOutputsRelativePath();
-            String datasetPath = outputsPath + "/" + outputDataset.getUuid();
+            String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(dirPath, getOutputsRelativePath());
+            String datasetPath = fileSystemManager.getPathOfFileRelativeToPath(outputsPath, outputDataset);
             java.io.File datasetFile = new java.io.File(datasetPath);
             outputDatasetFiles.add(datasetFile);
         }

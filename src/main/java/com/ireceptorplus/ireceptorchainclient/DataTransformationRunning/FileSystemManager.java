@@ -81,7 +81,7 @@ public class FileSystemManager
         return getPathOfFileRelativeToPath(dirPath, getFileName(file));
     }
 
-    private String getPathOfFileRelativeToPath(String dirPath, String filePath)
+    public String getPathOfFileRelativeToPath(String dirPath, String filePath)
     {
         Path processing = Paths.get(dirPath);
         Path expectedOutputPath = Paths.get(filePath);
@@ -110,7 +110,7 @@ public class FileSystemManager
         return getFileName(file);
     }
 
-    private String getFileName(File file)
+    public String getFileName(File file)
     {
         return file.getUuid() + "." + file.getExtension();
     }

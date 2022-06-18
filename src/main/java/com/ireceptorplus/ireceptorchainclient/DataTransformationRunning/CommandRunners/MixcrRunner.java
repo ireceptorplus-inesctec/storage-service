@@ -1,28 +1,28 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
     private String outputsPath;
 
-    public MixcrRunner(String dirPath, String inputsFolderPath, ArrayList<File> inputDatasets, String command)
+    public MixcrRunner(String dirPath, String inputsFolderPath,
+                       ArrayList<File> inputDatasets, String command,
+                       FileSystemManager fileSystemManager)
     {
-        super(dirPath, inputsFolderPath, inputDatasets, command);
+        super(dirPath, inputsFolderPath, inputDatasets, command, fileSystemManager);
     }
 
     @Override
     protected String buildToolCommandString()
     {
         //TODO fix hard-coded values
-        String datasetsString = "";
-        for (File dataset : inputDatasets)
-        {
-            datasetsString += dataset.getUuid() + ".fasta ";
-        }
+        String datasetsString = inputDatasets.stream().map(dataset -> fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
         String outputDatasetUuid = UUID.randomUUID().toString();
         String outputDatasetName = outputDatasetUuid;
         String outputDatasetFileExtension = "vdjca";

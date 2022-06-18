@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -98,11 +100,10 @@ public class CreatedPipelineController
     private void enqueuePipelineForExecution(CreatedPipeline createdPipeline)
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
-        jobScheduler.enqueue(() -> runPipeline(createdPipeline));
+        runPipeline(createdPipeline);
     }
 
-    @Job(name = "Job for executing pipelines", retries = 3)
-    @GetMapping("runPipelines")
+    @Async()
     public void runPipeline(CreatedPipeline createdPipeline)
     {
         createdPipeline = createdPipelineService.readAll().get(0);

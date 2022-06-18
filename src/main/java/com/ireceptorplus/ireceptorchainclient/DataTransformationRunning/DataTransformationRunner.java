@@ -101,7 +101,7 @@ public class DataTransformationRunner
         //TODO map to appropriate runner
         String inputsRelativePath = fileSystemManager.getInputsRelativePath(processingFilesPath);
         CommandRunner commandRunner = new MixcrRunner(processingFilesPath, inputsRelativePath,
-                inputs, command.getCommandString());
+                inputs, command.getCommandString(), fileSystemManager);
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
         {
@@ -116,6 +116,8 @@ public class DataTransformationRunner
         ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
         ArrayList<java.io.File> outputFiles = commandRunner.getOutputDatasetFiles();
         ArrayList<DownloadbleFile> outputsMetadata = buildOutputMetadata(outputDatasets, outputFiles);
+        System.out.println("output location at the end of run on class DataTransformationRunner:");
+        System.out.println(outputFiles.get(0).getAbsolutePath());
         this.outputs = new ArrayList<>(outputsMetadata);
     }
 
