@@ -13,10 +13,10 @@ public class CreatedPipeline
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany()
     private List<Dataset> inputDatasets;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne()
     @JoinColumn(name = "command_id", referencedColumnName = "id")
     private Command command;
 
