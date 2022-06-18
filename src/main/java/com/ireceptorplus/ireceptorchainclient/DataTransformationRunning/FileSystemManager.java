@@ -76,6 +76,11 @@ public class FileSystemManager
         return getProcessedOutputsRelativePath(processingPath) + "/" + getProcessedOutputFileName(processedOutput);
     }
 
+    public String getPathOfFileRelativeToPath(String dirPath, File file)
+    {
+        return getPathOfFileRelativeToPath(dirPath, getFileName(file));
+    }
+
     private String getPathOfFileRelativeToPath(String dirPath, String filePath)
     {
         Path processing = Paths.get(dirPath);

@@ -55,8 +55,6 @@ public class DataTransformationRunner
 
     String processingFilesPath;
 
-    String datasetsPath;
-
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, String toolId,
                                     String processingFilesPath, FileSystemManager fileSystemManager)
@@ -101,7 +99,8 @@ public class DataTransformationRunner
         else
             copyDatasetsFromStorageFolderToProcessingDir();
         //TODO map to appropriate runner
-        CommandRunner commandRunner = new MixcrRunner(processingFilesPath, datasetsPath,
+        String inputsRelativePath = fileSystemManager.getInputsRelativePath(processingFilesPath);
+        CommandRunner commandRunner = new MixcrRunner(processingFilesPath, inputsRelativePath,
                 inputs, command.getCommandString());
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
@@ -169,13 +168,12 @@ public class DataTransformationRunner
     protected void downloadDatasetsToProcessingDir() throws TryingToDownloadFileWithoutUrl
     {
         UUID uuid = UUID.randomUUID();
-        this.processingFilesPath = "./" + uuid.toString();
-        this.datasetsPath = processingFilesPath + "/inputDatasets";
+        this.processingFilesPath = fileSystemManager.getProcessingPath(uuid.toString());
         new java.io.File(processingFilesPath).mkdirs();
         ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
         FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, processingFilesPath);
         inputsDownloader.downloadFilesToDir();
-        FileDownloader outputsDownloader = new FileDownloader(outputs, processingFilesPath + "/outputs");
+        FileDownloader outputsDownloader = new FileDownloader(outputs, fileSystemManager.getExpectedOutputsRelativePath(processingFilesPath));
         outputsDownloader.downloadFilesToDir();
     }
 
@@ -196,7 +194,7 @@ public class DataTransformationRunner
     protected void copyDatasetsFromStorageFolderToProcessingDir()
     {
         new java.io.File(processingFilesPath).mkdirs();
-        this.datasetsPath = fileSystemManager.getInputsRelativePath(processingFilesPath);
+        String datasetsPath = fileSystemManager.getInputsRelativePath(processingFilesPath);
         new java.io.File(datasetsPath).mkdirs();
         for (File inputDataset : inputs)
         {
