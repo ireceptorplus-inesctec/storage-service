@@ -29,7 +29,7 @@ public class MixcrRunner extends CommandRunner
         String outputDatasetFileExtension = "vdjca";
         File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
         outputDatasets.add(outputFile);
-        datasetsString += outputDatasetName + outputDatasetFileExtension;
+        datasetsString += fileSystemManager.getFileName(outputFile);
 
         return "mixcr " + command + " " + datasetsString + " --species hs";
     }
