@@ -15,13 +15,13 @@ public class ProcessingStep
     @JoinColumn(name = "data_processing_id")
     private DataProcessing dataProcessing;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany()
     private List<Dataset> inputDatasets;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     private List<Dataset> outputDatasets;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne()
     @JoinColumn(name = "command_id", referencedColumnName = "id")
     Command command;
 

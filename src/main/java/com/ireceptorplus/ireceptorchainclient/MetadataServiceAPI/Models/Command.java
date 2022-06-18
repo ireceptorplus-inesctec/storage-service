@@ -10,10 +10,6 @@ public class Command
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "processing_step_id")
-    private ProcessingStep processingStep;
-
     @OneToOne
     private Tool tool;
 
@@ -35,16 +31,6 @@ public class Command
     public void setId(Long id)
     {
         this.id = id;
-    }
-
-    public ProcessingStep getProcessingStep()
-    {
-        return processingStep;
-    }
-
-    public void setProcessingStep(ProcessingStep processingStep)
-    {
-        this.processingStep = processingStep;
     }
 
     public Tool getTool()
