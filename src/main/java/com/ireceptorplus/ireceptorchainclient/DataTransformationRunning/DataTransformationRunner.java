@@ -55,6 +55,9 @@ public class DataTransformationRunner
 
     String processingFilesPath;
 
+    ArrayList<java.io.File> outputDatasetFiles;
+
+
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, String toolId,
                                     String processingFilesPath, FileSystemManager fileSystemManager)
@@ -114,20 +117,16 @@ public class DataTransformationRunner
             }
         }
         ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
-        ArrayList<java.io.File> outputFiles = commandRunner.getOutputDatasetFiles();
-        ArrayList<DownloadbleFile> outputsMetadata = buildOutputMetadata(outputDatasets, outputFiles);
-        System.out.println("output location at the end of run on class DataTransformationRunner:");
-        System.out.println(outputFiles.get(0).getAbsolutePath());
+        outputDatasetFiles = commandRunner.getOutputDatasetFiles();
+        ArrayList<DownloadbleFile> outputsMetadata = buildOutputMetadata(outputDatasets);
         this.outputs = new ArrayList<>(outputsMetadata);
     }
 
-    public ArrayList<DownloadbleFile> buildOutputMetadata(ArrayList<File> outputDatasets, ArrayList<java.io.File> outputFiles)
+    public ArrayList<DownloadbleFile> buildOutputMetadata(ArrayList<File> outputDatasets)
     {
         ArrayList<DownloadbleFile> filesMetadata = new ArrayList<>();
-        for (int i = 0; i < outputDatasets.size() && i < outputFiles.size(); i++)
+        for (File outputDataset : outputDatasets)
         {
-            File outputDataset = outputDatasets.get(i);
-            java.io.File outputFile = outputFiles.get(i);
             String uuid = outputDataset.getUuid();
             String url = FileUrlBuilder.buildFromUuid(peerIpAddr, peerPort, uuid);
             DownloadbleFile downloadbleFile = new DownloadbleFile(outputDataset, url);
@@ -217,4 +216,8 @@ public class DataTransformationRunner
 
     }
 
+    public ArrayList<java.io.File> getOutputDatasetFiles()
+    {
+        return outputDatasetFiles;
+    }
 }

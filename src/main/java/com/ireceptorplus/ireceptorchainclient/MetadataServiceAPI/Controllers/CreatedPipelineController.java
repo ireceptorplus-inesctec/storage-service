@@ -126,29 +126,27 @@ public class CreatedPipelineController
             e.printStackTrace();
         }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();
-        copyOutputsToDatasetsDir(createdPipeline, outputsMetadata);
+        ArrayList<java.io.File> outputDatasetFiles = runner.getOutputDatasetFiles();
+        copyOutputsToDatasetsDir(outputsMetadata, outputDatasetFiles);
         createEntitiesOnDb(outputsMetadata, createdPipeline);
     }
 
     /**
      * This method copies outputs to the datasets dir.
      * This will ensure other peers can access the datasets if they want to run the pipeline.
-     *
-     * @param createdPipeline
-     * @param outputsMetadata An ArrayList containing the metadata of the outputs.
      */
-    private void copyOutputsToDatasetsDir(CreatedPipeline createdPipeline, ArrayList<DownloadbleFile> outputsMetadata)
+    private void copyOutputsToDatasetsDir(ArrayList<DownloadbleFile> outputDatasets,
+                                          ArrayList<java.io.File> outputDatasetFiles)
     {
-        for (DownloadbleFile downloadbleFile : outputsMetadata)
+        for (int i = 0; i < outputDatasets.size() && i < outputDatasetFiles.size(); i++)
         {
-            String processingPath = fileSystemManager.getProcessingPath(createdPipeline.getId().toString());
-            String outputPath = fileSystemManager.getProcessedOutputRelativePath(processingPath, downloadbleFile);
-            String storedFilePath = fileSystemManager.getStoredFilesPath() + "/" + downloadbleFile.getUuid();
-            java.io.File outputFile = new java.io.File(outputPath);
+            File outputDataset = outputDatasets.get(i);
+            java.io.File outputDatasetFile = outputDatasetFiles.get(i);
+            String storedFilePath = fileSystemManager.getStoredFilePath(outputDataset);
             java.io.File storedFile = new java.io.File(storedFilePath);
             try
             {
-                copyFileUsingChannel(outputFile, storedFile);
+                copyFileUsingChannel(outputDatasetFile, storedFile);
             } catch (IOException e)
             {
                 e.printStackTrace();
