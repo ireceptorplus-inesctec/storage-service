@@ -13,7 +13,6 @@ public class CreatedPipelineDTO
     private String description;
 
     @NotNull
-    @JsonProperty("input_datasets_uuids")
     private List<String> inputDatasetsUuids;
 
     @NotNull

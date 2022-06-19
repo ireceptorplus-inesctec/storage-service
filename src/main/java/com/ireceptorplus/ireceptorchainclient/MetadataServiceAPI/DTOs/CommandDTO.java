@@ -11,11 +11,9 @@ public class CommandDTO extends DTOWithId
     private Long id;
 
     @NotNull
-    @JsonProperty("tool_name")
     private String toolName;
 
     @NotNull
-    @JsonProperty("command_string")
     private String commandString;
 
     public CommandDTO()
