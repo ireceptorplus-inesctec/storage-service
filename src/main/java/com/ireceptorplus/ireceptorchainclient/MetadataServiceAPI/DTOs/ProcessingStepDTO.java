@@ -8,6 +8,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 public class ProcessingStepDTO extends DTOWithId
@@ -29,6 +30,15 @@ public class ProcessingStepDTO extends DTOWithId
     @NotNull
     @JsonProperty("step_order")
     private Long stepOrder;
+
+    @Column
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column
+    private Date creationDate;
 
     public ProcessingStepDTO()
     {
@@ -72,5 +82,35 @@ public class ProcessingStepDTO extends DTOWithId
     public void setStepOrder(Long stepOrder)
     {
         this.stepOrder = stepOrder;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
     }
 }

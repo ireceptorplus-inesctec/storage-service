@@ -1,6 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,15 @@ public class ProcessingStep
 
     @Column
     private Long stepOrder;
+
+    @Column
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column
+    private Date creationDate;
 
     public ProcessingStep()
     {
@@ -90,5 +100,35 @@ public class ProcessingStep
     public void setStepOrder(Long stepOrder)
     {
         this.stepOrder = stepOrder;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
     }
 }
