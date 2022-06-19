@@ -23,7 +23,14 @@ public class CreatedPipeline
     @Enumerated(EnumType.ORDINAL)
     private CreatedPipelineState state;
 
-    private Date date;
+    @Column
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column
+    private Date creationDate;
 
     public Long getId()
     {
@@ -65,13 +72,33 @@ public class CreatedPipeline
         this.state = state;
     }
 
-    public Date getDate()
+    public String getName()
     {
-        return date;
+        return name;
     }
 
-    public void setDate(Date date)
+    public void setName(String name)
     {
-        this.date = date;
+        this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
     }
 }

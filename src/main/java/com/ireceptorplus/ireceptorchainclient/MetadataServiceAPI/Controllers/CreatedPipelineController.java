@@ -204,6 +204,9 @@ public class CreatedPipelineController
         processingStep.setInputDatasets(inputDatasets);
         processingStep.setCommand(createdPipeline.getCommand());
         processingStep.setOutputDatasets(outputDatasets);
+        processingStep.setName(createdPipeline.getName());
+        processingStep.setDescription(createdPipeline.getDescription());
+        processingStep.setCreationDate(new Date());
         ArrayList<ProcessingStep> processingSteps = new ArrayList<>();
         processingSteps.add(processingStep);
         DataProcessing dataProcessing = new DataProcessing();

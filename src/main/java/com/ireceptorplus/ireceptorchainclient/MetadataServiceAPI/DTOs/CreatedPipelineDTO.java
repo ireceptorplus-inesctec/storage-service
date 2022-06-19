@@ -3,6 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.CreatedPipelineState;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CreatedPipelineDTO
 
     CreatedPipelineState state;
 
-    Date creationDate;
+    private Date creationDate;
 
     public CreatedPipelineDTO()
     {
@@ -85,4 +86,5 @@ public class CreatedPipelineDTO
     {
         this.description = description;
     }
+
 }
