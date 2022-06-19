@@ -97,17 +97,30 @@ public class DatasetController
             throw new ErrorParsingJsonObject("Error parsing Json object sent.");
         }
         String originalFileName = file.getOriginalFilename();
+        String extension = getExtension(originalFileName);
         UUID uuid = UUID.randomUUID();
         datasetDTO.setUuid(uuid);
         storageService.store(file, uuid.toString());
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
         dataset.setCreationDate(new Date());
+        dataset.setExtension(extension);
         dataset.setOriginalFileName(originalFileName);
 
         Dataset createdDataset = datasetService.create(dataset);
         DatasetDTO createdDatasetDTO = modelMapper.map(createdDataset, DatasetDTO.class);
 
         return createdDatasetDTO;
+    }
+
+    private String getExtension(String originalFileName)
+    {
+        int extensionIdx = originalFileName.lastIndexOf('.');
+        String extension;
+        if(extensionIdx > 0)
+            extension = originalFileName.substring(extensionIdx + 1);
+        else
+            extension = null;
+        return extension;
     }
 }
