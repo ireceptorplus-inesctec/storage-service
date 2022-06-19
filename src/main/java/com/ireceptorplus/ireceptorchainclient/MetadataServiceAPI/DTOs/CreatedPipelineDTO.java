@@ -17,7 +17,7 @@ public class CreatedPipelineDTO
     private List<String> inputDatasetsUuids;
 
     @NotNull
-    private CommandDTO command;
+    private Long commandId;
 
     CreatedPipelineState state;
 
@@ -37,14 +37,14 @@ public class CreatedPipelineDTO
         this.inputDatasetsUuids = inputDatasetsUuids;
     }
 
-    public CommandDTO getCommand()
+    public Long getCommandId()
     {
-        return command;
+        return commandId;
     }
 
-    public void setCommand(CommandDTO command)
+    public void setCommandId(Long commandId)
     {
-        this.command = command;
+        this.commandId = commandId;
     }
 
     public CreatedPipelineState getState()

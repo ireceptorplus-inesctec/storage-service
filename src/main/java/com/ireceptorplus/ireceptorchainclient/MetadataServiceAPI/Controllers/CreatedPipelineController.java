@@ -61,7 +61,10 @@ public class CreatedPipelineController
     @Autowired
     private final ToolService toolService;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ToolService toolService)
+    @Autowired
+    private final CommandService commandService;
+
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ToolService toolService, CommandService commandService)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -72,6 +75,7 @@ public class CreatedPipelineController
         this.datasetService = datasetService;
         this.dataProcessingService = dataProcessingService;
         this.toolService = toolService;
+        this.commandService = commandService;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -79,8 +83,6 @@ public class CreatedPipelineController
     public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO)
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
-        Tool tool = this.toolService.readByName(createdPipelineDTO.getCommand().getToolName());
-        createdPipeline.getCommand().setTool(tool);
         ArrayList<Dataset> inputDatasets = new ArrayList<>();
         for (String datasetUuid : createdPipelineDTO.getInputDatasetsUuids())
         {

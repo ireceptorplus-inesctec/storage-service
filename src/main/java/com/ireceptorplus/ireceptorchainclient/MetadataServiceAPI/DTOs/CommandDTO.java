@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 
 public class CommandDTO extends DTOWithId
 {
+    private Long id;
+
     @NotNull
     @JsonProperty("tool_name")
     private String toolName;
@@ -18,6 +20,18 @@ public class CommandDTO extends DTOWithId
 
     public CommandDTO()
     {
+    }
+
+    @Override
+    public Long getId()
+    {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id)
+    {
+        this.id = id;
     }
 
     public String getToolName()
