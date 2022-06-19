@@ -193,6 +193,7 @@ public class CreatedPipelineController
         {
             Dataset dataset = new Dataset();
             dataset.setCreationDate(new Date());
+            dataset.setExtension(downloadbleFile.getExtension());
             dataset.setOriginalFileName(downloadbleFile.getUuid());
             dataset.setUuid(UUID.fromString(downloadbleFile.getUuid()));
             datasetService.create(dataset);
