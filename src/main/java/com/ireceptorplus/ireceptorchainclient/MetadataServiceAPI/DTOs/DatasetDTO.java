@@ -13,6 +13,11 @@ public class DatasetDTO extends DTOWithId
     private UUID uuid;
 
     @NotNull
+    private String extension;
+
+    private String originalFileName;
+
+    @NotNull
     private String name;
 
     private String description;
@@ -21,6 +26,36 @@ public class DatasetDTO extends DTOWithId
 
     public DatasetDTO()
     {
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid)
+    {
+        this.uuid = uuid;
+    }
+
+    public String getExtension()
+    {
+        return extension;
+    }
+
+    public void setExtension(String extension)
+    {
+        this.extension = extension;
+    }
+
+    public String getOriginalFileName()
+    {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName)
+    {
+        this.originalFileName = originalFileName;
     }
 
     public String getName()
@@ -41,16 +76,6 @@ public class DatasetDTO extends DTOWithId
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-    public UUID getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid)
-    {
-        this.uuid = uuid;
     }
 
     public Date getCreationDate()
