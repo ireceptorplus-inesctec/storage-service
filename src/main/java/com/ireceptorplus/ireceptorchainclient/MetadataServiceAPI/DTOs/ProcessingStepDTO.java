@@ -25,7 +25,7 @@ public class ProcessingStepDTO extends DTOWithId
 
     @NotNull
     @NotEmpty
-    private List<CommandDTO> commands;
+    private CommandDTO command;
 
     @NotNull
     @JsonProperty("step_order")
@@ -64,14 +64,14 @@ public class ProcessingStepDTO extends DTOWithId
         this.outputDatasets = outputDatasets;
     }
 
-    public List<CommandDTO> getCommands()
+    public CommandDTO getCommand()
     {
-        return commands;
+        return command;
     }
 
-    public void setCommands(List<CommandDTO> commands)
+    public void setCommand(CommandDTO command)
     {
-        this.commands = commands;
+        this.command = command;
     }
 
     public Long getStepOrder()

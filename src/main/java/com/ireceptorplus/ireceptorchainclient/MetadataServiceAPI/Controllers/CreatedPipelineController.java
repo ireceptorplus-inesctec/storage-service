@@ -6,14 +6,18 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTran
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.PipelineDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.apache.tomcat.jni.Proc;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +32,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/created_pipeline")
+@RequestMapping("api")
 @CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class CreatedPipelineController
 {
@@ -39,6 +44,10 @@ public class CreatedPipelineController
 
     @Autowired
     private final ScriptMapper scriptMapper;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Autowired
     private final CreatedPipelineService createdPipelineService;
@@ -59,27 +68,32 @@ public class CreatedPipelineController
     private final DataProcessingService dataProcessingService;
 
     @Autowired
+    private final ProcessingStepService processingStepService;
+
+    @Autowired
     private final ToolService toolService;
 
     @Autowired
     private final CommandService commandService;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ToolService toolService, CommandService commandService)
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, ModelMapper modelMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ProcessingStepService processingStepService, ToolService toolService, CommandService commandService)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
+        this.modelMapper = modelMapper;
         this.createdPipelineService = createdPipelineService;
         this.createdPipelineMapper = createdPipelineMapper;
         this.jobScheduler = jobScheduler;
         this.fileSystemManager = fileSystemManager;
         this.datasetService = datasetService;
         this.dataProcessingService = dataProcessingService;
+        this.processingStepService = processingStepService;
         this.toolService = toolService;
         this.commandService = commandService;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
-    @PostMapping
+    @PostMapping("created_pipeline")
     public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO)
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
@@ -207,12 +221,22 @@ public class CreatedPipelineController
         processingStep.setName(createdPipeline.getName());
         processingStep.setDescription(createdPipeline.getDescription());
         processingStep.setCreationDate(new Date());
+        processingStep.setStepOrder(Long.valueOf(1));
         ArrayList<ProcessingStep> processingSteps = new ArrayList<>();
         processingSteps.add(processingStep);
         DataProcessing dataProcessing = new DataProcessing();
         dataProcessing.setProcessingSteps(processingSteps);
         createdPipelineService.delete(createdPipeline);
         dataProcessingService.create(dataProcessing);
+    }
+
+    @GetMapping("finishedPipelines")
+    public List<ProcessingStepDTO> getAllFinishedPipelines()
+    {
+        List<ProcessingStep> processingSteps = processingStepService.readAll();
+        List<ProcessingStepDTO> processingStepDTOS = processingSteps.stream().map(processingStep -> modelMapper.map(processingStep, ProcessingStepDTO.class)).collect(Collectors.toList());
+
+        return processingStepDTOS;
     }
 
 }
