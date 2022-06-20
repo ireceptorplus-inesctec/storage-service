@@ -238,5 +238,13 @@ public class CreatedPipelineController
 
         return processingStepDTOS;
     }
+    @GetMapping("runningPipelines")
+    public List<CreatedPipelineDTO> getAllRunningPipelines()
+    {
+        List<CreatedPipeline> createdPipelines = createdPipelineService.readAll();
+        List<CreatedPipelineDTO> createdPipelineDTOS = createdPipelines.stream().map(createdPipeline -> modelMapper.map(createdPipeline, CreatedPipelineDTO.class)).collect(Collectors.toList());
+
+        return createdPipelineDTOS;
+    }
 
 }
