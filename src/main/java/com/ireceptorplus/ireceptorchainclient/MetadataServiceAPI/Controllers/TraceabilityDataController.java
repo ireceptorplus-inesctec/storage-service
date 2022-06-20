@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("api/traceability_data")
+@RequestMapping("api/traceabilityData")
 @CrossOrigin(origins = "${app.resourceAllowedOrigins}")
 public class TraceabilityDataController
 {
@@ -40,7 +40,6 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
-    @PostMapping("/all")
     public TraceabilityDataReturnType createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
     {
         try
