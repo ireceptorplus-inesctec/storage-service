@@ -14,12 +14,10 @@ import java.util.List;
 public class ProcessingStepDTO extends DTOWithId
 {
     @NotNull
-    @JsonProperty("input_datasets")
     @NotEmpty
     private List<DatasetDTO> inputDatasets;
 
     @NotNull
-    @JsonProperty("output_datasets")
     @NotEmpty
     private List<DatasetDTO> outputDatasets;
 
@@ -28,7 +26,6 @@ public class ProcessingStepDTO extends DTOWithId
     private CommandDTO command;
 
     @NotNull
-    @JsonProperty("step_order")
     private Long stepOrder;
 
     @Column
