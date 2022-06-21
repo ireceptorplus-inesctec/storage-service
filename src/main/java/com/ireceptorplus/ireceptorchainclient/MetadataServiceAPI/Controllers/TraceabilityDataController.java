@@ -3,7 +3,6 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
@@ -71,9 +70,9 @@ public class TraceabilityDataController
     @PostMapping("run")
     public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl
     {
-        ProcessingDetails processingDetails = data.getProcessingDetails();
-            DataTransformationRunner runner = new DataTransformationRunner(processingDetails.getInputDatasets(),
-                    processingDetails.getCommand(), processingDetails.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY, processingDetails.getCommand().getToolId(), data.getUuid(), fileSystemManager);
+            DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
+                    data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
+                    data.getCommand().getToolId(), data.getUuid(), fileSystemManager);
 
             boolean outputsMatch;
             try

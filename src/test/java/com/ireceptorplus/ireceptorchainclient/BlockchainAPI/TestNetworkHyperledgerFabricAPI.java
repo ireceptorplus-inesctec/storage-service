@@ -5,7 +5,6 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProp
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ProcessingDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
@@ -121,9 +120,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
                 "d9359bb2-e91b-11ec-8fea-0242ac120002", "https://213.544.435.34/dataset/d9359bb2-e91b-11ec-8fea-0242ac120002");
         ArrayList<DownloadbleFile> outputDatasets = new ArrayList<DownloadbleFile>();
         outputDatasets.add(outputDataset);
-        ProcessingDetails processingDetails = new ProcessingDetails(inputDatasets,
-                new Command("MiXCR", "align"), outputDatasets);
-        TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(processingDetails);
+        Command command = new Command("MiXCR", "align");
+        TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(inputDatasets,
+                command, outputDatasets);
         createTraceabilityDataEntry(data);
     }
 
