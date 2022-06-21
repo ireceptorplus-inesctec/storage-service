@@ -38,6 +38,9 @@ public class ProcessingStep
     @Column
     private Date creationDate;
 
+    @Enumerated(EnumType.ORDINAL)
+    private ProcessingStepBlockchainState blockchainState;
+
     public ProcessingStep()
     {
     }
@@ -130,5 +133,13 @@ public class ProcessingStep
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    public ProcessingStepBlockchainState getBlockchainState() {
+        return blockchainState;
+    }
+
+    public void setBlockchainState(ProcessingStepBlockchainState state) {
+        this.blockchainState = state;
     }
 }
