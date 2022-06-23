@@ -39,6 +39,7 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
+    @PostMapping
     public TraceabilityDataReturnType createTraceabilityDataEntry(TraceabilityDataToBeSubmitted data) throws BlockchainAPIException
     {
         try
