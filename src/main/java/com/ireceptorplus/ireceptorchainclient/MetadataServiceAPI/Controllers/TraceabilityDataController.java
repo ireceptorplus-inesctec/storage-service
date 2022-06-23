@@ -52,7 +52,7 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Returns all traceability data entries awaiting validation on the blockchain.")
-    @GetMapping("awaitingValidation")
+    @GetMapping()
     public List<TraceabilityDataReturnType> getAllTraceabilityDataAwaitingValidationFromBlokchain() throws BlockchainAPIException
     {
         try
