@@ -23,6 +23,8 @@ public class CreatedPipelineDTO
 
     private Date creationDate;
 
+    private CommandDTO command;
+
     public CreatedPipelineDTO()
     {
     }
@@ -87,4 +89,13 @@ public class CreatedPipelineDTO
         this.description = description;
     }
 
+    public CommandDTO getCommand()
+    {
+        return command;
+    }
+
+    public void setCommand(CommandDTO command)
+    {
+        this.command = command;
+    }
 }
