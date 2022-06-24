@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStepBlockchainState;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -28,14 +29,13 @@ public class ProcessingStepDTO extends DTOWithId
     @NotNull
     private Long stepOrder;
 
-    @Column
     private String name;
 
-    @Column
     private String description;
 
-    @Column
     private Date creationDate;
+
+    private ProcessingStepBlockchainState blockchainState;
 
     public ProcessingStepDTO()
     {
@@ -109,5 +109,15 @@ public class ProcessingStepDTO extends DTOWithId
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    public ProcessingStepBlockchainState getBlockchainState()
+    {
+        return blockchainState;
+    }
+
+    public void setBlockchainState(ProcessingStepBlockchainState blockchainState)
+    {
+        this.blockchainState = blockchainState;
     }
 }
