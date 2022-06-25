@@ -1,15 +1,13 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -107,7 +105,7 @@ public abstract class CommandRunner
         return outputDatasetFiles;
     }
 
-    public void executeCommand()
+    public void executeCommand() throws ErrorRunningToolCommand
     {
         String inputsFolder = organizeInputs();
         runBashCommand(buildHostCommandString(inputsFolder));
@@ -118,7 +116,7 @@ public abstract class CommandRunner
      *
      * @param command A String representing the command to be run.
      */
-    void runBashCommand(String command)
+    void runBashCommand(String command) throws ErrorRunningToolCommand
     {
         try
         {
@@ -159,15 +157,15 @@ public abstract class CommandRunner
                 System.out.println("Error running command");
                 System.out.println(errorOutput);
                 System.out.println(output);
-                //abnormal...
+                throw new ErrorRunningToolCommand("Error running command. Error was " + errorOutput);
             }
 
         } catch (IOException e)
         {
-            e.printStackTrace();
+            throw new ErrorRunningToolCommand("Error running command: IOException. Reason: " + e.getMessage());
         } catch (InterruptedException e)
         {
-            e.printStackTrace();
+            throw new ErrorRunningToolCommand("Error running command: InterruptedException. Reason: " + e.getMessage());
         }
     }
 

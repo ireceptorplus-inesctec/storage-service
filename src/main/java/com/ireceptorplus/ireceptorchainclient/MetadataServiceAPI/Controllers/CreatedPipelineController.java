@@ -3,6 +3,9 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingOutputFiles;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
@@ -12,6 +15,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Created
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
+import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.tomcat.jni.Proc;
@@ -94,7 +98,7 @@ public class CreatedPipelineController
 
     @Operation(summary = "Creates a new CreatedPipeline object")
     @PostMapping("created_pipeline")
-    public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO)
+    public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
         ArrayList<Dataset> inputDatasets = new ArrayList<>();
@@ -108,12 +112,27 @@ public class CreatedPipelineController
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
-        enqueuePipelineForExecution(createdPipeline);
+        try
+        {
+            enqueuePipelineForExecution(createdPipeline);
+        } catch (TryingToDownloadFileWithoutUrl e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Trying to download file without URL");
+            throw e;
+        } catch (ErrorCopyingInputFiles e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying input files.");
+            throw e;
+        } catch (ErrorRunningToolCommand e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error running tool command");
+            throw e;
+        }
 
         return newCreatedPipelineDTO;
     }
 
-    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline)
+    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline) throws ErrorCopyingInputFiles, TryingToDownloadFileWithoutUrl, ErrorRunningToolCommand
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
         runPipeline(createdPipeline);
@@ -121,7 +140,7 @@ public class CreatedPipelineController
 
     @Async()
     @GetMapping("runPipelines")
-    public void runPipeline(CreatedPipeline createdPipeline)
+    public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
     {
         createdPipeline = createdPipelineService.readAll().get(0);
         System.out.println("running pipeline");
@@ -139,11 +158,27 @@ public class CreatedPipelineController
             runner.run();
         } catch (TryingToDownloadFileWithoutUrl e)
         {
-            e.printStackTrace();
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Trying to download file without URL");
+            throw e;
+        } catch (ErrorCopyingInputFiles e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying input files.");
+            throw e;
+        } catch (ErrorRunningToolCommand e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error running tool command");
+            throw e;
         }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();
         ArrayList<java.io.File> outputDatasetFiles = runner.getOutputDatasetFiles();
-        copyOutputsToDatasetsDir(outputsMetadata, outputDatasetFiles);
+        try
+        {
+            copyOutputsToDatasetsDir(outputsMetadata, outputDatasetFiles);
+        } catch (ErrorCopyingOutputFiles e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying output files: " + e.getMessage());
+            e.printStackTrace();
+        }
         createEntitiesOnDb(outputsMetadata, createdPipeline);
     }
 
@@ -152,7 +187,7 @@ public class CreatedPipelineController
      * This will ensure other peers can access the datasets if they want to run the pipeline.
      */
     private void copyOutputsToDatasetsDir(ArrayList<DownloadbleFile> outputDatasets,
-                                          ArrayList<java.io.File> outputDatasetFiles)
+                                          ArrayList<java.io.File> outputDatasetFiles) throws ErrorCopyingOutputFiles
     {
         for (int i = 0; i < outputDatasets.size() && i < outputDatasetFiles.size(); i++)
         {
@@ -165,7 +200,7 @@ public class CreatedPipelineController
                 copyFileUsingChannel(outputDatasetFile, storedFile);
             } catch (IOException e)
             {
-                e.printStackTrace();
+                throw new ErrorCopyingOutputFiles(e.getMessage());
             }
         }
     }

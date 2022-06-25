@@ -8,6 +8,8 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
@@ -69,7 +71,7 @@ public class TraceabilityDataController
     @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
     @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
     @PostMapping("run")
-    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl
+    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
     {
             DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
                     data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
@@ -89,8 +91,15 @@ public class TraceabilityDataController
             } catch (TryingToDownloadFileWithoutUrl e)
             {
                 iReceptorStorageServiceLogging.writeLogMessages(e, e.getMessage());
-                e.printStackTrace();
-                throw new TryingToDownloadFileWithoutUrl(e.getMessage());
+                throw e;
+            } catch (ErrorCopyingInputFiles e)
+            {
+                iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline awaiting validation on blockchain: Error copying input files.");
+                throw e;
+            } catch (ErrorRunningToolCommand e)
+            {
+                iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
+                throw e;
             }
 
         VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;

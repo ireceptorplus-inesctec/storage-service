@@ -6,6 +6,8 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.CommandRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.MixcrRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
@@ -95,7 +97,7 @@ public class DataTransformationRunner
         return outputs;
     }
 
-    public void run() throws TryingToDownloadFileWithoutUrl
+    public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
     {
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
@@ -192,7 +194,7 @@ public class DataTransformationRunner
         return inputsDownloadableFiles;
     }
 
-    protected void copyDatasetsFromStorageFolderToProcessingDir()
+    protected void copyDatasetsFromStorageFolderToProcessingDir() throws ErrorCopyingInputFiles
     {
         new java.io.File(processingFilesPath).mkdirs();
         String datasetsPath = fileSystemManager.getInputsRelativePath(processingFilesPath);
@@ -211,6 +213,7 @@ public class DataTransformationRunner
             {
                 String message = "Error copying file from local dataset storage folder " + inputDataset.getUuid() + ". Reason: ";
                 iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                throw new ErrorCopyingInputFiles(message);
             }
         }
 
