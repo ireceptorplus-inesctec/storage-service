@@ -9,7 +9,6 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptio
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.PipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
@@ -18,13 +17,10 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.apache.tomcat.jni.Proc;
-import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -117,15 +113,15 @@ public class CreatedPipelineController
             enqueuePipelineForExecution(createdPipeline);
         } catch (TryingToDownloadFileWithoutUrl e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Trying to download file without URL");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
             throw e;
         } catch (ErrorCopyingInputFiles e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying input files.");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
             throw e;
         } catch (ErrorRunningToolCommand e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error running tool command");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
             throw e;
         }
 
@@ -158,15 +154,15 @@ public class CreatedPipelineController
             runner.run();
         } catch (TryingToDownloadFileWithoutUrl e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Trying to download file without URL");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
             throw e;
         } catch (ErrorCopyingInputFiles e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying input files.");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
             throw e;
         } catch (ErrorRunningToolCommand e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error running tool command");
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
             throw e;
         }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();
@@ -176,7 +172,7 @@ public class CreatedPipelineController
             copyOutputsToDatasetsDir(outputsMetadata, outputDatasetFiles);
         } catch (ErrorCopyingOutputFiles e)
         {
-            iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline: Error copying output files: " + e.getMessage());
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying output files: " + e.getMessage());
             e.printStackTrace();
         }
         createEntitiesOnDb(outputsMetadata, createdPipeline);

@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
 public class DataTransformationRunner
@@ -115,7 +114,7 @@ public class DataTransformationRunner
                 verifyIfOutputsMatch();
             } catch (ErrorComparingOutputs e)
             {
-                iReceptorStorageServiceLogging.writeLogMessages(e, "Error comparing file outputs of processing.");
+                iReceptorStorageServiceLogging.writeLogMessage(e, "Error comparing file outputs of processing.");
             }
         }
         ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
@@ -212,7 +211,7 @@ public class DataTransformationRunner
             } catch (IOException e)
             {
                 String message = "Error copying file from local dataset storage folder " + inputDataset.getUuid() + ". Reason: ";
-                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                iReceptorStorageServiceLogging.writeLogMessage(e, message);
                 throw new ErrorCopyingInputFiles(message);
             }
         }

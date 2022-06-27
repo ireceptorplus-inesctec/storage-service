@@ -8,7 +8,7 @@ import java.io.StringWriter;
 
 public class iReceptorStorageServiceLogging
 {
-    public static void writeLogMessages(Exception e, String message)
+    public static void writeLogMessage(Exception e, String message)
     {
         LogFactory.getLog(HyperledgerFabricAPI.class).error(message);
         StringWriter stackTrace = new StringWriter();

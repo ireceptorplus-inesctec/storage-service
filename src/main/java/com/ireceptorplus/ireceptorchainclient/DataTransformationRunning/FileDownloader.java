@@ -1,7 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
-import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 
@@ -46,11 +45,11 @@ public class FileDownloader
             } catch (MalformedURLException e)
             {
                 String message = "Error downloading file from URL " + downloadbleFile.getUrl() + ", due to malformed URL exception. Reason: ";
-                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                iReceptorStorageServiceLogging.writeLogMessage(e, message);
             } catch (IOException e)
             {
                 String message = "Error downloading file from URL " + downloadbleFile.getUrl() + ", due to exception when writing to disk. Reason: ";
-                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                iReceptorStorageServiceLogging.writeLogMessage(e, message);
             }
         }
     }

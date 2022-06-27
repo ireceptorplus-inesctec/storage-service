@@ -65,12 +65,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error creating traceability data: blockchain returned " + e.getMessage();
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorSubmittingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error creating JSON object that represents traceability data to be created.";
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorSubmittingData(message);
         }
     }
@@ -97,12 +97,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException e)
         {
             String message = "Error fetching data awaiting validation from blockchain";
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorFetchingData(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error fetching data awaiting validation from blockchain: error parsing result from blockchain";
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorFetchingData(message);
         }
     }
@@ -145,12 +145,12 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         } catch (ContractException | InterruptedException | TimeoutException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Blockchain returned: " + e.getMessage();
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorSubmittingVote(message);
         } catch (JsonProcessingException e)
         {
             String message = "Error submitting " + voteType + " vote for traceability data " + uuid + ". Error parsing JSON response returned from the blockchain.";
-            iReceptorStorageServiceLogging.writeLogMessages(e, message);
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
             throw new ErrorSubmittingVote(message);
         }
     }

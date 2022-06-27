@@ -85,20 +85,20 @@ public class TraceabilityDataController
             } catch (ErrorComparingOutputs e)
             {
                 String message = "Error verifying if outputs of processing match with expected outputs of traceablity data entry: ";
-                iReceptorStorageServiceLogging.writeLogMessages(e, message);
+                iReceptorStorageServiceLogging.writeLogMessage(e, message);
                 e.printStackTrace();
                 throw new ErrorComparingOutputs(message);
             } catch (TryingToDownloadFileWithoutUrl e)
             {
-                iReceptorStorageServiceLogging.writeLogMessages(e, e.getMessage());
+                iReceptorStorageServiceLogging.writeLogMessage(e, e.getMessage());
                 throw e;
             } catch (ErrorCopyingInputFiles e)
             {
-                iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline awaiting validation on blockchain: Error copying input files.");
+                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error copying input files.");
                 throw e;
             } catch (ErrorRunningToolCommand e)
             {
-                iReceptorStorageServiceLogging.writeLogMessages(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
+                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
                 throw e;
             }
 
