@@ -4,8 +4,12 @@
 # docker login --username $USERNAME
 # docker push $USERNAME/adc-storage:$VERSION
 
+FROM alpine:3.16.2
 
-FROM openjdk:19
+RUN apk add openjdk11
+RUN apk add --update docker openrc
+RUN rc-update add docker boot
+
 
 WORKDIR /storage
 

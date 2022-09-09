@@ -5,6 +5,7 @@ services:
     image: postgres:12
     volumes:
       - ireceptorchain-storage-service-db:/var/lib/postgresql/data:delegated
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 5432:5432
     environment:
