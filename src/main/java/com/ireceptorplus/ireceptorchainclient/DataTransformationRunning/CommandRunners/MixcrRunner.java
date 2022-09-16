@@ -37,12 +37,15 @@ public class MixcrRunner extends CommandRunner
     @Override
     protected String buildHostCommandString(String inputsPath, String outputsPath)
     {
-        String dataDirAbsolutePath = new java.io.File(inputsPath).getAbsolutePath();
-        this.outputsPath = dataDirAbsolutePath;
-        String mixcrHostCommand = "docker run --rm " +
+        System.out.println("Datapath: " + inputsPath);
+        String inputsDirAbsolutePath = new java.io.File(inputsPath).getAbsolutePath();
+        String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
+        outputsPath = dataDirAbsolutePath;
+        String mixcrHostCommand = "docker run -e MI_LICENSE=\"I.eyJ2IjoxNjYyNzI5MTAxLCJlIjoxNjYyODIyOTc2LCJtIjoiNmI2MzY0OWEtNWVmOC00NzBmLTljYjQtNTMwY2QwMmZiYjFlIzdjZDdkMmQzMDdmZTQzNzc0MzcwZTM1OTc5NjQ0OGJkMmY4OGUzMGUyMDNmNzQ2NGI0N2E1ZDZlNWQ3ZWVhODgiLCJsIjoiRS1KQk9MVE9BTktaSEFHQVZLR0xHWUpaVEZKWUlYTERQUlVFV0hWQ01TVkdSWFVXQUQifQ==.CPECUVF.wq7x5xkGpbRCqTpVeMgYK2seydKber9vk9Fiae15KNwYeMTtu9BOjzPCWZxCkYzparTammLKKKIEtIKJyawIm9mhldj1rUJmnjGBWtV4SH2VNFYaYt96OKNCqsiZw5KsEiiH1PQ57D7AAlQMe3Rrvd8dWmjRfRt61d3E13o9C4MhR4FpozYMIVjmwO98ImtecvksrGcuCVyYCIw7dYA4JE7NBODxqY0JSKZl+bVzB3z7ZvTXTZ5B+ed4HrK2vkpJQoDyOaS6ymH/bLuxVcjAyDnwYoA5ytlSE8/Pv+3GhUg3ghvvBvvaWsRC69+sZxBRgNBrvO7afX5R+i4ED6JioA==\" --rm " +
                 "    -m 4g " +
-                "    -v " + dataDirAbsolutePath + ":/work " +
-                "    milaboratory/mixcr:latest " +
+                "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
+                "    -v " + outputsDirAbsolutePath + ":/work " +
+                "    ghcr.io/milaboratory/mixcr/mixcr:4.0.0-251-develop " +
                 "    " + buildToolCommandString();
 
         return mixcrHostCommand;

@@ -207,12 +207,17 @@ public class DataTransformationRunner
         {
             String storedDatasetPath = fileSystemManager.getStoredFilePath(inputDataset);
             Path storedFile = new java.io.File(storedDatasetPath).toPath();
-            String processingDatasetPath = fileSystemManager.getInputRelativePath(inputFilesPath, inputDataset);
-            Path processingFile = new java.io.File(processingDatasetPath).toPath();
+            String processingDatasetPath = fileSystemManager.getInputRelativePath(processingFilesPath, inputDataset);
+            java.io.File fileToBeProcessed = new java.io.File(processingDatasetPath);
+            fileToBeProcessed.mkdirs();
+            Path processingFile = new fileToBeProcessed.toPath();
+                System.out.println("processingDatasetPath");
+                System.out.println(processingDatasetPath);
 
             try
             {
                 Files.copy(storedFile, processingFile, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("copied successfully");
             } catch (IOException e)
             {
                 String message = "Error copying file from local dataset storage folder " + inputDataset.getUuid() + ". Reason: ";
