@@ -24,6 +24,8 @@ public abstract class CommandRunner
 
     protected String inputsFolderPath;
 
+    protected String outputsFolderPath;
+
     protected ArrayList<File> inputDatasets;
 
     protected String command;
@@ -33,12 +35,13 @@ public abstract class CommandRunner
     FileSystemManager fileSystemManager;
 
     public CommandRunner(String dirPath, String inputsFolderPath,
-                         ArrayList<File> inputDatasets, String command,
-                         FileSystemManager fileSystemManager)
+                         String outputsFolderPath, ArrayList<File> inputDatasets,
+                         String command, FileSystemManager fileSystemManager)
     {
         this.dirPath = dirPath;
         this.inputsFolderPath = inputsFolderPath;
         this.inputDatasets = inputDatasets;
+        this.outputsFolderPath = outputsFolderPath;
         this.command = command;
         this.fileSystemManager = fileSystemManager;
         this.outputDatasets = new ArrayList<>();
@@ -81,8 +84,10 @@ public abstract class CommandRunner
      * This method builds the command that will be executed on the host to run the tool.
      * In case the pipeline is to be run locally, the return of this method is equal to buildToolCommandString method.
      * In case the pipeline is to be run inside a container, this method returns the command that launches the container, for example.
+     * @param inputsPath
+     * @param outputsPath
      */
-    protected abstract String buildHostCommandString(String dataPath);
+    protected abstract String buildHostCommandString(String inputsPath, String outputsPath);
 
     /**
      * This method returns the path in which the output datasets are stored.
@@ -108,7 +113,7 @@ public abstract class CommandRunner
     public void executeCommand() throws ErrorRunningToolCommand
     {
         String inputsFolder = organizeInputs();
-        runBashCommand(buildHostCommandString(inputsFolder));
+        runBashCommand(buildHostCommandString(inputsFolder, outputsFolderPath));
     }
 
     /**

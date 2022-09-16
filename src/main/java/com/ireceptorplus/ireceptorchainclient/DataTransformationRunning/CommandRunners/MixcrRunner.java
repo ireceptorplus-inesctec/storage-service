@@ -12,10 +12,10 @@ public class MixcrRunner extends CommandRunner
     private String outputsPath;
 
     public MixcrRunner(String dirPath, String inputsFolderPath,
-                       ArrayList<File> inputDatasets, String command,
-                       FileSystemManager fileSystemManager)
+                       String outputsFolderPath, ArrayList<File> inputDatasets,
+                       String command, FileSystemManager fileSystemManager)
     {
-        super(dirPath, inputsFolderPath, inputDatasets, command, fileSystemManager);
+        super(dirPath, inputsFolderPath, outputsFolderPath, inputDatasets, command, fileSystemManager);
     }
 
     @Override
@@ -35,10 +35,10 @@ public class MixcrRunner extends CommandRunner
     }
 
     @Override
-    protected String buildHostCommandString(String dataPath)
+    protected String buildHostCommandString(String inputsPath, String outputsPath)
     {
-        String dataDirAbsolutePath = new java.io.File(dataPath).getAbsolutePath();
-        outputsPath = dataDirAbsolutePath;
+        String dataDirAbsolutePath = new java.io.File(inputsPath).getAbsolutePath();
+        this.outputsPath = dataDirAbsolutePath;
         String mixcrHostCommand = "docker run --rm " +
                 "    -m 4g " +
                 "    -v " + dataDirAbsolutePath + ":/work " +

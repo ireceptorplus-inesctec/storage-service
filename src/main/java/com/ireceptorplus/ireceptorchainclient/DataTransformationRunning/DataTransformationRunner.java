@@ -54,20 +54,24 @@ public class DataTransformationRunner
 
     String toolId;
 
-    String processingFilesPath;
+    String inputFilesPath;
+
+    String outputFilesPath;
 
     ArrayList<java.io.File> outputDatasetFiles;
 
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, String toolId,
-                                    String processingFilesPath, FileSystemManager fileSystemManager)
+                                    String inputFilesPath, String outputFilesPath,
+                                    FileSystemManager fileSystemManager)
     {
         this.inputs = inputs;
         this.command = command;
         this.runningMode = runningMode;
         this.toolId = toolId;
-        this.processingFilesPath = processingFilesPath;
+        this.inputFilesPath = inputFilesPath;
+        this.outputFilesPath = outputFilesPath;
         this.fileSystemManager = fileSystemManager;
     }
 
@@ -80,14 +84,14 @@ public class DataTransformationRunner
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    String toolId, String processingFilesPath, FileSystemManager fileSystemManager)
+                                    String toolId, String inputFilesPath, FileSystemManager fileSystemManager)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
         this.outputs = new ArrayList<>(outputDatasets);
         this.runningMode = runningMode;
         this.toolId = toolId;
-        this.processingFilesPath = processingFilesPath;
+        this.inputFilesPath = inputFilesPath;
         this.fileSystemManager = fileSystemManager;
     }
 
@@ -103,8 +107,9 @@ public class DataTransformationRunner
         else
             copyDatasetsFromStorageFolderToProcessingDir();
         //TODO map to appropriate runner
-        String inputsRelativePath = fileSystemManager.getInputsRelativePath(processingFilesPath);
-        CommandRunner commandRunner = new MixcrRunner(processingFilesPath, inputsRelativePath,
+        String inputsRelativePath = fileSystemManager.getInputsRelativePath(inputFilesPath);
+        String outputsRelativePath = fileSystemManager.getOutputsRelativePath(outputFilesPath);
+        CommandRunner commandRunner = new MixcrRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
                 inputs, command.getCommandString(), fileSystemManager);
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
@@ -148,8 +153,8 @@ public class DataTransformationRunner
     {
         for (File output : outputs)
         {
-            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(processingFilesPath, output);
-            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(processingFilesPath, output);
+            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(inputFilesPath, output);
+            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(inputFilesPath, output);
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
             try
             {
@@ -170,12 +175,12 @@ public class DataTransformationRunner
     protected void downloadDatasetsToProcessingDir() throws TryingToDownloadFileWithoutUrl
     {
         UUID uuid = UUID.randomUUID();
-        this.processingFilesPath = fileSystemManager.getProcessingPath(uuid.toString());
-        new java.io.File(processingFilesPath).mkdirs();
+        this.inputFilesPath = fileSystemManager.getProcessingPath(uuid.toString());
+        new java.io.File(inputFilesPath).mkdirs();
         ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
-        FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, processingFilesPath);
+        FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, inputFilesPath);
         inputsDownloader.downloadFilesToDir();
-        FileDownloader outputsDownloader = new FileDownloader(outputs, fileSystemManager.getExpectedOutputsRelativePath(processingFilesPath));
+        FileDownloader outputsDownloader = new FileDownloader(outputs, fileSystemManager.getExpectedOutputsRelativePath(inputFilesPath));
         outputsDownloader.downloadFilesToDir();
     }
 
@@ -195,14 +200,14 @@ public class DataTransformationRunner
 
     protected void copyDatasetsFromStorageFolderToProcessingDir() throws ErrorCopyingInputFiles
     {
-        new java.io.File(processingFilesPath).mkdirs();
-        String datasetsPath = fileSystemManager.getInputsRelativePath(processingFilesPath);
+        new java.io.File(inputFilesPath).mkdirs();
+        String datasetsPath = fileSystemManager.getInputsRelativePath(inputFilesPath);
         new java.io.File(datasetsPath).mkdirs();
         for (File inputDataset : inputs)
         {
             String storedDatasetPath = fileSystemManager.getStoredFilePath(inputDataset);
             Path storedFile = new java.io.File(storedDatasetPath).toPath();
-            String processingDatasetPath = fileSystemManager.getInputRelativePath(processingFilesPath, inputDataset);
+            String processingDatasetPath = fileSystemManager.getInputRelativePath(inputFilesPath, inputDataset);
             Path processingFile = new java.io.File(processingDatasetPath).toPath();
 
             try

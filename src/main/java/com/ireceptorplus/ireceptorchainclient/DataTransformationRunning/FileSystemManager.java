@@ -41,6 +41,11 @@ public class FileSystemManager
         return getDirPathWithSlashAtTheEnd(processingPath);
     }
 
+    public String getOutputsRelativePath(String processingPath)
+    {
+        return getDirPathWithSlashAtTheEnd(processingPath);
+    }
+
     public String getScriptRelativePath(String processingPath)
     {
         return getDirPathWithSlashAtTheEnd(processingPath);
