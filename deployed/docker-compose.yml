@@ -19,6 +19,8 @@ services:
       - ../src:/storage/src
       - ./config:/storage/config
       - ./files:/storage/files
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./processingPath:/storage/processingPath
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:

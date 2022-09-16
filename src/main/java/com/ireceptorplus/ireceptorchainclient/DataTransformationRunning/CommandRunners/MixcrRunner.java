@@ -31,7 +31,7 @@ public class MixcrRunner extends CommandRunner
         outputDatasets.add(outputFile);
         datasetsString += fileSystemManager.getFileName(outputFile);
 
-        return "mixcr " + command + " " + datasetsString + " --species hs";
+        return "" + command + " " + datasetsString + " --species hs";
     }
 
     @Override
