@@ -59,18 +59,17 @@ public abstract class CommandRunner
      */
     protected String organizeInputs()
     {
-        String dataDirPath = dirPath + "/data/";
-        new java.io.File(dataDirPath).mkdirs();
+        new java.io.File(dirPath).mkdirs();
         for (File inputDataset : inputDatasets)
         {
             String inputDatasetPath = fileSystemManager.getInputRelativePath(inputsFolderPath, inputDataset);
             java.io.File source = new java.io.File(inputDatasetPath);
-            String destinationPath = fileSystemManager.getPathOfFileRelativeToPath(dataDirPath, inputDataset);
+            String destinationPath = fileSystemManager.getPathOfFileRelativeToPath(dirPath, inputDataset);
             java.io.File destination = new java.io.File(destinationPath);
             source.renameTo(destination);
         }
 
-        return dataDirPath;
+        return dirPath;
     }
 
     /**
