@@ -147,8 +147,8 @@ public class CreatedPipelineController
                 new com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command(tool.getName(), commandModel.getCommandString());
 
         String processingFilesDirPrefix = "./processingFiles" + createdPipeline.getId().toString();
-        String inputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "/inputs");
-        String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "/outputs");
+        String inputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "inputs");
+        String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "outputs");
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
                 command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName(),
                 inputsPath, outputsPath, fileSystemManager);
