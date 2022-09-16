@@ -5,8 +5,8 @@ services:
     image: postgres:12
     volumes:
       - ireceptorchain-storage-service-db:/var/lib/postgresql/data:delegated
-    expose:
-      - 5432
+    ports:
+      - 5432:5432
     environment:
       # default user is 'postgres'
       POSTGRES_DB: ireceptorchain-storage-service
@@ -20,15 +20,14 @@ services:
       - ./config:/storage/config
       - ./files:/storage/files
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./processingPath:/storage/processingPath
+      - ./processingFiles:/storage/processingFiles
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:
       - db
     restart: always
-    networks:
-      - default
-      - apache_ireceptor-network
+    ports:
+      - 8080:8080
 
 networks:
   default:
