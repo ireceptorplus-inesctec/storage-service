@@ -207,7 +207,7 @@ public class DataTransformationRunner
         {
             String storedDatasetPath = fileSystemManager.getStoredFilePath(inputDataset);
             Path storedFile = new java.io.File(storedDatasetPath).toPath();
-            String processingDatasetPath = fileSystemManager.getInputRelativePath(processingFilesPath, inputDataset);
+            String processingDatasetPath = fileSystemManager.getInputRelativePath(inputFilesPath, inputDataset);
             java.io.File fileToBeProcessed = new java.io.File(processingDatasetPath);
             fileToBeProcessed.mkdirs();
             Path processingFile = new fileToBeProcessed.toPath();
