@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
-    private String outputsPath;
-
     public MixcrRunner(String dirPath, String inputsFolderPath,
                        String outputsFolderPath, ArrayList<File> inputDatasets,
                        String command, FileSystemManager fileSystemManager)
@@ -54,6 +52,6 @@ public class MixcrRunner extends CommandRunner
     @Override
     protected String getOutputsRelativePath()
     {
-        return outputsPath;
+        return outputsFolderPath;
     }
 }
