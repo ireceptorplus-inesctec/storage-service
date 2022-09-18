@@ -45,7 +45,7 @@ public class MixcrRunner extends CommandRunner
                 "    -m 4g " +
                 "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
                 "    -v " + outputsDirAbsolutePath + ":/work " +
-                "    ghcr.io/milaboratory/mixcr/mixcr:4.0.0-251-develop " +
+                "    ghcr.io/milaboratory/mixcr/mixcr:latest " +
                 "    " + buildToolCommandString();
 
         return mixcrHostCommand;
