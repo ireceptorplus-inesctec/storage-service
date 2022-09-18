@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
-    private String outputsPath;
-
     public MixcrRunner(String dirPath, String inputsFolderPath,
                        String outputsFolderPath, ArrayList<File> inputDatasets,
                        String command, FileSystemManager fileSystemManager)
@@ -22,7 +20,7 @@ public class MixcrRunner extends CommandRunner
     protected String buildToolCommandString()
     {
         //TODO fix hard-coded values
-        String datasetsString = inputDatasets.stream().map(dataset -> fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
+        String datasetsString = inputDatasets.stream().map(dataset -> "/raw/" + fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
         datasetsString += " ";
         String outputDatasetUuid = UUID.randomUUID().toString();
         String outputDatasetName = outputDatasetUuid;
@@ -54,6 +52,6 @@ public class MixcrRunner extends CommandRunner
     @Override
     protected String getOutputsRelativePath()
     {
-        return outputsPath;
+        return outputsFolderPath;
     }
 }
