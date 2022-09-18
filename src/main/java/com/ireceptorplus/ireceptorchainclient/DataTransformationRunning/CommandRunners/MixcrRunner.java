@@ -22,7 +22,7 @@ public class MixcrRunner extends CommandRunner
     protected String buildToolCommandString()
     {
         //TODO fix hard-coded values
-        String datasetsString = inputDatasets.stream().map(dataset -> fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
+        String datasetsString = inputDatasets.stream().map(dataset -> "/raw/" + fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
         datasetsString += " ";
         String outputDatasetUuid = UUID.randomUUID().toString();
         String outputDatasetName = outputDatasetUuid;
