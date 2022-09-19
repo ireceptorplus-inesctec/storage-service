@@ -100,8 +100,7 @@ public abstract class CommandRunner
         ArrayList<java.io.File> outputDatasetFiles = new ArrayList<>();
         for (File outputDataset : outputDatasets)
         {
-            String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(dirPath, getOutputsRelativePath());
-            String datasetPath = fileSystemManager.getPathOfFileRelativeToPath(outputsPath, outputDataset);
+            String datasetPath = fileSystemManager.getPathOfFileRelativeToPath(outputsFolderPath, outputDataset);
             java.io.File datasetFile = new java.io.File(datasetPath);
             outputDatasetFiles.add(datasetFile);
         }
