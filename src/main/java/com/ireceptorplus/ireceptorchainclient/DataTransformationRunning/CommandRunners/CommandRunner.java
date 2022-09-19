@@ -111,6 +111,8 @@ public abstract class CommandRunner
     public void executeCommand() throws ErrorRunningToolCommand
     {
         String inputsFolder = organizeInputs();
+        java.io.File outputsDir = new java.io.File(outputsFolderPath);
+        outputsDir.mkdirs();
         runBashCommand(buildHostCommandString(inputsFolder, outputsFolderPath));
     }
 
