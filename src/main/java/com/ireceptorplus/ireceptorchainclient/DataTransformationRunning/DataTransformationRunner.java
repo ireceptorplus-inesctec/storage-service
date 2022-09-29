@@ -4,11 +4,9 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.CommandRunner;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.IgblastRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.MixcrRunner;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +98,7 @@ public class DataTransformationRunner
         return outputs;
     }
 
-    public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
+    public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
@@ -109,8 +107,18 @@ public class DataTransformationRunner
         //TODO map to appropriate runner
         String inputsRelativePath = fileSystemManager.getInputsRelativePath(inputFilesPath);
         String outputsRelativePath = fileSystemManager.getOutputsRelativePath(outputFilesPath);
-        CommandRunner commandRunner = new MixcrRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
-                inputs, command.getCommandString(), fileSystemManager);
+
+        CommandRunner commandRunner;
+        if (toolId.equals("MiXCR"))
+            commandRunner = new MixcrRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
+                    inputs, command.getCommandString(), fileSystemManager);
+        else if(toolId.equals("igblast"))
+            commandRunner = new IgblastRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
+                    inputs, command.getCommandString(), fileSystemManager);
+        else
+        {
+            throw new UnsupportedTool("Reference to unsupported tool: " + toolId);
+        }
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
         {
