@@ -14,6 +14,19 @@ It is also required that the iReceptorChain repository directory is at the same 
 
 This repository currently supports two different running modes for the iReceptorChain Storage Service: development and deployment.
 
+### License
+Since August 2022, MiXCR requires a license to run. Therefore, to use MiXCR to run pipelines on this software, you need to obtain a license [here](https://licensing.milaboratories.com/).
+
+The license should be passed as an application property, at the applications.properties file. To pass the MiXCR license to the storage service, go to
+```bash
+src/main/resources/application.properties
+```
+And add a property named `tools.mixcr.license`. For example, add the following line:
+```bash
+tools.mixcr.license=G.weKJrekE
+```
+
+
 ### Development
 The development mode assumes you will run the postgresql database inside a docker container and the java spring-boot application in your host machine. To run in deployment mode, on the repository root, run:
 ```bash
