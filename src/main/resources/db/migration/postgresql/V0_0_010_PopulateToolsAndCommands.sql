@@ -7,11 +7,11 @@ insert into Tool (
 )
 values
 (
- "",
- "https://docs.milaboratories.com/",
- "MiXCR",
- "https://github.com/milaboratory/mixcr/releases/download/v4.0.0/mixcr-4.0.0.zip",
- "4.0.0"
+ '',
+ 'https://docs.milaboratories.com/',
+ 'MiXCR',
+ 'https://github.com/milaboratory/mixcr/releases/download/v4.0.0/mixcr-4.0.0.zip',
+ '4.0.0'
 )
 
 insert into Command (
@@ -20,6 +20,6 @@ insert into Command (
 )
 values
 (
-    "align",
-    "1"
+    'align',
+    '1'
 )
