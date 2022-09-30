@@ -2,6 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Command
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -9,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
+    @Value("${tools.mixcr.license}")
+    private String license;
+
     public MixcrRunner(String dirPath, String inputsFolderPath,
                        String outputsFolderPath, ArrayList<File> inputDatasets,
                        String command, FileSystemManager fileSystemManager)
@@ -39,7 +43,7 @@ public class MixcrRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
-        String mixcrHostCommand = "docker run -e MI_LICENSE=\"I.eyJ2IjoxNjYyNzI5MTAxLCJlIjoxNjYyODIyOTc2LCJtIjoiNmI2MzY0OWEtNWVmOC00NzBmLTljYjQtNTMwY2QwMmZiYjFlIzdjZDdkMmQzMDdmZTQzNzc0MzcwZTM1OTc5NjQ0OGJkMmY4OGUzMGUyMDNmNzQ2NGI0N2E1ZDZlNWQ3ZWVhODgiLCJsIjoiRS1KQk9MVE9BTktaSEFHQVZLR0xHWUpaVEZKWUlYTERQUlVFV0hWQ01TVkdSWFVXQUQifQ==.CPECUVF.wq7x5xkGpbRCqTpVeMgYK2seydKber9vk9Fiae15KNwYeMTtu9BOjzPCWZxCkYzparTammLKKKIEtIKJyawIm9mhldj1rUJmnjGBWtV4SH2VNFYaYt96OKNCqsiZw5KsEiiH1PQ57D7AAlQMe3Rrvd8dWmjRfRt61d3E13o9C4MhR4FpozYMIVjmwO98ImtecvksrGcuCVyYCIw7dYA4JE7NBODxqY0JSKZl+bVzB3z7ZvTXTZ5B+ed4HrK2vkpJQoDyOaS6ymH/bLuxVcjAyDnwYoA5ytlSE8/Pv+3GhUg3ghvvBvvaWsRC69+sZxBRgNBrvO7afX5R+i4ED6JioA==\" --rm " +
+        String mixcrHostCommand = "docker run -e MI_LICENSE=\"" + license + "\" --rm " +
                 "    -m 4g " +
                 "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
                 "    -v " + outputsDirAbsolutePath + ":/work " +

@@ -3,10 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingOutputFiles;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
@@ -94,7 +91,7 @@ public class CreatedPipelineController
 
     @Operation(summary = "Creates a new CreatedPipeline object")
     @PostMapping("created_pipeline")
-    public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
+    public CreatedPipelineDTO create(@Parameter(description = "The new instance of CreatedPipeline to be created") @RequestBody @Valid CreatedPipelineDTO createdPipelineDTO) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         CreatedPipeline createdPipeline = createdPipelineMapper.createdPipelineDTOToCreatedPipeline(createdPipelineDTO);
         ArrayList<Dataset> inputDatasets = new ArrayList<>();
@@ -123,12 +120,16 @@ public class CreatedPipelineController
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
             throw e;
+        } catch (UnsupportedTool e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
+            throw e;
         }
 
         return newCreatedPipelineDTO;
     }
 
-    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline) throws ErrorCopyingInputFiles, TryingToDownloadFileWithoutUrl, ErrorRunningToolCommand
+    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline) throws ErrorCopyingInputFiles, TryingToDownloadFileWithoutUrl, ErrorRunningToolCommand, UnsupportedTool
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
         runPipeline(createdPipeline);
@@ -136,7 +137,7 @@ public class CreatedPipelineController
 
     @Async()
     @GetMapping("runPipelines")
-    public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
+    public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         createdPipeline = createdPipelineService.readAll().get(0);
         System.out.println("running pipeline");
@@ -167,6 +168,10 @@ public class CreatedPipelineController
         } catch (ErrorRunningToolCommand e)
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
+            throw e;
+        } catch (UnsupportedTool e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool");
             throw e;
         }
         ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();

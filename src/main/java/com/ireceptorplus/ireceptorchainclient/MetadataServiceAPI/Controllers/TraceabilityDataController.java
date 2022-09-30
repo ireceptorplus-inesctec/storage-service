@@ -7,10 +7,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.Blockchai
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.HyperledgerFabricAPI;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorComparingOutputs;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorCopyingInputFiles;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
-import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.TryingToDownloadFileWithoutUrl;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +68,7 @@ public class TraceabilityDataController
     @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
     @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
     @PostMapping("run")
-    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand
+    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
             DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
                     data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
@@ -99,6 +96,10 @@ public class TraceabilityDataController
             } catch (ErrorRunningToolCommand e)
             {
                 iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
+                throw e;
+            } catch (UnsupportedTool e)
+            {
+                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Unsupported tool.");
                 throw e;
             }
 
