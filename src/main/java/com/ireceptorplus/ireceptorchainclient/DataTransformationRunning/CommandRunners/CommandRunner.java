@@ -124,17 +124,12 @@ public abstract class CommandRunner
         runBashCommand(command);
     }
 
-    void runBashCommand(String command) throws ErrorRunningToolCommand
-    {
-        runBashCommand(command, System.getProperty("user.dir"));
-    }
-
     /**
      * This method runs a bash command. It can be a command to call a bash or nextflow script.
      *
      * @param command A String representing the command to be run.
      */
-    void runBashCommand(String command, String dirToRunCommandOn) throws ErrorRunningToolCommand
+    void runBashCommand(String command) throws ErrorRunningToolCommand
     {
         try
         {
@@ -158,7 +153,7 @@ public abstract class CommandRunner
                 process = Runtime.getRuntime().exec("cmd /c " + command);
             } else
             {
-                process = Runtime.getRuntime().exec("cd " + dirToRunCommandOn + " && " + command);
+                process = Runtime.getRuntime().exec(command);
             }
 
             StringBuilder output = getOutputFromProcess(process.getInputStream());
