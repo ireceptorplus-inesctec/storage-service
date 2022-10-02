@@ -118,7 +118,7 @@ public class CreatedPipelineController
 
         try
         {
-            enqueuePipelineForExecution(createdPipeline);
+            enqueuePipelineForExecution(newCreatedPipeline);
         } catch (TryingToDownloadFileWithoutUrl e)
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
@@ -150,7 +150,6 @@ public class CreatedPipelineController
     @GetMapping("runPipelines")
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
-        createdPipeline = createdPipelineService.readAll().get(0);
         System.out.println("running pipeline");
         ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
         Command commandModel = createdPipeline.getCommand();
