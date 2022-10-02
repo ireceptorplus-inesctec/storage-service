@@ -2,6 +2,7 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Command
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
@@ -15,9 +16,10 @@ public class MixcrRunner extends CommandRunner
 
     public MixcrRunner(String dirPath, String inputsFolderPath,
                        String outputsFolderPath, ArrayList<File> inputDatasets,
-                       String command, FileSystemManager fileSystemManager)
+                       String command, FileSystemManager fileSystemManager,
+                       ToolsConfigProperties toolsConfigProperties)
     {
-        super(dirPath, inputsFolderPath, outputsFolderPath, inputDatasets, command, fileSystemManager);
+        super(dirPath, inputsFolderPath, outputsFolderPath, inputDatasets, command, fileSystemManager, toolsConfigProperties);
     }
 
     @Override

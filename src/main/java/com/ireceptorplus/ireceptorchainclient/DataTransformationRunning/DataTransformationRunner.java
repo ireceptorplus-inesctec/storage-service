@@ -58,11 +58,13 @@ public class DataTransformationRunner
 
     ArrayList<java.io.File> outputDatasetFiles;
 
+    ToolsConfigProperties toolsConfigProperties;
+
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, String toolId,
                                     String inputFilesPath, String outputFilesPath,
-                                    FileSystemManager fileSystemManager)
+                                    FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties)
     {
         this.inputs = inputs;
         this.command = command;
@@ -71,18 +73,20 @@ public class DataTransformationRunner
         this.inputFilesPath = inputFilesPath;
         this.outputFilesPath = outputFilesPath;
         this.fileSystemManager = fileSystemManager;
+        this.toolsConfigProperties = toolsConfigProperties;
     }
 
     /**
      * This constructor should be used to run a pipeline using datasets that are not stored locally and need to be downloaded from other peers of the network.
-     *
-     * @param inputDatasets  An ArrayList containing metadata of the input datasets.
+     *  @param inputDatasets  An ArrayList containing metadata of the input datasets.
      * @param command         An instance of class Command representing the command that should be run to execute the pipeline.
      * @param outputDatasets An ArrayList containing metadata of the output datasets.
+     * @param toolsConfigProperties
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    String toolId, String inputFilesPath, FileSystemManager fileSystemManager)
+                                    String toolId, String inputFilesPath, FileSystemManager fileSystemManager,
+                                    ToolsConfigProperties toolsConfigProperties)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
@@ -91,6 +95,7 @@ public class DataTransformationRunner
         this.toolId = toolId;
         this.inputFilesPath = inputFilesPath;
         this.fileSystemManager = fileSystemManager;
+        this.toolsConfigProperties = toolsConfigProperties;
     }
 
     public ArrayList<DownloadbleFile> getOutputs()
@@ -111,10 +116,10 @@ public class DataTransformationRunner
         CommandRunner commandRunner;
         if (toolId.equals("MiXCR"))
             commandRunner = new MixcrRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
-                    inputs, command.getCommandString(), fileSystemManager);
+                    inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
         else if(toolId.equals("igblast"))
             commandRunner = new IgblastRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
-                    inputs, command.getCommandString(), fileSystemManager);
+                    inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
         else
         {
             throw new UnsupportedTool("Reference to unsupported tool: " + toolId);

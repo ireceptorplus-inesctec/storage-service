@@ -3,6 +3,7 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Command
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.ErrorRunningToolCommand;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,9 +35,14 @@ public abstract class CommandRunner
 
     FileSystemManager fileSystemManager;
 
+    protected String toolsContainersDir;
+
+    protected ToolsConfigProperties toolsConfigProperties;
+
     public CommandRunner(String dirPath, String inputsFolderPath,
                          String outputsFolderPath, ArrayList<File> inputDatasets,
-                         String command, FileSystemManager fileSystemManager)
+                         String command, FileSystemManager fileSystemManager,
+                         ToolsConfigProperties toolsConfigProperties)
     {
         this.dirPath = dirPath;
         this.inputsFolderPath = inputsFolderPath;
@@ -45,6 +51,7 @@ public abstract class CommandRunner
         this.command = command;
         this.fileSystemManager = fileSystemManager;
         this.outputDatasets = new ArrayList<>();
+        this.toolsConfigProperties = toolsConfigProperties;
     }
 
     public ArrayList<File> getOutputDatasets()
@@ -113,7 +120,13 @@ public abstract class CommandRunner
         String inputsFolder = organizeInputs();
         java.io.File outputsDir = new java.io.File(outputsFolderPath);
         outputsDir.mkdirs();
-        runBashCommand(buildHostCommandString(inputsFolder, outputsFolderPath));
+        String command = buildHostCommandString(inputsFolder, outputsFolderPath);
+        runBashCommand(command);
+    }
+
+    void runBashCommand(String command) throws ErrorRunningToolCommand
+    {
+        runBashCommand(command, System.getProperty("user.dir"));
     }
 
     /**
@@ -121,7 +134,7 @@ public abstract class CommandRunner
      *
      * @param command A String representing the command to be run.
      */
-    void runBashCommand(String command) throws ErrorRunningToolCommand
+    void runBashCommand(String command, String dirToRunCommandOn) throws ErrorRunningToolCommand
     {
         try
         {
@@ -145,7 +158,7 @@ public abstract class CommandRunner
                 process = Runtime.getRuntime().exec("cmd /c " + command);
             } else
             {
-                process = Runtime.getRuntime().exec(command);
+                process = Runtime.getRuntime().exec("cd " + dirToRunCommandOn + " && " + command);
             }
 
             StringBuilder output = getOutputFromProcess(process.getInputStream());

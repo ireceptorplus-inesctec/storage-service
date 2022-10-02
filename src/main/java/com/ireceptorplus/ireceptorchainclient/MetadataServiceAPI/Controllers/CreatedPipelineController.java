@@ -5,6 +5,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
@@ -73,7 +74,16 @@ public class CreatedPipelineController
     @Autowired
     private final CommandService commandService;
 
-    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper, ModelMapper modelMapper, CreatedPipelineService createdPipelineService, CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler, FileSystemManager fileSystemManager, DatasetService datasetService, DataProcessingService dataProcessingService, ProcessingStepService processingStepService, ToolService toolService, CommandService commandService)
+    @Autowired
+    private ToolsConfigProperties toolsConfigProperties;
+
+    public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
+                                     ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
+                                     CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler,
+                                     FileSystemManager fileSystemManager, DatasetService datasetService,
+                                     DataProcessingService dataProcessingService, ProcessingStepService processingStepService,
+                                     ToolService toolService, CommandService commandService,
+                                     ToolsConfigProperties toolsConfigProperties)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -87,6 +97,7 @@ public class CreatedPipelineController
         this.processingStepService = processingStepService;
         this.toolService = toolService;
         this.commandService = commandService;
+        this.toolsConfigProperties = toolsConfigProperties;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -153,7 +164,7 @@ public class CreatedPipelineController
         System.out.println("inputsPath: " + inputsPath);
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
                 command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, tool.getName(),
-                inputsPath, outputsPath, fileSystemManager);
+                inputsPath, outputsPath, fileSystemManager, toolsConfigProperties);
         try
         {
             runner.run();

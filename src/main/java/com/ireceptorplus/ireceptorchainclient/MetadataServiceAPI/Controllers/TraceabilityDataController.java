@@ -9,6 +9,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.VoteType;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTransformationRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
+import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,11 +31,14 @@ public class TraceabilityDataController
 
     FileSystemManager fileSystemManager;
 
+    ToolsConfigProperties toolsConfigProperties;
+
     @Autowired
-    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI, FileSystemManager fileSystemManager)
+    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI, FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties)
     {
         this.blockchainAPI = blockchainAPI;
         this.fileSystemManager = fileSystemManager;
+        this.toolsConfigProperties = toolsConfigProperties;
     }
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
@@ -72,7 +76,7 @@ public class TraceabilityDataController
     {
             DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
                     data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
-                    data.getCommand().getToolId(), data.getUuid(), fileSystemManager);
+                    data.getCommand().getToolId(), data.getUuid(), fileSystemManager, toolsConfigProperties);
 
             boolean outputsMatch;
             try
