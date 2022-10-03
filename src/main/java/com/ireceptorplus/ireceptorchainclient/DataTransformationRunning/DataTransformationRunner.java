@@ -106,8 +106,8 @@ public class DataTransformationRunner
     public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
-        String inputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "inputs");
-        String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "outputs");
+        inputFilesPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "inputs");
+        outputFilesPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "outputs");
 
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
