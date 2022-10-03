@@ -10,12 +10,23 @@ import java.util.stream.Collectors;
 
 public class IgblastRunner extends CommandRunner
 {
-    public IgblastRunner(String dirPath, String inputsFolderPath,
-                         String outputsFolderPath, ArrayList<File> inputDatasets,
+    public IgblastRunner(String dirPath, String pipelineId, ArrayList<File> inputDatasets,
                          String command, FileSystemManager fileSystemManager,
                          ToolsConfigProperties toolsConfigProperties)
     {
-        super(dirPath, inputsFolderPath, outputsFolderPath, inputDatasets, command, fileSystemManager, toolsConfigProperties);
+        super(dirPath, pipelineId, inputDatasets, command, fileSystemManager, toolsConfigProperties);
+    }
+
+    @Override
+    public String getInputFilesRelativePath()
+    {
+        return null;
+    }
+
+    @Override
+    public String getOutputFilesRelativePath()
+    {
+        return null;
     }
 
 
@@ -42,19 +53,13 @@ public class IgblastRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
-        String mixcrHostCommand = "docker run -e MI_LICENSE=\"" + toolsConfigProperties.getMixcrLicense() + "\" --rm " +
+        String igblastHostCommand = "docker run --rm -it $(docker build -q " + toolsConfigProperties.getIgblastDockerfileLocation() +  ") " +
                 "    -m 4g " +
                 "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
                 "    -v " + outputsDirAbsolutePath + ":/work " +
                 "    ghcr.io/milaboratory/mixcr/mixcr:latest " +
                 "    " + buildToolCommandString();
 
-        return mixcrHostCommand;
-    }
-
-    @Override
-    protected String getOutputsRelativePath()
-    {
-        return outputsFolderPath;
+        return igblastHostCommand;
     }
 }

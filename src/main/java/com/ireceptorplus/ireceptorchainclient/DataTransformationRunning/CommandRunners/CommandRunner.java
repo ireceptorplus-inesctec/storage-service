@@ -23,9 +23,7 @@ public abstract class CommandRunner
      */
     protected String dirPath;
 
-    protected String inputsFolderPath;
-
-    protected String outputsFolderPath;
+    protected String pipelineId;
 
     protected ArrayList<File> inputDatasets;
 
@@ -39,15 +37,13 @@ public abstract class CommandRunner
 
     protected ToolsConfigProperties toolsConfigProperties;
 
-    public CommandRunner(String dirPath, String inputsFolderPath,
-                         String outputsFolderPath, ArrayList<File> inputDatasets,
-                         String command, FileSystemManager fileSystemManager,
-                         ToolsConfigProperties toolsConfigProperties)
+    public CommandRunner(String dirPath, String pipelineId,
+                         ArrayList<File> inputDatasets, String command,
+                         FileSystemManager fileSystemManager,  ToolsConfigProperties toolsConfigProperties)
     {
         this.dirPath = dirPath;
-        this.inputsFolderPath = inputsFolderPath;
+        this.pipelineId = pipelineId;
         this.inputDatasets = inputDatasets;
-        this.outputsFolderPath = outputsFolderPath;
         this.command = command;
         this.fileSystemManager = fileSystemManager;
         this.outputDatasets = new ArrayList<>();
@@ -59,6 +55,15 @@ public abstract class CommandRunner
         return outputDatasets;
     }
 
+    public abstract String getInputFilesRelativePath();
+
+    /**
+     * This method returns the path in which the output datasets are stored.
+     * It is implemented by the derived class since different tools might place the output in different folders.
+     * @return A String representing the relative path of the output datasets.
+     */
+    public abstract String getOutputFilesRelativePath();
+
     /**
      * This method places the input files in the appropriate location that will then be fed to the tool.
      * By default, the method implementation provided by this class, places the files in directory allocated for this command to run, inside a folder named "data".
@@ -69,6 +74,7 @@ public abstract class CommandRunner
         new java.io.File(dirPath).mkdirs();
         for (File inputDataset : inputDatasets)
         {
+            String inputsFolderPath = getInputFilesRelativePath();
             String inputDatasetPath = fileSystemManager.getInputRelativePath(inputsFolderPath, inputDataset);
             java.io.File source = new java.io.File(inputDatasetPath);
             String destinationPath = fileSystemManager.getPathOfFileRelativeToPath(dirPath, inputDataset);
@@ -95,18 +101,12 @@ public abstract class CommandRunner
      */
     protected abstract String buildHostCommandString(String inputsPath, String outputsPath);
 
-    /**
-     * This method returns the path in which the output datasets are stored.
-     * It is implemented by the derived class since different tools might place the output in different folders.
-     * @return A String representing the relative path of the output datasets.
-     */
-    protected abstract String getOutputsRelativePath();
-
     public ArrayList<java.io.File> getOutputDatasetFiles()
     {
         ArrayList<java.io.File> outputDatasetFiles = new ArrayList<>();
         for (File outputDataset : outputDatasets)
         {
+            String outputsFolderPath = getOutputFilesRelativePath();
             String datasetPath = fileSystemManager.getPathOfFileRelativeToPath(outputsFolderPath, outputDataset);
             java.io.File datasetFile = new java.io.File(datasetPath);
             outputDatasetFiles.add(datasetFile);
@@ -118,6 +118,7 @@ public abstract class CommandRunner
     public void executeCommand() throws ErrorRunningToolCommand
     {
         String inputsFolder = organizeInputs();
+        String outputsFolderPath = getOutputFilesRelativePath();
         java.io.File outputsDir = new java.io.File(outputsFolderPath);
         outputsDir.mkdirs();
         String command = buildHostCommandString(inputsFolder, outputsFolderPath);

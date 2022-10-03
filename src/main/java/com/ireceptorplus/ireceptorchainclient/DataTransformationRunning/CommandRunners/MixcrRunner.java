@@ -3,7 +3,6 @@ package com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Command
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.File;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,12 +10,23 @@ import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
-    public MixcrRunner(String dirPath, String inputsFolderPath,
-                       String outputsFolderPath, ArrayList<File> inputDatasets,
+    public MixcrRunner(String dirPath, String pipelineId, ArrayList<File> inputDatasets,
                        String command, FileSystemManager fileSystemManager,
                        ToolsConfigProperties toolsConfigProperties)
     {
-        super(dirPath, inputsFolderPath, outputsFolderPath, inputDatasets, command, fileSystemManager, toolsConfigProperties);
+        super(dirPath, pipelineId, inputDatasets, command, fileSystemManager, toolsConfigProperties);
+    }
+
+    @Override
+    public String getInputFilesRelativePath()
+    {
+        return fileSystemManager.getPathOfFileRelativeToPath(dirPath, "inputs");
+    }
+
+    @Override
+    public String getOutputFilesRelativePath()
+    {
+        return fileSystemManager.getPathOfFileRelativeToPath(dirPath, "outputs");
     }
 
     @Override
@@ -50,11 +60,5 @@ public class MixcrRunner extends CommandRunner
                 "    " + buildToolCommandString();
 
         return mixcrHostCommand;
-    }
-
-    @Override
-    protected String getOutputsRelativePath()
-    {
-        return outputsFolderPath;
     }
 }

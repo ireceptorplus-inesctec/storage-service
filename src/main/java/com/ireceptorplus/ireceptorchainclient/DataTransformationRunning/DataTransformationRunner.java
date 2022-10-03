@@ -105,29 +105,26 @@ public class DataTransformationRunner
 
     public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
-        String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
-        inputFilesPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "inputs");
-        outputFilesPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "outputs");
-
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
         else
             copyDatasetsFromStorageFolderToProcessingDir();
-        //TODO map to appropriate runner
-        String inputsRelativePath = fileSystemManager.getInputsRelativePath(inputFilesPath);
-        String outputsRelativePath = fileSystemManager.getOutputsRelativePath(outputFilesPath);
+
+        String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
 
         CommandRunner commandRunner;
         if (toolId.equals("MiXCR"))
-            commandRunner = new MixcrRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
+            commandRunner = new MixcrRunner(processingFilesDirPrefix, pipelineId,
                     inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
         else if(toolId.equals("igblast"))
-            commandRunner = new IgblastRunner(inputFilesPath, inputsRelativePath, outputsRelativePath,
+            commandRunner = new IgblastRunner(processingFilesDirPrefix, pipelineId,
                     inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
         else
         {
             throw new UnsupportedTool("Reference to unsupported tool: " + toolId);
         }
+        this.inputFilesPath = commandRunner.getInputFilesRelativePath();
+        this.outputFilesPath = commandRunner.getOutputFilesRelativePath();
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
         {
