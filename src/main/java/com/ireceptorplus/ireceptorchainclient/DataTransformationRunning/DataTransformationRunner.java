@@ -47,6 +47,8 @@ public class DataTransformationRunner
     @Value("${peer.network.port}")
     private String peerPort;
 
+    private String pipelineId;
+
     @Autowired
     FileSystemManager fileSystemManager;
 
@@ -62,16 +64,14 @@ public class DataTransformationRunner
 
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
-                                    RunningMode runningMode, String toolId,
-                                    String inputFilesPath, String outputFilesPath,
+                                    RunningMode runningMode, Long pipelineId, String toolId,
                                     FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties)
     {
         this.inputs = inputs;
         this.command = command;
         this.runningMode = runningMode;
         this.toolId = toolId;
-        this.inputFilesPath = inputFilesPath;
-        this.outputFilesPath = outputFilesPath;
+        this.pipelineId = pipelineId.toString();
         this.fileSystemManager = fileSystemManager;
         this.toolsConfigProperties = toolsConfigProperties;
     }
@@ -85,7 +85,7 @@ public class DataTransformationRunner
      */
     public DataTransformationRunner(ArrayList<DownloadbleFile> inputDatasets, Command command,
                                     ArrayList<DownloadbleFile> outputDatasets, RunningMode runningMode,
-                                    String toolId, String inputFilesPath, FileSystemManager fileSystemManager,
+                                    String toolId, String pipelineId, FileSystemManager fileSystemManager,
                                     ToolsConfigProperties toolsConfigProperties)
     {
         this.inputs = new ArrayList<File>(inputDatasets);
@@ -93,7 +93,7 @@ public class DataTransformationRunner
         this.outputs = new ArrayList<>(outputDatasets);
         this.runningMode = runningMode;
         this.toolId = toolId;
-        this.inputFilesPath = inputFilesPath;
+        this.pipelineId = pipelineId;
         this.fileSystemManager = fileSystemManager;
         this.toolsConfigProperties = toolsConfigProperties;
     }
@@ -105,6 +105,10 @@ public class DataTransformationRunner
 
     public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
+        String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
+        String inputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "inputs");
+        String outputsPath = fileSystemManager.getPathOfFileRelativeToPath(processingFilesDirPrefix, "outputs");
+
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir();
         else

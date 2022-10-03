@@ -76,7 +76,7 @@ public class TraceabilityDataController
     {
             DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
                     data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
-                    data.getCommand().getToolId(), data.getUuid(), fileSystemManager, toolsConfigProperties);
+                    data.getCommand().getToolId(), data.getUuid(),fileSystemManager, toolsConfigProperties);
 
             boolean outputsMatch;
             try
