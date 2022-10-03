@@ -9,6 +9,8 @@ public class ToolsConfigProperties
 {
     protected String mixcrLicense;
 
+    protected String igblastDockerfileLocation;
+
     public ToolsConfigProperties()
     {
     }
@@ -21,5 +23,15 @@ public class ToolsConfigProperties
     public void setMixcrLicense(String mixcrLicense)
     {
         this.mixcrLicense = mixcrLicense;
+    }
+
+    public String getIgblastDockerfileLocation()
+    {
+        return igblastDockerfileLocation;
+    }
+
+    public void setIgblastDockerfileLocation(String igblastDockerfileLocation)
+    {
+        this.igblastDockerfileLocation = igblastDockerfileLocation;
     }
 }
