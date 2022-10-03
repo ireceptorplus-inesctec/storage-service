@@ -42,7 +42,7 @@ public class MixcrRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
-        String mixcrHostCommand = "docker run -e MI_LICENSE=\"" + toolsConfigProperties.getMixcrLicense() + "\" --rm " +
+        String mixcrHostCommand = "docker run -e MI_LICENSE=" + toolsConfigProperties.getMixcrLicense() + " --rm " +
                 "    -m 4g " +
                 "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
                 "    -v " + outputsDirAbsolutePath + ":/work " +
