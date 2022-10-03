@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 
 public class MixcrRunner extends CommandRunner
 {
-    @Value("${tools.mixcr.license}")
-    private String license;
-
     public MixcrRunner(String dirPath, String inputsFolderPath,
                        String outputsFolderPath, ArrayList<File> inputDatasets,
                        String command, FileSystemManager fileSystemManager,
@@ -45,7 +42,7 @@ public class MixcrRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
-        String mixcrHostCommand = "docker run -e MI_LICENSE=\"" + license + "\" --rm " +
+        String mixcrHostCommand = "docker run -e MI_LICENSE=\"" + toolsConfigProperties.getMixcrLicense() + "\" --rm " +
                 "    -m 4g " +
                 "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
                 "    -v " + outputsDirAbsolutePath + ":/work " +
