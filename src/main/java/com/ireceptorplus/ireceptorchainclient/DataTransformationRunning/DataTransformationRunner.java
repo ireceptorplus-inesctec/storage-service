@@ -54,8 +54,6 @@ public class DataTransformationRunner
 
     String toolId;
 
-    String inputFilesPath;
-
     String outputFilesPath;
 
     ArrayList<java.io.File> outputDatasetFiles;
@@ -105,12 +103,13 @@ public class DataTransformationRunner
 
     public void run() throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
-        if (runningMode == RunningMode.VERIFY)
-            downloadDatasetsToProcessingDir();
-        else
-            copyDatasetsFromStorageFolderToProcessingDir();
-
         String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
+
+        if (runningMode == RunningMode.VERIFY)
+            downloadDatasetsToProcessingDir(processingFilesDirPrefix);
+        else
+            copyDatasetsFromStorageFolderToProcessingDir(processingFilesDirPrefix);
+
 
         CommandRunner commandRunner;
         if (toolId.equals("MiXCR"))
@@ -123,7 +122,6 @@ public class DataTransformationRunner
         {
             throw new UnsupportedTool("Reference to unsupported tool: " + toolId);
         }
-        this.inputFilesPath = commandRunner.getInputFilesRelativePath();
         this.outputFilesPath = commandRunner.getOutputFilesRelativePath();
         commandRunner.executeCommand();
         if (runningMode == RunningMode.VERIFY)
@@ -167,8 +165,8 @@ public class DataTransformationRunner
     {
         for (File output : outputs)
         {
-            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(inputFilesPath, output);
-            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(inputFilesPath, output);
+            String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(outputFilesPath, output);
+            String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(outputFilesPath, output);
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
             try
             {
@@ -186,10 +184,9 @@ public class DataTransformationRunner
      * This method downloads the datasets and the script necessary to run the data processing.
      * The scripts are downloaded from their respective URLs which should point to other peers, instances of the iReceptorChain Storage Service (this application).
      */
-    protected void downloadDatasetsToProcessingDir() throws TryingToDownloadFileWithoutUrl
+    protected void downloadDatasetsToProcessingDir(String processingPath) throws TryingToDownloadFileWithoutUrl
     {
-        UUID uuid = UUID.randomUUID();
-        this.inputFilesPath = fileSystemManager.getProcessingPath(uuid.toString());
+        String inputFilesPath = processingPath;
         new java.io.File(inputFilesPath).mkdirs();
         ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
         FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, inputFilesPath);
@@ -212,8 +209,9 @@ public class DataTransformationRunner
         return inputsDownloadableFiles;
     }
 
-    protected void copyDatasetsFromStorageFolderToProcessingDir() throws ErrorCopyingInputFiles
+    protected void copyDatasetsFromStorageFolderToProcessingDir(String processingPath) throws ErrorCopyingInputFiles
     {
+        String inputFilesPath = processingPath;
         new java.io.File(inputFilesPath).mkdirs();
         String datasetsPath = fileSystemManager.getInputsRelativePath(inputFilesPath);
         new java.io.File(datasetsPath).mkdirs();
