@@ -7,9 +7,13 @@ WORKDIR /igblast/ncbi-igblast-1.19.0/database
 ADD https://ftp.ncbi.nih.gov/blast/executables/igblast/release/database/mouse_gl_VDJ.tar mouse_gl_VDJ.tar
 RUN tar -xvf mouse_gl_VDJ.tar
 
+WORKDIR /igblast/ncbi-igblast-1.19.0
+
 RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install -y --no-install-recommends git ca-certificates \
     && apt-get install -y --no-install-recommends git \
         ca-certificates \
         libxml2
+
+ENTRYPOINT ["/igblast/ncbi-igblast-1.19.0/bin/igblastn"]
