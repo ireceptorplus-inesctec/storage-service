@@ -25,7 +25,7 @@ values
     (
         '',
         'https://ncbi.github.io/igblast/',
-        'Igblast',
+        'IgBlast',
         'https://ftp.ncbi.nih.gov/blast/executables/igblast/release/1.20.0/ncbi-igblast-1.20.0-src.zip',
         '1.20.0'
     );
