@@ -54,8 +54,9 @@ public class IgblastRunner extends CommandRunner
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
         String dockerBuildCommand = "docker build -t igblast " + toolsConfigProperties.getIgblastDockerfileLocation();
-        String dockerRunCommand = "docker run --rm -m 4g igblast" +
+        String dockerRunCommand = "docker run --rm -m 4g" +
                 "    -v " + inputsDirAbsolutePath + ":/igblast/files:ro " +
+                "    igblast " +
                 "    " + buildToolCommandString();
 
         ArrayList<String> commands = new ArrayList<>();
