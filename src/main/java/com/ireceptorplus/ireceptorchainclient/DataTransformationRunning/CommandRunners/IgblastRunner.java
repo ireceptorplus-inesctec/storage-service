@@ -47,19 +47,21 @@ public class IgblastRunner extends CommandRunner
     }
 
     @Override
-    protected String buildHostCommandString(String inputsPath, String outputsPath)
+    protected ArrayList<String> buildHostCommandString(String inputsPath, String outputsPath)
     {
         String inputsDirAbsolutePath = new java.io.File(inputsPath).getAbsolutePath();
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
-        String igblastHostCommand = "docker run --rm -it $(docker build -q " + toolsConfigProperties.getIgblastDockerfileLocation() +  ") " +
-                "    -m 4g " +
-                "    -v " + inputsDirAbsolutePath + ":/raw:ro " +
-                "    -v " + outputsDirAbsolutePath + ":/work " +
-                "    ghcr.io/milaboratory/mixcr/mixcr:latest " +
+        String dockerBuildCommand = "docker build -t igblast " + toolsConfigProperties.getIgblastDockerfileLocation();
+        String dockerRunCommand = "docker run --rm -m 4g igblast" +
+                "    -v " + inputsDirAbsolutePath + ":/igblast/files:ro " +
                 "    " + buildToolCommandString();
 
-        return igblastHostCommand;
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add(dockerBuildCommand);
+        commands.add(dockerRunCommand);
+
+        return commands;
     }
 }

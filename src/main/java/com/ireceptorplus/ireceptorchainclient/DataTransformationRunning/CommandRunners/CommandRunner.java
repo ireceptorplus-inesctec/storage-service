@@ -98,8 +98,9 @@ public abstract class CommandRunner
      * In case the pipeline is to be run inside a container, this method returns the command that launches the container, for example.
      * @param inputsPath
      * @param outputsPath
+     * @return
      */
-    protected abstract String buildHostCommandString(String inputsPath, String outputsPath);
+    protected abstract ArrayList<String> buildHostCommandString(String inputsPath, String outputsPath);
 
     public ArrayList<java.io.File> getOutputDatasetFiles()
     {
@@ -121,8 +122,8 @@ public abstract class CommandRunner
         String outputsFolderPath = getOutputFilesRelativePath();
         java.io.File outputsDir = new java.io.File(outputsFolderPath);
         outputsDir.mkdirs();
-        String command = buildHostCommandString(inputsFolder, outputsFolderPath);
-        runBashCommand(command);
+        ArrayList<String> commands = buildHostCommandString(inputsFolder, outputsFolderPath);
+        runBashCommands(commands);
     }
 
 

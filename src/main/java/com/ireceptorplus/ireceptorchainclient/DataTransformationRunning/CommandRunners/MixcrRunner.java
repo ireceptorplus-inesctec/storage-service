@@ -46,7 +46,7 @@ public class MixcrRunner extends CommandRunner
     }
 
     @Override
-    protected String buildHostCommandString(String inputsPath, String outputsPath)
+    protected ArrayList<String> buildHostCommandString(String inputsPath, String outputsPath)
     {
         String inputsDirAbsolutePath = new java.io.File(inputsPath).getAbsolutePath();
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
@@ -59,6 +59,9 @@ public class MixcrRunner extends CommandRunner
                 "    ghcr.io/milaboratory/mixcr/mixcr:latest " +
                 "    " + buildToolCommandString();
 
-        return mixcrHostCommand;
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add(mixcrHostCommand);
+
+        return commands;
     }
 }
