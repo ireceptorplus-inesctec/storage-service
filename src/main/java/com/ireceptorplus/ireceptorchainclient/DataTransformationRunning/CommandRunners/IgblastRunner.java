@@ -20,13 +20,13 @@ public class IgblastRunner extends CommandRunner
     @Override
     public String getInputFilesRelativePath()
     {
-        return null;
+        return dirPath;
     }
 
     @Override
     public String getOutputFilesRelativePath()
     {
-        return null;
+        return dirPath;
     }
 
 

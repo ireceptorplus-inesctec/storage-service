@@ -115,7 +115,7 @@ public class DataTransformationRunner
         if (toolId.equals("MiXCR"))
             commandRunner = new MixcrRunner(processingFilesDirPrefix, pipelineId,
                     inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
-        else if(toolId.equals("igblast"))
+        else if(toolId.equals("IgBlast"))
             commandRunner = new IgblastRunner(processingFilesDirPrefix, pipelineId,
                     inputs, command.getCommandString(), fileSystemManager, toolsConfigProperties);
         else
