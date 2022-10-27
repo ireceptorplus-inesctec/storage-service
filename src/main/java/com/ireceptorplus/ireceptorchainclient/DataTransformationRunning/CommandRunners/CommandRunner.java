@@ -125,6 +125,21 @@ public abstract class CommandRunner
         runBashCommand(command);
     }
 
+
+    void runBashCommands(String command1, String command2) throws ErrorRunningToolCommand
+    {
+        runBashCommand(command1);
+        runBashCommand(command2);
+    }
+
+    void runBashCommands(ArrayList<String> commands) throws ErrorRunningToolCommand
+    {
+        for (String command : commands)
+        {
+            runBashCommand(command);
+        }
+    }
+
     /**
      * This method runs a bash command. It can be a command to call a bash or nextflow script.
      *
