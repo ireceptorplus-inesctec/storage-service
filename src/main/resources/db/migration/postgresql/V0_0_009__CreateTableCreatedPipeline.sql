@@ -7,4 +7,10 @@ create table created_pipeline
     state         int4,
     command_id    int8,
     primary key (id)
-)
+);
+
+create table created_pipeline_input_datasets
+(
+    created_pipeline_id int8 not null,
+    input_datasets_id   int8 not null
+);
