@@ -53,15 +53,26 @@ public class IgblastRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
+        String dockerCreateVolumeCommand = "docker volume create --name igblast-files-volume";
+        Stromg createContainerCommand = "docker container create --name igblast-container -v igblast-files-volume:/igblast/files";
+        String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + " igblast-files-volume:/igblast/files";
         String dockerBuildCommand = "docker build -t igblast " + toolsConfigProperties.getIgblastDockerfileLocation();
         String dockerRunCommand = "docker run --rm -m 4g" +
-                "    -v " + inputsDirAbsolutePath + ":/igblast/files:ro " +
+                "    -v igblast-files-volume:/igblast/files:ro " +
                 "    igblast " +
-                "    " + buildToolCommandString();
+                "  -germline_db_V database/mouse_gl_V -germline_db_J database/mouse_gl_J -germline_db_D database/mouse_gl_D -organism mouse -query myseq -auxiliary_data optional_file/mouse_gl.aux -show_translation -outfmt 3  ";
 
         ArrayList<String> commands = new ArrayList<>();
+        commands.add(dockerCreateVolumeCommand);
+        commands.add(createContainerCommand);
+        commands.add(copyFilesCommand);
         commands.add(dockerBuildCommand);
         commands.add(dockerRunCommand);
+        for (String command : commands)
+        {
+            System.out.println(command);
+        }
+
 
         return commands;
     }
