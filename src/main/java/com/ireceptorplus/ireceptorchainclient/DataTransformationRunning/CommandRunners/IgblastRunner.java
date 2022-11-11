@@ -61,6 +61,7 @@ public class IgblastRunner extends CommandRunner
                 "    -v igblast-files-volume:/igblast/files:ro " +
                 "    igblast " +
                 "  -germline_db_V database/mouse_gl_V -germline_db_J database/mouse_gl_J -germline_db_D database/mouse_gl_D -organism mouse -query myseq -auxiliary_data optional_file/mouse_gl.aux -show_translation -outfmt 3  ";
+        String removeContainerCommand = "docker rm igblast-container";
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add(dockerBuildCommand);
@@ -68,6 +69,7 @@ public class IgblastRunner extends CommandRunner
         commands.add(createContainerCommand);
         commands.add(copyFilesCommand);
         commands.add(dockerRunCommand);
+        commands.add(removeContainerCommand);
         for (String command : commands)
         {
             System.out.println(command);
