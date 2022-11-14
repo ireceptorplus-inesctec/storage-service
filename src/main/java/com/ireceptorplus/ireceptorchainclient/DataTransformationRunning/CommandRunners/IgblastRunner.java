@@ -59,7 +59,7 @@ public class IgblastRunner extends CommandRunner
         String igblastVolumeName = "igblast-files-volume";
         String igblastContainerName = "igblast-container";
         String dockerBuildCommand = "docker build -t " + igblastContainerTag + " " + toolsConfigProperties.getIgblastDockerfileLocation();
-        String dockerCreateVolumeCommand = "docker volume create --name " + igblastVolumeName;
+        String createVolumeCommand = "docker volume create --name " + igblastVolumeName;
         String createContainerCommand = "docker container create --name " + igblastContainerName + " -v " + igblastVolumeName + ":/igblast/files igblast";
         String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + "/. " + igblastContainerName + ":/igblast/files";
         String inputFilePathInsideIgblastContainer = "/igblast/files" + "/" + inputFileName;
@@ -72,7 +72,7 @@ public class IgblastRunner extends CommandRunner
         ArrayList<String> commands = new ArrayList<>();
         commands.add(removeContainerCommand);
         commands.add(dockerBuildCommand);
-        commands.add(dockerCreateVolumeCommand);
+        commands.add(createVolumeCommand);
         commands.add(createContainerCommand);
         commands.add(copyFilesCommand);
         commands.add(dockerRunCommand);
