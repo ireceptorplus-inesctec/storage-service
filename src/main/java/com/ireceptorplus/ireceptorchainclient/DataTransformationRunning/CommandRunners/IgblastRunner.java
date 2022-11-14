@@ -55,16 +55,19 @@ public class IgblastRunner extends CommandRunner
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
         File inputFile = inputDatasets.get(0);
         String inputFileName = fileSystemManager.getFileName(inputFile);
-        String dockerBuildCommand = "docker build -t igblast " + toolsConfigProperties.getIgblastDockerfileLocation();
-        String dockerCreateVolumeCommand = "docker volume create --name igblast-files-volume";
-        String createContainerCommand = "docker container create --name igblast-container -v igblast-files-volume:/igblast/files igblast";
-        String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + "/. igblast-container:/igblast/files";
+        String igblastContainerTag = "igblast";
+        String igblastVolumeName = "igblast-files-volume";
+        String igblastContainerName = "igblast-container";
+        String dockerBuildCommand = "docker build -t " + igblastContainerTag + " " + toolsConfigProperties.getIgblastDockerfileLocation();
+        String dockerCreateVolumeCommand = "docker volume create --name " + igblastVolumeName;
+        String createContainerCommand = "docker container create --name " + igblastContainerName + " -v " + igblastVolumeName + ":/igblast/files igblast";
+        String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + "/. " + igblastContainerName + ":/igblast/files";
         String inputFilePathInsideIgblastContainer = "/igblast/files" + "/" + inputFileName;
         String dockerRunCommand = "docker run --rm -m 4g" +
-                "   -v igblast-files-volume:/igblast/files:ro " +
-                "   igblast " +
+                "   -v " + igblastVolumeName + ":/igblast/files:ro " +
+                "   " + igblastContainerName + " " +
                 command + " -query " + inputFilePathInsideIgblastContainer;
-        String removeContainerCommand = "docker rm -f igblast-container";
+        String removeContainerCommand = "docker rm -f " + igblastContainerName;
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add(removeContainerCommand);
