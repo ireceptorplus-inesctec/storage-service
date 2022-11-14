@@ -37,7 +37,7 @@ public class IgblastRunner extends CommandRunner
     @Override
     protected String buildToolCommandString()
     {
-        return "";
+        return command;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class IgblastRunner extends CommandRunner
         String dockerRunCommand = "docker run --rm -m 4g" +
                 "   -v " + igblastVolumeName + ":/igblast/files:ro " +
                 "   " + igblastContainerName + " " +
-                command + " -query " + inputFilePathInsideIgblastContainer;
+                buildToolCommandString() + " -query " + inputFilePathInsideIgblastContainer;
         String removeContainerCommand = "docker rm -f " + igblastContainerName;
 
         ArrayList<String> commands = new ArrayList<>();
