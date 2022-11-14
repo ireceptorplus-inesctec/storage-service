@@ -73,6 +73,10 @@ public class IgblastRunner extends CommandRunner
             System.out.println(command);
         }
 
+        String outputDatasetUuid = UUID.randomUUID().toString();
+        String outputDatasetFileExtension = "fasta";
+        File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
+        outputDatasets.add(outputFile);
 
         return commands;
     }
