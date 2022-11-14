@@ -49,7 +49,7 @@ insert into Command (
 )
 values
     (
-        '-germline_db_V database/mouse_gl_V -germline_db_J database/mouse_gl_J -germline_db_D database/mouse_gl_D -organism mouse -query myseq -auxiliary_data optional_file/mouse_gl.aux -show_translation -outfmt 3',
+        '-germline_db_V database/mouse_gl_V -germline_db_J database/mouse_gl_J -germline_db_D database/mouse_gl_D -organism mouse -auxiliary_data optional_file/mouse_gl.aux -show_translation -outfmt 3',
         '2'
     );
 
