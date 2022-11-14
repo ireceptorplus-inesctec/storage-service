@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 
 public class IgblastRunner extends CommandRunner
 {
+    private static final String igblastContainerTag = "igblast";
+    private static final String igblastVolumeName = "igblast-files-volume";
+    private static final String igblastContainerName = "igblast-container";
+
     public IgblastRunner(String dirPath, String pipelineId, ArrayList<File> inputDatasets,
                          String command, FileSystemManager fileSystemManager,
                          ToolsConfigProperties toolsConfigProperties)
@@ -55,9 +59,6 @@ public class IgblastRunner extends CommandRunner
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
         File inputFile = inputDatasets.get(0);
         String inputFileName = fileSystemManager.getFileName(inputFile);
-        String igblastContainerTag = "igblast";
-        String igblastVolumeName = "igblast-files-volume";
-        String igblastContainerName = "igblast-container";
         String dockerBuildCommand = "docker build -t " + igblastContainerTag + " " + toolsConfigProperties.getIgblastDockerfileLocation();
         String createVolumeCommand = "docker volume create --name " + igblastVolumeName;
         String createContainerCommand = "docker container create --name " + igblastContainerName + " -v " + igblastVolumeName + ":/igblast/files igblast";
