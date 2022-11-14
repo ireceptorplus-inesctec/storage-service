@@ -47,6 +47,13 @@ public class IgblastRunner extends CommandRunner
         String outputsDirAbsolutePath = new java.io.File(outputsPath).getAbsolutePath();
         System.out.println("inputsDirAbsolutePath: " + inputsDirAbsolutePath);
         System.out.println("outputsDirAbsolutePath: " + outputsDirAbsolutePath);
+
+        String outputDatasetUuid = UUID.randomUUID().toString();
+        String outputDatasetFileExtension = "fasta";
+        File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
+        String outputFileName = fileSystemManager.getFileName(outputFile);
+        outputDatasets.add(outputFile);
+
         File inputFile = inputDatasets.get(0);
         String inputFileName = fileSystemManager.getFileName(inputFile);
         String dockerBuildCommand = "docker build -t " + igblastContainerTag + " " + toolsConfigProperties.getIgblastDockerfileLocation();
