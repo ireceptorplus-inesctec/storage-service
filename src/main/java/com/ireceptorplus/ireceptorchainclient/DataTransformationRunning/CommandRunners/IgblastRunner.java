@@ -62,9 +62,9 @@ public class IgblastRunner extends CommandRunner
         String inputFilePathInsideIgblastContainer = "/igblast/files" + "/" + inputFileName;
         String dockerRunCommand = "docker run --rm -m 4g" +
                 "    -v igblast-files-volume:/igblast/files:ro " +
-                "    igblast " +
+                "   igblast " +
                 "  -germline_db_V database/mouse_gl_V -germline_db_J database/mouse_gl_J -germline_db_D database/mouse_gl_D -organism mouse -query " + inputFilePathInsideIgblastContainer + " -auxiliary_data optional_file/mouse_gl.aux -show_translation -outfmt 3  ";
-        String removeContainerCommand = "docker rm igblast-container";
+        String removeContainerCommand = "docker rm -f igblast-container";
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add(removeContainerCommand);
