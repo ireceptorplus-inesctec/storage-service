@@ -37,17 +37,7 @@ public class IgblastRunner extends CommandRunner
     @Override
     protected String buildToolCommandString()
     {
-        //TODO fix hard-coded values
-        String datasetsString = inputDatasets.stream().map(dataset -> "/bbx/mnt/input/" + fileSystemManager.getFileName(dataset)).collect(Collectors.joining(" "));
-        datasetsString += " ";
-        String outputDatasetUuid = UUID.randomUUID().toString();
-        String outputDatasetName = outputDatasetUuid;
-        String outputDatasetFileExtension = "vdjca";
-        File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
-        outputDatasets.add(outputFile);
-        datasetsString += fileSystemManager.getFileName(outputFile);
-
-        return "" + command + " " + datasetsString + " --species hs";
+        return "";
     }
 
     @Override
