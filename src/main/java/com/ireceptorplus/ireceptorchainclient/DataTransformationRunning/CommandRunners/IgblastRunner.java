@@ -61,14 +61,15 @@ public class IgblastRunner extends CommandRunner
         String createContainerCommand = "docker container create --name " + igblastContainerName + " -v " + igblastVolumeName + ":/igblast/files igblast";
         String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + "/. " + igblastContainerName + ":/igblast/files";
         String inputFilePathInsideIgblastContainer = "/igblast/files" + "/" + inputFileName;
-        String dockerRunCommand = "docker run -m 4g --name " + igblastContainerName + "-run" +
+        String igblastContainerRunName = igblastContainerName + "-run";
+        String dockerRunCommand = "docker run -m 4g --name " + igblastContainerRunName +
                 "   -v " + igblastVolumeName + ":/igblast/files " +
                 "   " + igblastContainerTag + " " +
                 buildToolCommandString() + " -query " + inputFilePathInsideIgblastContainer + " " +
                 "   -out /igblast/files/" + outputFileName;
-        String copyOutputFileToOutputsDir = "docker cp " + igblastContainerName + "-run" + ":/igblast/files/" + outputFileName + " " + outputsDirAbsolutePath;
+        String copyOutputFileToOutputsDir = "docker cp " + igblastContainerRunName + ":/igblast/files/" + outputFileName + " " + outputsDirAbsolutePath;
         String removeContainerCommand = "docker rm -f " + igblastContainerName;
-        String removeContainerRunCommand = "docker rm -f " + igblastContainerName + "-run";
+        String removeContainerRunCommand = "docker rm -f " + igblastContainerRunName;
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add(removeContainerCommand);
