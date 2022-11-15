@@ -268,6 +268,7 @@ public class CreatedPipelineController
         processingStep.setDescription(createdPipeline.getDescription());
         processingStep.setCreationDate(new Date());
         processingStep.setStepOrder(Long.valueOf(1));
+        processingStep.setBlockchainState(BlockchainSyncState.NOT_SUBMITTED);
         ArrayList<ProcessingStep> processingSteps = new ArrayList<>();
         processingSteps.add(processingStep);
         DataProcessing dataProcessing = new DataProcessing();
