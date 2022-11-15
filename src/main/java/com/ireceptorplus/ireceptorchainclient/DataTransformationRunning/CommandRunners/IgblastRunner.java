@@ -61,29 +61,30 @@ public class IgblastRunner extends CommandRunner
         String createContainerCommand = "docker container create --name " + igblastContainerName + " -v " + igblastVolumeName + ":/igblast/files igblast";
         String copyFilesCommand = "docker cp " + inputsDirAbsolutePath + "/. " + igblastContainerName + ":/igblast/files";
         String inputFilePathInsideIgblastContainer = "/igblast/files" + "/" + inputFileName;
-        String dockerRunCommand = "docker run --rm -m 4g" +
-                "   -v " + igblastVolumeName + ":/igblast/files:ro " +
+        String dockerRunCommand = "docker run -m 4g --name " + igblastContainerName + "-run" +
+                "   -v " + igblastVolumeName + ":/igblast/files " +
                 "   " + igblastContainerTag + " " +
-                buildToolCommandString() + " -query " + inputFilePathInsideIgblastContainer;
+                buildToolCommandString() + " -query " + inputFilePathInsideIgblastContainer + " " +
+                "   -out /igblast/files/" + outputFileName;
+        String copyOutputFileToOutputsDir = "docker cp " + igblastContainerName + "-run" + ":/igblast/files/" + outputFileName + " " + outputsDirAbsolutePath;
         String removeContainerCommand = "docker rm -f " + igblastContainerName;
+        String removeContainerRunCommand = "docker rm -f " + igblastContainerName + "-run";
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add(removeContainerCommand);
+        commands.add(removeContainerRunCommand);
         commands.add(dockerBuildCommand);
         commands.add(createVolumeCommand);
         commands.add(createContainerCommand);
         commands.add(copyFilesCommand);
         commands.add(dockerRunCommand);
+        commands.add(copyOutputFileToOutputsDir);
         commands.add(removeContainerCommand);
+        commands.add(removeContainerRunCommand);
         for (String command : commands)
         {
             System.out.println(command);
         }
-
-        String outputDatasetUuid = UUID.randomUUID().toString();
-        String outputDatasetFileExtension = "fasta";
-        File outputFile = new File(outputDatasetUuid, outputDatasetFileExtension);
-        outputDatasets.add(outputFile);
 
         return commands;
     }
