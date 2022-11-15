@@ -39,7 +39,7 @@ public class ProcessingStep
     private Date creationDate;
 
     @Enumerated(EnumType.ORDINAL)
-    private ProcessingStepBlockchainState blockchainState;
+    private BlockchainSyncState blockchainState;
 
     public ProcessingStep()
     {
@@ -135,11 +135,11 @@ public class ProcessingStep
         this.creationDate = creationDate;
     }
 
-    public ProcessingStepBlockchainState getBlockchainState() {
+    public BlockchainSyncState getBlockchainState() {
         return blockchainState;
     }
 
-    public void setBlockchainState(ProcessingStepBlockchainState state) {
+    public void setBlockchainState(BlockchainSyncState state) {
         this.blockchainState = state;
     }
 }

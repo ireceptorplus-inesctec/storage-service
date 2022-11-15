@@ -1,12 +1,7 @@
 package com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Command;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.DataProcessing;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStepBlockchainState;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.BlockchainSyncState;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -35,7 +30,7 @@ public class ProcessingStepDTO extends DTOWithId
 
     private Date creationDate;
 
-    private ProcessingStepBlockchainState blockchainState;
+    private BlockchainSyncState blockchainState;
 
     public ProcessingStepDTO()
     {
@@ -111,12 +106,12 @@ public class ProcessingStepDTO extends DTOWithId
         this.creationDate = creationDate;
     }
 
-    public ProcessingStepBlockchainState getBlockchainState()
+    public BlockchainSyncState getBlockchainState()
     {
         return blockchainState;
     }
 
-    public void setBlockchainState(ProcessingStepBlockchainState blockchainState)
+    public void setBlockchainState(BlockchainSyncState blockchainState)
     {
         this.blockchainState = blockchainState;
     }
