@@ -53,7 +53,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     @Test
     public void initBlockchainTestAccounts()
     {
-        hyperledgerWalletDetails = new HyperledgerWalletDetails("wallet-creator", "creator");
+        hyperledgerWalletDetails = new HyperledgerWalletDetails("./wallets/wallet-creator", "creator");
         try {
             enrollAdmin();
             registerUser();
@@ -93,7 +93,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     @Test
     public void createTraceabilityDataEntry() throws BlockchainAPIException
     {
-        hyperledgerWalletDetails = new HyperledgerWalletDetails("wallet-creator", "creator");
+        hyperledgerWalletDetails = new HyperledgerWalletDetails("./wallets/wallet-creator", "creator");
         initBlockchainTestAccounts();
         createTestTraceabilityDataEntry();
         List<TraceabilityDataReturnType> dataReturnTypeList = getTraceabilityDataAwaitingValidation();
