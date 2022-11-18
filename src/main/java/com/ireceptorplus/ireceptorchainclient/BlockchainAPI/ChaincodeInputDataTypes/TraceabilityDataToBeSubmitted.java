@@ -29,6 +29,10 @@ public class TraceabilityDataToBeSubmitted
      */
     protected Double additionalValue;
 
+    public TraceabilityDataToBeSubmitted()
+    {
+    }
+
     public TraceabilityDataToBeSubmitted(ArrayList<DownloadbleFile> inputDatasets, Command command, ArrayList<DownloadbleFile> outputDatasets)
     {
         this.inputDatasets = inputDatasets;
