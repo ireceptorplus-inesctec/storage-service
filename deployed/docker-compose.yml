@@ -23,6 +23,7 @@ services:
       - ./processingFiles:/storage/processingFiles
       - ../tools-containers:/storage/tools-containers
       - ../wallets:/storage/wallets
+      - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:
