@@ -12,6 +12,12 @@ RUN dnf config-manager --add-repo https://download.docker.com/linux/fedora/docke
 RUN dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 RUN systemctl enable docker
 
+RUN yum install -y \
+	libxcrypt-compat \
+	libnsl \
+	procps \
+	dash
+
 
 WORKDIR /storage
 
