@@ -31,9 +31,14 @@ services:
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - test
 
 networks:
   default:
+
+  test:
+    name: fabric_test
 
   apache_ireceptor-network:
     external: true
