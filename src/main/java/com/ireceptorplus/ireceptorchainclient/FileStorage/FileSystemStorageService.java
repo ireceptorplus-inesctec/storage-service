@@ -1,7 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.FileStorage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -82,11 +81,9 @@ public class FileSystemStorageService implements StorageService {
 	public String computeSHA256ChecksumOfFile(String filename)
 	{
 		File file = new File(load(filename).toString());
-		MessageDigest shaDigest;
 		try
 		{
-			shaDigest = MessageDigest.getInstance("SHA-256");
-			return FileUtils.getFileChecksum(shaDigest, file);
+			return FileUtils.getFileSHA256Checksum(file);
 		} catch (NoSuchAlgorithmException e)
 		{
 			throw new StorageException("Error computing SHA256 checksum of file: " + filename);

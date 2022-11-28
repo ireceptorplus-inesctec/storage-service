@@ -4,9 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class FileUtils
 {
+    public static String getFileSHA256Checksum(File file) throws IOException, NoSuchAlgorithmException
+    {
+        MessageDigest shaDigest = MessageDigest.getInstance("SHA-256");
+        return getFileChecksum(shaDigest, file);
+    }
+
     public static String getFileChecksum(MessageDigest digest, File file) throws IOException
     {
         //Get file input stream for reading the file content
