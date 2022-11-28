@@ -8,16 +8,17 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandR
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.MixcrRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
+import com.ireceptorplus.ireceptorchainclient.Utils.FileUtils;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class DataTransformationRunner
 {
@@ -37,7 +38,13 @@ public class DataTransformationRunner
     /**
      * The outputs which are yield when the script is applied to the inputs.
      */
-    protected ArrayList<DownloadbleFile> outputs;
+    protected ArrayList<File> outputs;
+
+    /**
+     * The expected outputs for the processing.
+     * This is used when the processing is a verification of a previous processing, otherwise empty.
+     */
+    protected ArrayList<DownloadbleFile> expectedOutputs;
 
     protected RunningMode runningMode;
 
@@ -95,7 +102,7 @@ public class DataTransformationRunner
         this.toolsConfigProperties = toolsConfigProperties;
     }
 
-    public ArrayList<DownloadbleFile> getOutputs()
+    public ArrayList<File> getOutputs()
     {
         return outputs;
     }
@@ -135,22 +142,7 @@ public class DataTransformationRunner
         }
         ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
         outputDatasetFiles = commandRunner.getOutputDatasetFiles();
-        ArrayList<DownloadbleFile> outputsMetadata = buildOutputMetadata(outputDatasets);
-        this.outputs = new ArrayList<>(outputsMetadata);
-    }
-
-    public ArrayList<DownloadbleFile> buildOutputMetadata(ArrayList<File> outputDatasets)
-    {
-        ArrayList<DownloadbleFile> filesMetadata = new ArrayList<>();
-        for (File outputDataset : outputDatasets)
-        {
-            String uuid = outputDataset.getUuid();
-            String url = fileUrlBuilder.buildFromUuid(uuid);
-            DownloadbleFile downloadbleFile = new DownloadbleFile(outputDataset, url);
-            filesMetadata.add(downloadbleFile);
-        }
-
-        return filesMetadata;
+        this.outputs = outputDatasets;
     }
 
     /**
@@ -190,7 +182,7 @@ public class DataTransformationRunner
         ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
         FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, inputFilesPath);
         inputsDownloader.downloadFilesToDir();
-        FileDownloader outputsDownloader = new FileDownloader(outputs, fileSystemManager.getExpectedOutputsRelativePath(inputFilesPath));
+        FileDownloader outputsDownloader = new FileDownloader(expectedOutputs, fileSystemManager.getExpectedOutputsRelativePath(inputFilesPath));
         outputsDownloader.downloadFilesToDir();
     }
 

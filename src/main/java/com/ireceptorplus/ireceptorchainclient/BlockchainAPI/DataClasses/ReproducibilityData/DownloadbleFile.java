@@ -20,12 +20,6 @@ public class DownloadbleFile extends File
         this.hashValue = hashValue;
     }
 
-    public DownloadbleFile(File file, String url)
-    {
-        super(file.getUuid(), file.getExtension());
-        this.url = url;
-    }
-
     public DownloadbleFile(File file, String url, String hashValue)
     {
         super(file.getUuid(), file.getExtension());

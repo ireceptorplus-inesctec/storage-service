@@ -186,7 +186,7 @@ public class CreatedPipelineController
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool");
             throw e;
         }
-        ArrayList<DownloadbleFile> outputsMetadata = runner.getOutputs();
+        ArrayList<File> outputsMetadata = runner.getOutputs();
         ArrayList<java.io.File> outputDatasetFiles = runner.getOutputDatasetFiles();
         try
         {
@@ -203,7 +203,7 @@ public class CreatedPipelineController
      * This method copies outputs to the datasets dir.
      * This will ensure other peers can access the datasets if they want to run the pipeline.
      */
-    private void copyOutputsToDatasetsDir(ArrayList<DownloadbleFile> outputDatasets,
+    private void copyOutputsToDatasetsDir(ArrayList<File> outputDatasets,
                                           ArrayList<java.io.File> outputDatasetFiles) throws ErrorCopyingOutputFiles
     {
         for (int i = 0; i < outputDatasets.size() && i < outputDatasetFiles.size(); i++)
@@ -252,10 +252,10 @@ public class CreatedPipelineController
         }
     }
 
-    private void createEntitiesOnDb(ArrayList<DownloadbleFile> outputsMetadata, CreatedPipeline createdPipeline)
+    private void createEntitiesOnDb(ArrayList<File> outputsMetadata, CreatedPipeline createdPipeline)
     {
         ArrayList<Dataset> outputDatasets = new ArrayList<>();
-        for (DownloadbleFile downloadbleFile : outputsMetadata)
+        for (File downloadbleFile : outputsMetadata)
         {
             Dataset dataset = new Dataset();
             dataset.setCreationDate(new Date());
