@@ -26,6 +26,8 @@ public class DatasetDTO extends DTOWithId
 
     private String url;
 
+    private String sha256Checksum;
+
     public DatasetDTO()
     {
     }
@@ -98,5 +100,15 @@ public class DatasetDTO extends DTOWithId
     public void setUrl(String url)
     {
         this.url = url;
+    }
+
+    public String getSha256Checksum()
+    {
+        return sha256Checksum;
+    }
+
+    public void setSha256Checksum(String sha256Checksum)
+    {
+        this.sha256Checksum = sha256Checksum;
     }
 }

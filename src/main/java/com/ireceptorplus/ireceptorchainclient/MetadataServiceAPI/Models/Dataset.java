@@ -42,6 +42,9 @@ public class Dataset
     @Column
     private String url;
 
+    @Column
+    private String sha256Checksum;
+
     public Long getId()
     {
         return id;
@@ -120,5 +123,15 @@ public class Dataset
     public void setUrl(String url)
     {
         this.url = url;
+    }
+
+    public String getSha256Checksum()
+    {
+        return sha256Checksum;
+    }
+
+    public void setSha256Checksum(String sha256Checksum)
+    {
+        this.sha256Checksum = sha256Checksum;
     }
 }
