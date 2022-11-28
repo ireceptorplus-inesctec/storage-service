@@ -6,6 +6,7 @@ create table dataset
     extension          varchar(255),
     name               varchar(255),
     original_file_name varchar(255),
+    sha256checksum     varchar(255),
     url                varchar(255),
     uuid               uuid,
     primary key (id)
