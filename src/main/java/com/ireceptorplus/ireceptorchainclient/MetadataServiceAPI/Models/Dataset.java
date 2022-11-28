@@ -39,10 +39,10 @@ public class Dataset
     @Column
     private Date creationDate;
 
-    @Column
+    @Column(nullable = false)
     private String url;
 
-    @Column
+    @Column(nullable = false)
     private String sha256Checksum;
 
     public Long getId()
