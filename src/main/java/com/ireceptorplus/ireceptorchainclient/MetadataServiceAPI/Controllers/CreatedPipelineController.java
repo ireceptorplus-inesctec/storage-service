@@ -8,6 +8,7 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSyst
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.CreatedPipelineMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.*;
@@ -77,13 +78,17 @@ public class CreatedPipelineController
     @Autowired
     private ToolsConfigProperties toolsConfigProperties;
 
+    @Autowired
+    protected FileUrlBuilder fileUrlBuilder;
+
+
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
                                      CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler,
                                      FileSystemManager fileSystemManager, DatasetService datasetService,
                                      DataProcessingService dataProcessingService, ProcessingStepService processingStepService,
                                      ToolService toolService, CommandService commandService,
-                                     ToolsConfigProperties toolsConfigProperties)
+                                     ToolsConfigProperties toolsConfigProperties, FileUrlBuilder fileUrlBuilder)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -98,6 +103,7 @@ public class CreatedPipelineController
         this.toolService = toolService;
         this.commandService = commandService;
         this.toolsConfigProperties = toolsConfigProperties;
+        this.fileUrlBuilder = fileUrlBuilder;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -159,7 +165,7 @@ public class CreatedPipelineController
 
         DataTransformationRunner runner = new DataTransformationRunner(inputDatasetFiles,
                 command, DataTransformationRunner.RunningMode.COMPUTE_OUTPUTS, createdPipeline.getId(), tool.getName(),
-                fileSystemManager, toolsConfigProperties);
+                fileSystemManager, toolsConfigProperties, fileUrlBuilder);
         try
         {
             runner.run();

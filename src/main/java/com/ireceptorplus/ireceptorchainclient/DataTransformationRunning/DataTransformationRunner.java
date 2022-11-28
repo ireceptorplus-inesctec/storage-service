@@ -41,11 +41,8 @@ public class DataTransformationRunner
 
     protected RunningMode runningMode;
 
-    @Value("${peer.network.ipAddress}")
-    private String peerIpAddr;
-
-    @Value("${peer.network.port}")
-    private String peerPort;
+    @Autowired
+    protected FileUrlBuilder fileUrlBuilder;
 
     private String pipelineId;
 
@@ -63,7 +60,8 @@ public class DataTransformationRunner
 
     public DataTransformationRunner(ArrayList<File> inputs, Command command,
                                     RunningMode runningMode, Long pipelineId, String toolId,
-                                    FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties)
+                                    FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties,
+                                    FileUrlBuilder fileUrlBuilder)
     {
         this.inputs = inputs;
         this.command = command;
@@ -72,6 +70,7 @@ public class DataTransformationRunner
         this.pipelineId = pipelineId.toString();
         this.fileSystemManager = fileSystemManager;
         this.toolsConfigProperties = toolsConfigProperties;
+        this.fileUrlBuilder = fileUrlBuilder;
     }
 
     /**
@@ -146,7 +145,7 @@ public class DataTransformationRunner
         for (File outputDataset : outputDatasets)
         {
             String uuid = outputDataset.getUuid();
-            String url = FileUrlBuilder.buildFromUuid(peerIpAddr, peerPort, uuid);
+            String url = fileUrlBuilder.buildFromUuid(uuid);
             DownloadbleFile downloadbleFile = new DownloadbleFile(outputDataset, url);
             filesMetadata.add(downloadbleFile);
         }
