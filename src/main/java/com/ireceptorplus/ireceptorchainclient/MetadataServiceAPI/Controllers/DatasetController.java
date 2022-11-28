@@ -6,6 +6,7 @@ import com.ireceptorplus.ireceptorchainclient.FileStorage.DatasetStorageService;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ErrorParsingJsonObject;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.UnExistantEntity;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DatasetService;
 import com.sun.istack.NotNull;
@@ -38,6 +39,9 @@ public class DatasetController
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private FileUrlBuilder fileUrlBuilder;
 
     /**
      * Returns all Dataset objects stored.
@@ -106,6 +110,7 @@ public class DatasetController
         dataset.setCreationDate(new Date());
         dataset.setExtension(extension);
         dataset.setOriginalFileName(originalFileName);
+        dataset.setUrl(fileUrlBuilder.buildFromUuid(uuid.toString()));
 
         Dataset createdDataset = datasetService.create(dataset);
         DatasetDTO createdDatasetDTO = modelMapper.map(createdDataset, DatasetDTO.class);
