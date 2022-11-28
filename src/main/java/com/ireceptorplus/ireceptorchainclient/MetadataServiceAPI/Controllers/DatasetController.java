@@ -105,12 +105,14 @@ public class DatasetController
         UUID uuid = UUID.randomUUID();
         datasetDTO.setUuid(uuid);
         storageService.store(file, uuid.toString());
+        String checksumOfFile = storageService.computeSHA256ChecksumOfFile(uuid.toString());
 
         Dataset dataset = modelMapper.map(datasetDTO, Dataset.class);
         dataset.setCreationDate(new Date());
         dataset.setExtension(extension);
         dataset.setOriginalFileName(originalFileName);
         dataset.setUrl(fileUrlBuilder.buildFromUuid(uuid.toString()));
+        dataset.setSha256Checksum(checksumOfFile);
 
         Dataset createdDataset = datasetService.create(dataset);
         DatasetDTO createdDatasetDTO = modelMapper.map(createdDataset, DatasetDTO.class);
