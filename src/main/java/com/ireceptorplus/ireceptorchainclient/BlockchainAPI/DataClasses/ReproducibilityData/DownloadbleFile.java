@@ -13,12 +13,6 @@ public class DownloadbleFile extends File
     {
     }
 
-    public DownloadbleFile(String uuid, String extension, String url)
-    {
-        super(uuid, extension);
-        this.url = url;
-    }
-
     public DownloadbleFile(String uuid, String extension, String url, String hashValue)
     {
         super(uuid, extension);

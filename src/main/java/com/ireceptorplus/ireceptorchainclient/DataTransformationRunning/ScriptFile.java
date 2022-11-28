@@ -4,8 +4,8 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.Reproduc
 
 public class ScriptFile extends DownloadbleFile
 {
-    public ScriptFile(String name, String extension, String url)
+    public ScriptFile(String uuid, String extension, String url, String hashValue)
     {
-        super(name, extension, url);
+        super(uuid, extension, url, hashValue);
     }
 }
