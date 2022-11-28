@@ -6,6 +6,7 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTran
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ApiRequestException;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
@@ -13,6 +14,7 @@ import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Created
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ScriptMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.*;
+import com.ireceptorplus.ireceptorchainclient.Utils.FileUtils;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -255,13 +258,27 @@ public class CreatedPipelineController
     private void createEntitiesOnDb(ArrayList<File> outputsMetadata, CreatedPipeline createdPipeline)
     {
         ArrayList<Dataset> outputDatasets = new ArrayList<>();
-        for (File downloadbleFile : outputsMetadata)
+        for (File file : outputsMetadata)
         {
             Dataset dataset = new Dataset();
             dataset.setCreationDate(new Date());
-            dataset.setExtension(downloadbleFile.getExtension());
-            dataset.setOriginalFileName(downloadbleFile.getUuid());
-            dataset.setUuid(UUID.fromString(downloadbleFile.getUuid()));
+            dataset.setExtension(file.getExtension());
+            dataset.setOriginalFileName(file.getUuid());
+            dataset.setUuid(UUID.fromString(file.getUuid()));
+            dataset.setUrl(fileUrlBuilder.buildFromUuid(file.getUuid()));
+            String filePath = fileSystemManager.getStoredFilePath(file);
+            java.io.File datasetFile = new java.io.File(filePath);
+            try
+            {
+                String sha256Checksum = FileUtils.getFileSHA256Checksum(datasetFile);
+                dataset.setSha256Checksum(sha256Checksum);
+            } catch (IOException e)
+            {
+                throw new ApiRequestException("Error computing SHA256 checksum of output dataset file after running processing.");
+            } catch (NoSuchAlgorithmException e)
+            {
+                throw new ApiRequestException("Error computing SHA256 checksum of output dataset file after running processing.");
+            }
             datasetService.create(dataset);
             outputDatasets.add(dataset);
         }
