@@ -21,8 +21,7 @@ public class Tool
     /**
      * An url from which the executable program can be fetched.
      */
-    @Column
-    @NotNull
+    @Column(nullable = false)
     private String url;
 
     @Column

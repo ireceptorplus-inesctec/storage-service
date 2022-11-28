@@ -17,7 +17,7 @@ public class Germline
     /**
      * This identifies the .fasta file in the file system and, therefore, defines the file name.
      */
-    @Column
+    @Column(nullable = false)
     private UUID uuid;
 
     /**

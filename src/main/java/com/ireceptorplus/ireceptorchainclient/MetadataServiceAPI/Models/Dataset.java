@@ -15,13 +15,13 @@ public class Dataset
     /**
      * This identifies the file in the file system and, therefore, defines the file name.
      */
-    @Column
+    @Column(nullable = false)
     private UUID uuid;
 
     /**
      * A string representing the file extension to be able to identify the file type.
      */
-    @Column
+    @Column(nullable = false)
     private String extension;
 
     /**

@@ -16,7 +16,7 @@ public class Command
     /**
      * A string representing the command that should be run on the command line.
      */
-    @Column
+    @Column(nullable = false)
     private String commandString;
 
     public Command()
