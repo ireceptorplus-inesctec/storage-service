@@ -4,6 +4,7 @@ import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTy
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.Command;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.DataClasses.ReproducibilityData.DownloadbleFile;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.CommandDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.DatasetDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.PipelineDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.DataProcessingResolver;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.Resolvers.ToolResolver;
@@ -25,7 +26,7 @@ public interface TraceabilityDataMapper
     @Mappings({
             @Mapping(target="hashValue", source="sha256Checksum")
     })
-    DownloadbleFile datasetToDownloadableFile(Dataset dataset);
+    DownloadbleFile datasetToDownloadableFile(DatasetDTO dataset);
 
     @Mappings({
             @Mapping(target="toolId", source="toolName")

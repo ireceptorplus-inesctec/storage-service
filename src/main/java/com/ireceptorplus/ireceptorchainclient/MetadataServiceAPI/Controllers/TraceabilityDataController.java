@@ -12,7 +12,7 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.DataTran
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
-import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.PipelineDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.TraceabilityDataMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DatasetService;
@@ -57,26 +57,13 @@ public class TraceabilityDataController
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
     @PostMapping
-    public TraceabilityDataReturnType createTraceabilityDataEntry(PipelineDTO pipelineDTO) throws BlockchainAPIException
+    public TraceabilityDataReturnType createTraceabilityDataEntry(ProcessingStepDTO processingStepDTO) throws BlockchainAPIException
     {
-        ArrayList<Dataset> inputDatasets = new ArrayList<>();
-        ArrayList<Dataset> outputDatasets = new ArrayList<>();
-        for (String uuid : pipelineDTO.getInputDatasetsUuids())
-        {
-            Dataset dataset = datasetService.readByUuid(uuid);
-            inputDatasets.add(dataset);
-        }
-        for (String uuid : pipelineDTO.getOutputDatasetsUuids())
-        {
-            Dataset dataset = datasetService.readByUuid(uuid);
-            outputDatasets.add(dataset);
-        }
-
-        ArrayList<DownloadbleFile> inputDatasetFiles = new ArrayList<>(inputDatasets.stream().map(
+        ArrayList<DownloadbleFile> inputDatasetFiles = new ArrayList<>(processingStepDTO.getInputDatasets().stream().map(
                 dataset -> traceabilityDataMapper.datasetToDownloadableFile(dataset)).collect(Collectors.toList()));
-        ArrayList<DownloadbleFile> outputDatasetFiles = new ArrayList<>(outputDatasets.stream().map(
+        ArrayList<DownloadbleFile> outputDatasetFiles = new ArrayList<>(processingStepDTO.getOutputDatasets().stream().map(
                 dataset -> traceabilityDataMapper.datasetToDownloadableFile(dataset)).collect(Collectors.toList()));
-        Command command = traceabilityDataMapper.commandDTOToBlockchainCommand(pipelineDTO.getCommand());
+        Command command = traceabilityDataMapper.commandDTOToBlockchainCommand(processingStepDTO.getCommand());
 
 
         TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
