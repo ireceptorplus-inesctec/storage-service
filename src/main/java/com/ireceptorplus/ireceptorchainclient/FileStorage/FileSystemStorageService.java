@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
+import com.ireceptorplus.ireceptorchainclient.Utils.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.FileSystemUtils;
@@ -85,7 +86,7 @@ public class FileSystemStorageService implements StorageService {
 		try
 		{
 			shaDigest = MessageDigest.getInstance("SHA-256");
-			return getFileChecksum(shaDigest, file);
+			return FileUtils.getFileChecksum(shaDigest, file);
 		} catch (NoSuchAlgorithmException e)
 		{
 			throw new StorageException("Error computing SHA256 checksum of file: " + filename);
@@ -93,38 +94,6 @@ public class FileSystemStorageService implements StorageService {
 		{
 			throw new StorageException("Error computing SHA256 checksum of file: " + filename);
 		}
-	}
-
-	private static String getFileChecksum(MessageDigest digest, File file) throws IOException
-	{
-		//Get file input stream for reading the file content
-		FileInputStream fis = new FileInputStream(file);
-
-		//Create byte array to read data in chunks
-		byte[] byteArray = new byte[1024];
-		int bytesCount = 0;
-
-		//Read file data and update in message digest
-		while ((bytesCount = fis.read(byteArray)) != -1) {
-			digest.update(byteArray, 0, bytesCount);
-		};
-
-		//close the stream; We don't need it now.
-		fis.close();
-
-		//Get the hash's bytes
-		byte[] bytes = digest.digest();
-
-		//This bytes[] has bytes in decimal format;
-		//Convert it to hexadecimal format
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i< bytes.length ;i++)
-		{
-			sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-		}
-
-		//return complete hash
-		return sb.toString();
 	}
 
 	@Override
