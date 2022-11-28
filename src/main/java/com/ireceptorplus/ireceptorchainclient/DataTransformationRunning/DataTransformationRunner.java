@@ -48,12 +48,10 @@ public class DataTransformationRunner
 
     protected RunningMode runningMode;
 
-    @Autowired
     protected FileUrlBuilder fileUrlBuilder;
 
     private String pipelineId;
 
-    @Autowired
     FileSystemManager fileSystemManager;
 
     String toolId;
