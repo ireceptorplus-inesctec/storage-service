@@ -13,9 +13,13 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptio
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.ToolsConfigProperties;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.DTOs.ProcessingStepDTO;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.ProcessingStepMapper;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Mappers.TraceabilityDataMapper;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.BlockchainSyncState;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.Dataset;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Models.ProcessingStep;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.DatasetService;
+import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.Services.ProcessingStepService;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,14 +50,20 @@ public class TraceabilityDataController
 
     TraceabilityDataMapper traceabilityDataMapper;
 
+    ProcessingStepMapper processingStepMapper;
+
+    ProcessingStepService processingStepService;
+
     @Autowired
-    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI, FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties, DatasetService datasetService, TraceabilityDataMapper traceabilityDataMapper)
+    public TraceabilityDataController(HyperledgerFabricAPI blockchainAPI, FileSystemManager fileSystemManager, ToolsConfigProperties toolsConfigProperties, DatasetService datasetService, TraceabilityDataMapper traceabilityDataMapper, ProcessingStepMapper processingStepMapper, ProcessingStepService processingStepService)
     {
         this.blockchainAPI = blockchainAPI;
         this.fileSystemManager = fileSystemManager;
         this.toolsConfigProperties = toolsConfigProperties;
         this.datasetService = datasetService;
         this.traceabilityDataMapper = traceabilityDataMapper;
+        this.processingStepMapper = processingStepMapper;
+        this.processingStepService = processingStepService;
     }
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
@@ -72,8 +82,11 @@ public class TraceabilityDataController
 
         try
         {
-            return blockchainAPI.createTraceabilityDataEntry(data);
+            TraceabilityDataReturnType returnFromBlockchain = blockchainAPI.createTraceabilityDataEntry(data);
+            ProcessingStep processingStep = processingStepMapper.processingStepDTOToProcessingStep(processingStepDTO);
+            processingStep.setBlockchainState(BlockchainSyncState.IN_VOTING_ROUND);
 
+            return returnFromBlockchain;
         } catch (BlockchainAPIException e)
         {
             handleBlockchainAPIException(e);
