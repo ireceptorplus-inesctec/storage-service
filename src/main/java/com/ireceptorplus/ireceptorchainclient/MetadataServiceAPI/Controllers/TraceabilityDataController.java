@@ -68,7 +68,7 @@ public class TraceabilityDataController
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
     @PostMapping
-    public TraceabilityDataReturnType createTraceabilityDataEntry(@Parameter(description = "The new instance of ProcessingStep to be registered on the blockchain as a tracability data entry") @RequestBody ProcessingStepDTO processingStepDTO) throws BlockchainAPIException
+    public TraceabilityDataReturnType createTraceabilityDataEntry(@Parameter(description = "The new instance of ProcessingStep to be registered on the blockchain as a tracability data entry") @RequestBody @Valid ProcessingStepDTO processingStepDTO) throws BlockchainAPIException
     {
         ArrayList<DownloadbleFile> inputDatasetFiles = new ArrayList<>(processingStepDTO.getInputDatasets().stream().map(
                 dataset -> traceabilityDataMapper.datasetToDownloadableFile(dataset)).collect(Collectors.toList()));

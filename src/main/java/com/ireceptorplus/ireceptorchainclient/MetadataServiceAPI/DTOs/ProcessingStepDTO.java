@@ -18,7 +18,6 @@ public class ProcessingStepDTO extends DTOWithId
     private List<DatasetDTO> outputDatasets;
 
     @NotNull
-    @NotEmpty
     private CommandDTO command;
 
     @NotNull
