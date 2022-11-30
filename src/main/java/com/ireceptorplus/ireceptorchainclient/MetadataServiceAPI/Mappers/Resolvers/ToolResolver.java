@@ -10,9 +10,10 @@ public class ToolResolver extends ResolverById<Tool>
 {
     ToolRepository toolRepository;
 
-    public ToolResolver(JpaRepository<Tool, Long> repository)
+    public ToolResolver(ToolRepository repository)
     {
         super(repository);
+        this.toolRepository = repository;
     }
 
     public Tool resolveByName(String name)

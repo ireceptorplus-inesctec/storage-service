@@ -68,7 +68,7 @@ public class TraceabilityDataController
 
     @Operation(summary = "Creates a traceability data entry on the blockchain.")
     @PostMapping
-    public TraceabilityDataReturnType createTraceabilityDataEntry(@Parameter(description = "The new instance of ProcessingStep to be registered on the blockchain as a tracability data entry") @RequestBody @Valid ProcessingStepDTO processingStepDTO) throws BlockchainAPIException
+    public TraceabilityDataReturnType createTraceabilityDataEntry(@Parameter(description = "The new instance of ProcessingStep to be registered on the blockchain as a tracability data entry") @RequestBody ProcessingStepDTO processingStepDTO) throws BlockchainAPIException
     {
         ArrayList<DownloadbleFile> inputDatasetFiles = new ArrayList<>(processingStepDTO.getInputDatasets().stream().map(
                 dataset -> traceabilityDataMapper.datasetToDownloadableFile(dataset)).collect(Collectors.toList()));
@@ -80,12 +80,13 @@ public class TraceabilityDataController
         TraceabilityDataToBeSubmitted data = new TraceabilityDataToBeSubmitted(
                 inputDatasetFiles, command, outputDatasetFiles);
 
+        ProcessingStep processingStep = processingStepMapper.processingStepDTOToProcessingStep(processingStepDTO);
+        processingStep.setBlockchainState(BlockchainSyncState.IN_VOTING_ROUND);
+        processingStepService.save(processingStep);
+
         try
         {
             TraceabilityDataReturnType returnFromBlockchain = blockchainAPI.createTraceabilityDataEntry(data);
-            ProcessingStep processingStep = processingStepMapper.processingStepDTOToProcessingStep(processingStepDTO);
-            processingStep.setBlockchainState(BlockchainSyncState.IN_VOTING_ROUND);
-
             return returnFromBlockchain;
         } catch (BlockchainAPIException e)
         {
@@ -113,41 +114,41 @@ public class TraceabilityDataController
     @PostMapping("run")
     public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
-            DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
-                    data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
-                    data.getCommand().getToolId(), data.getUuid(),fileSystemManager, toolsConfigProperties);
+        DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
+                data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
+                data.getCommand().getToolId(), data.getUuid(),fileSystemManager, toolsConfigProperties);
 
-            boolean outputsMatch;
-            try
-            {
-                runner.run();
-                outputsMatch = runner.verifyIfOutputsMatch();
-            } catch (ErrorComparingOutputs e)
-            {
-                String message = "Error verifying if outputs of processing match with expected outputs of traceablity data entry: ";
-                iReceptorStorageServiceLogging.writeLogMessage(e, message);
-                e.printStackTrace();
-                throw new ErrorComparingOutputs(message);
-            } catch (TryingToDownloadFileWithoutUrl e)
-            {
-                iReceptorStorageServiceLogging.writeLogMessage(e, e.getMessage());
-                throw e;
-            } catch (ErrorCopyingInputFiles e)
-            {
-                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error copying input files.");
-                throw e;
-            } catch (ErrorRunningToolCommand e)
-            {
-                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
-                throw e;
-            } catch (UnsupportedTool e)
-            {
-                iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Unsupported tool.");
-                throw e;
-            }
+        boolean outputsMatch;
+        try
+        {
+            runner.run();
+            outputsMatch = runner.verifyIfOutputsMatch();
+        } catch (ErrorComparingOutputs e)
+        {
+            String message = "Error verifying if outputs of processing match with expected outputs of traceablity data entry: ";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            e.printStackTrace();
+            throw new ErrorComparingOutputs(message);
+        } catch (TryingToDownloadFileWithoutUrl e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, e.getMessage());
+            throw e;
+        } catch (ErrorCopyingInputFiles e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error copying input files.");
+            throw e;
+        } catch (ErrorRunningToolCommand e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Error running tool command.");
+            throw e;
+        } catch (UnsupportedTool e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline awaiting validation on blockchain: Unsupported tool.");
+            throw e;
+        }
 
         VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;
-            return submitVoteToBlockchain(data.getUuid(), voteType);
+        return submitVoteToBlockchain(data.getUuid(), voteType);
     }
 
     @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")

@@ -15,4 +15,9 @@ public class ProcessingStepService extends CreateAndReadService<ProcessingStep, 
         super(processingStepRepository);
         this.processingStepRepository = processingStepRepository;
     }
+
+    public ProcessingStep save(ProcessingStep processingStep)
+    {
+        return processingStepRepository.save(processingStep);
+    }
 }

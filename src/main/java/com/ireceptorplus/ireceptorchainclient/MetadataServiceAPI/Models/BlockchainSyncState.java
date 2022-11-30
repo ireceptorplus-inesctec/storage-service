@@ -6,12 +6,17 @@ public enum BlockchainSyncState
 
     private int value;
 
-    private BlockchainSyncState(int value) {
+    BlockchainSyncState(int value) {
         this.value = value;
     }
 
     public int getValue()
     {
         return value;
+    }
+
+    public void setValue(int value)
+    {
+        this.value = value;
     }
 }
