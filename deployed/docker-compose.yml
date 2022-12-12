@@ -24,6 +24,7 @@ services:
       - ../tools-containers:/storage/tools-containers
       - ../wallets:/storage/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
+      - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
     depends_on:
@@ -32,13 +33,19 @@ services:
     ports:
       - 8080:8080
     networks:
-      - test
+      - hyperledger_test_network
+      - hyperledger_production_network
 
 networks:
   default:
 
-  test:
+  hyperledger_test_network:
     name: fabric_test
+  
+  hyperledger_production_network:
+    name: ireceptorchain
+    external: true
+    driver: overlay
 
   apache_ireceptor-network:
     external: true
