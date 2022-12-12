@@ -27,7 +27,7 @@ ADD pom.xml /storage
 ADD mvnw /storage
 ADD mvnw.cmd /storage
 
-RUN ./mvnw clean install -DskipTests -T4
+RUN ./mvnw clean install -DskipTests -T 1C
 
 #RUN mv ./build/libs/*.jar ./storage.jar
 
