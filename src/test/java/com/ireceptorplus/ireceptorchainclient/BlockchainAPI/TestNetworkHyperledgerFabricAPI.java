@@ -36,9 +36,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
+public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
 {
 
     String blockchainDirectoryPath = "../ireceptorchain/";
@@ -47,7 +45,8 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         super(new HyperledgerNetworkDetails("../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
                 "mychannel", "ireceptorchain"),
-                null);
+                null, "test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem",
+                "https://localhost:7054");
     }
 
     @Test
@@ -110,7 +109,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         System.out.println(voteResultReturnType);
     }
 
-    private void createTestTraceabilityDataEntry() throws BlockchainAPIException
+    protected void createTestTraceabilityDataEntry() throws BlockchainAPIException
     {
         DownloadbleFile inputDataset = new DownloadbleFile("0771110c-6f61-11ed-a1eb-0242ac120002",
                 "71cc009c-e91b-11ec-8fea-0242ac120002", "https://213.544.435.34/dataset/71cc009c-e91b-11ec-8fea-0242ac120002",
@@ -128,7 +127,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         createTraceabilityDataEntry(data);
     }
 
-    private String resolveBlockchainCertsDirPath(String relativePath)
+    protected String resolveBlockchainCertsDirPath(String relativePath)
     {
         return blockchainDirectoryPath + relativePath;
     }
@@ -138,9 +137,9 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainCertsDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
+                resolveBlockchainCertsDirPath(caCertPath));
         props.put("allowAllHostNames", "true");
-        HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
+        HFCAClient caClient = HFCAClient.createNewInstance(blockchainPeerUrl, props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
@@ -169,7 +168,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainCertsDirPath("test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"));
+                resolveBlockchainCertsDirPath(caCertPath));
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();

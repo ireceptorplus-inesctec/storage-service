@@ -36,9 +36,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
+
+public  class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
 {
 
     String blockchainDirectoryPath = "../ireceptorchain/";
@@ -47,7 +46,8 @@ public class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         super(new HyperledgerNetworkDetails("../ireceptorchain/production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/connection-org1.yaml",
                         "ireceptorchain", "ireceptorchain"),
-                null);
+                null, "production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/client/tls-ca-cert.pem",
+                "https://localhost:7053");
     }
 
     @Test
@@ -100,9 +100,9 @@ public class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainCertsDirPath("production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/client/tls-ca-cert.pem"));
+                resolveBlockchainCertsDirPath(caCertPath));
         props.put("allowAllHostNames", "true");
-        HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7053", props);
+        HFCAClient caClient = HFCAClient.createNewInstance(blockchainPeerUrl, props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
@@ -131,9 +131,9 @@ public class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
         props.put("pemFile",
-                resolveBlockchainCertsDirPath("production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/client/tls-ca-cert.pem"));
+                resolveBlockchainCertsDirPath(caCertPath));
         props.put("allowAllHostNames", "true");
-        HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7053", props);
+        HFCAClient caClient = HFCAClient.createNewInstance(blockchainPeerUrl, props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
