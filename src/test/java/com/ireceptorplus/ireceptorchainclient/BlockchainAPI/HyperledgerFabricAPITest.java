@@ -34,14 +34,19 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
     protected String caCertPath;
     protected String blockchainPeerUrl;
     String blockchainDirectoryPath = "../ireceptorchain/";
+    private String caAdminUser;
+    private String caAdminPassword;
 
     public HyperledgerFabricAPITest(HyperledgerNetworkDetails hyperledgerNetworkDetails,
                                     HyperledgerWalletDetails hyperledgerWalletDetails,
-                                    String caCertPath, String blockchainPeerUrl)
+                                    String caCertPath, String blockchainPeerUrl,
+                                    String caAdminUser, String caAdminPassword)
     {
         super(hyperledgerNetworkDetails, hyperledgerWalletDetails);
         this.caCertPath = caCertPath;
         this.blockchainPeerUrl = blockchainPeerUrl;
+        this.caAdminUser = caAdminUser;
+        this.caAdminPassword = caAdminPassword;
     }
 
     @Test
@@ -113,7 +118,9 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
         enrollmentRequestTLS.addHost("localhost");
         enrollmentRequestTLS.setProfile("tls");
-        Enrollment enrollment = caClient.enroll("org_ca_admin", "org_ca_admin_pw", enrollmentRequestTLS);
+        caAdminUser = "org_ca_admin";
+        caAdminPassword = "org_ca_admin_pw";
+        Enrollment enrollment = caClient.enroll(caAdminUser, caAdminPassword, enrollmentRequestTLS);
         Identity user = Identities.newX509Identity("Org1MSP", enrollment);
         wallet.put("admin", user);
         System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
