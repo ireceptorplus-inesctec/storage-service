@@ -87,6 +87,7 @@ public class TraceabilityDataController
         try
         {
             TraceabilityDataReturnType returnFromBlockchain = blockchainAPI.createTraceabilityDataEntry(data);
+            System.out.println("Traceability data entry for pipeline " + processingStep.getName() + " has been successfully submitted to blockchain.");
             return returnFromBlockchain;
         } catch (BlockchainAPIException e)
         {
