@@ -5,8 +5,8 @@ services:
     image: postgres:12
     volumes:
       - ireceptorchain-storage-service-db:/var/lib/postgresql/data:delegated
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     environment:
       # default user is 'postgres'
       POSTGRES_DB: ireceptorchain-storage-service
@@ -35,6 +35,9 @@ services:
     networks:
       - hyperledger_test_network
       - hyperledger_production_network
+      - apache_ireceptor-network
+      - default
+
 
 networks:
   default:
