@@ -118,8 +118,6 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
         enrollmentRequestTLS.addHost("localhost");
         enrollmentRequestTLS.setProfile("tls");
-        caAdminUser = "org_ca_admin";
-        caAdminPassword = "org_ca_admin_pw";
         Enrollment enrollment = caClient.enroll(caAdminUser, caAdminPassword, enrollmentRequestTLS);
         Identity user = Identities.newX509Identity("Org1MSP", enrollment);
         wallet.put("admin", user);
