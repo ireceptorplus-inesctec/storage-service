@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.EntityDataReturnType;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.EntityID;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.*;
@@ -39,6 +41,47 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     {
         this.hyperledgerNetworkDetails = hyperledgerNetworkDetails;
         this.hyperledgerWalletDetails = hyperledgerWalletDetails;
+    }
+
+    @Override
+    public EntityDataReturnType enrollMyself() throws BlockchainAPIException
+    {
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
+        Contract contract = setupContract(builder);
+
+        try
+        {
+            byte[] result = contract.submitTransaction("enrollMyself");
+            String resultStr = new String(result);
+
+            LogFactory.getLog(EntityDataReturnType.class).debug("Successfully enrolled myself into the blockchain traceability data registry.");
+            LogFactory.getLog(EntityDataReturnType.class).debug(resultStr);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            EntityDataReturnType entityDataReturnType = objectMapper.readValue(resultStr, EntityDataReturnType.class);
+
+            return entityDataReturnType;
+        } catch (ContractException e)
+        {
+            String message = "Error enrolling entity on the traceability data registry.";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        } catch (JsonProcessingException e)
+        {
+            String message = "Error enrolling entity on the traceability data registry: error parsing result from blockchain";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        } catch (InterruptedException e)
+        {
+            String message = "Error enrolling entity on the traceability data registry: thread was interrupted while waiting";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        } catch (TimeoutException e)
+        {
+            String message = "Error enrolling entity on the traceability data registry: timed out";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        }
     }
 
     @Override

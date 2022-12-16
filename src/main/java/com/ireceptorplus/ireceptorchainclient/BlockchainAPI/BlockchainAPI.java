@@ -1,6 +1,8 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.EntityDataReturnType;
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.EntityID;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.Exceptions.BlockchainAPIException;
@@ -14,6 +16,12 @@ import java.util.List;
 @Component
 public interface BlockchainAPI
 {
+    /**
+     * Enrolls this user into the registry used on the traceability data system.
+     * @return
+     */
+    public EntityDataReturnType enrollMyself() throws BlockchainAPIException;
+
     /**
      * Creates a traceability data entry on the blockchain.
      * @param data An instance of class TraceabilityDataToBeSubmitted that represents the traceability data entry to be created on the blockchain.
