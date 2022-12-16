@@ -203,6 +203,7 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         Enrollment enrollment = caClient.enroll(userId, enrollmentSecret);
         Identity user = Identities.newX509Identity("Org1MSP", enrollment);
         wallet.put(userId, user);
+        enrollMyself();
         System.out.println("Successfully enrolled user " + userId + " and imported it into the wallet");
 
     }
