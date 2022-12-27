@@ -28,7 +28,7 @@ public class EntityDataReturnType extends ChaincodeReturnDataType
      * Reputation is put at stake when the entity votes for a traceability data entry that is still awaiting validation.
      * This reputation may be lost if the entity is decided to be lying (by majority consensus).
      */
-    private final Double reputationAtStake;
+    private Double reputationAtStake;
 
     public EntityDataReturnType(String uuid, String id, Double reputation, Double reputationAtStake)
     {
@@ -36,6 +36,10 @@ public class EntityDataReturnType extends ChaincodeReturnDataType
         this.id = id;
         this.reputation = reputation;
         this.reputationAtStake = reputationAtStake;
+    }
+
+    public EntityDataReturnType()
+    {
     }
 
     @Override
@@ -51,5 +55,40 @@ public class EntityDataReturnType extends ChaincodeReturnDataType
     public int hashCode()
     {
         return Objects.hash(uuid, id, reputation, reputationAtStake);
+    }
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(String uuid)
+    {
+        this.uuid = uuid;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    public Double getReputation()
+    {
+        return reputation;
+    }
+
+    public void setReputation(Double reputation)
+    {
+        this.reputation = reputation;
+    }
+
+    public Double getReputationAtStake()
+    {
+        return reputationAtStake;
     }
 }
