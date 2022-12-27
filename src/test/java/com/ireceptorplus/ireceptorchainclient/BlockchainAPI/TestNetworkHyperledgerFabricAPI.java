@@ -21,6 +21,7 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -38,11 +39,12 @@ import java.util.concurrent.TimeoutException;
 
 public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
 {
-    public TestNetworkHyperledgerFabricAPI()
+    @Autowired
+    public TestNetworkHyperledgerFabricAPI(HyperledgerNetworkDetails networkDetails,
+                                                 HyperledgerWalletDetails hyperledgerWalletDetails)
     {
-        super(new HyperledgerNetworkDetails("../ireceptorchain/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml",
-                "mychannel", "ireceptorchain"),
-                null, "test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem",
+        super(networkDetails, hyperledgerWalletDetails,
+                "test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem",
                 "https://localhost:7054", "admin", "adminpw");
     }
 
