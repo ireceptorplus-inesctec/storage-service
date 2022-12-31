@@ -52,7 +52,6 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
     @Test
     public void initBlockchainTestAccounts()
     {
-        hyperledgerWalletDetails = new HyperledgerWalletDetails("./wallets/wallet-creator", "creator");
         try {
             enrollAdmin();
             registerUser();
