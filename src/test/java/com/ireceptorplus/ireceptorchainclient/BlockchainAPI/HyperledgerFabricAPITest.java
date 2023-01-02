@@ -154,7 +154,7 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
 
             @Override
             public String getAffiliation() {
-                return "org1.department1";
+                return hyperledgerCADetails.getAffiliation();
             }
 
             @Override
