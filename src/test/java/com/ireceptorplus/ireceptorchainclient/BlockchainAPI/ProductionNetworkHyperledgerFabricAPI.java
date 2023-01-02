@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerCADetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.ChaincodeInputDataTypes.TraceabilityDataToBeSubmitted;
@@ -42,12 +43,9 @@ public  class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
 {
 
     @Autowired
-    public ProductionNetworkHyperledgerFabricAPI(HyperledgerNetworkDetails networkDetails,
-                                                 HyperledgerWalletDetails hyperledgerWalletDetails)
+    public ProductionNetworkHyperledgerFabricAPI(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
     {
-        super(networkDetails, hyperledgerWalletDetails,
-                "production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/client/tls-ca-cert.pem",
-                "https://localhost:7053", "org_ca_admin", "org_ca_admin_pw", "Org1MSP");
+        super(hyperledgerNetworkDetails, hyperledgerWalletDetails, hyperledgerCADetails);
     }
 
     public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
@@ -57,7 +55,7 @@ public  class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
         Path walletPath = Paths.get(hyperledgerWalletDetails.getPath());
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
-        Path networkConfigPath = Paths.get(resolveBlockchainCertsDirPath(""), "test-network", "organizations", "peerOrganizations", "org1.example.com", "connection-org1.yaml");
+        Path networkConfigPath = Paths.get(hyperledgerNetworkDetails.getNetworkConfigPath());
 
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, userId).networkConfig(networkConfigPath).discovery(true);

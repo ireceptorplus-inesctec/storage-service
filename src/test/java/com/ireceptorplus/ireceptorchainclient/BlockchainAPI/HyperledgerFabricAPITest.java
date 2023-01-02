@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI;
 
+import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerCADetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
 import com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import org.hyperledger.fabric.gateway.*;
@@ -15,6 +16,7 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -31,25 +33,13 @@ import java.util.concurrent.TimeoutException;
 @RunWith(SpringRunner.class)
 public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
 {
-    protected String caCertPath;
-    protected String blockchainPeerUrl;
-    String blockchainDirectoryPath = "../ireceptorchain/";
-    private String caAdminUser;
-    private String caAdminPassword;
-    String mspId;
+    protected HyperledgerCADetails hyperledgerCADetails;
 
-    public HyperledgerFabricAPITest(HyperledgerNetworkDetails hyperledgerNetworkDetails,
-                                    HyperledgerWalletDetails hyperledgerWalletDetails,
-                                    String caCertPath, String blockchainPeerUrl,
-                                    String caAdminUser, String caAdminPassword,
-                                    String mspId)
+    @Autowired
+    public HyperledgerFabricAPITest(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
     {
         super(hyperledgerNetworkDetails, hyperledgerWalletDetails);
-        this.caCertPath = caCertPath;
-        this.blockchainPeerUrl = blockchainPeerUrl;
-        this.caAdminUser = caAdminUser;
-        this.caAdminPassword = caAdminPassword;
-        this.mspId = mspId;
+        this.hyperledgerCADetails = hyperledgerCADetails;
     }
 
     @Test
@@ -91,19 +81,13 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         }
     }
 
-    protected String resolveBlockchainCertsDirPath(String relativePath)
-    {
-        return blockchainDirectoryPath + relativePath;
-    }
-
     private void enrollAdmin() throws IOException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvalidArgumentException, CryptoException, CertificateException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException, EnrollmentException
     {
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
-        props.put("pemFile",
-                resolveBlockchainCertsDirPath(caCertPath));
+        props.put("pemFile", hyperledgerCADetails.getCaCertPath());
         props.put("allowAllHostNames", "true");
-        HFCAClient caClient = HFCAClient.createNewInstance(blockchainPeerUrl, props);
+        HFCAClient caClient = HFCAClient.createNewInstance(hyperledgerCADetails.getBlockchainPeerUrl(), props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
@@ -120,8 +104,8 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
         enrollmentRequestTLS.addHost("localhost");
         enrollmentRequestTLS.setProfile("tls");
-        Enrollment enrollment = caClient.enroll(caAdminUser, caAdminPassword, enrollmentRequestTLS);
-        Identity user = Identities.newX509Identity(mspId, enrollment);
+        Enrollment enrollment = caClient.enroll(hyperledgerCADetails.getCaAdminUser(), hyperledgerCADetails.getCaAdminPassword(), enrollmentRequestTLS);
+        Identity user = Identities.newX509Identity(hyperledgerCADetails.getMspId(), enrollment);
         wallet.put("admin", user);
         System.out.println("Successfully enrolled user \"admin\" and imported it into the wallet");
     }
@@ -131,10 +115,9 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         String userId = hyperledgerWalletDetails.getUserId();
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
-        props.put("pemFile",
-                resolveBlockchainCertsDirPath(caCertPath));
+        props.put("pemFile", hyperledgerCADetails.getCaCertPath());
         props.put("allowAllHostNames", "true");
-        HFCAClient caClient = HFCAClient.createNewInstance(blockchainPeerUrl, props);
+        HFCAClient caClient = HFCAClient.createNewInstance(hyperledgerCADetails.getBlockchainPeerUrl(), props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
         caClient.setCryptoSuite(cryptoSuite);
 
