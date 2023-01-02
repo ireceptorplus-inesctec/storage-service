@@ -1,5 +1,6 @@
 package com.ireceptorplus.ireceptorchainclient.BlockchainAPI.BlockchainConfigProperties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,18 +16,20 @@ public class HyperledgerCADetails
     protected String caAdminUser;
     protected String caAdminPassword;
     protected String mspId;
+    protected String affiliation;
 
     public HyperledgerCADetails()
     {
     }
 
-    public HyperledgerCADetails(String certPath, String blockchainPeerUrl, String caAdminUser, String caAdminPassword, String mspId)
+    public HyperledgerCADetails(String certPath, String blockchainPeerUrl, String caAdminUser, String caAdminPassword, String mspId, String affiliation)
     {
         this.certPath = certPath;
         this.blockchainPeerUrl = blockchainPeerUrl;
         this.caAdminUser = caAdminUser;
         this.caAdminPassword = caAdminPassword;
         this.mspId = mspId;
+        this.affiliation = affiliation;
     }
 
     public String getCertPath()
@@ -77,5 +80,15 @@ public class HyperledgerCADetails
     public void setMspId(String mspId)
     {
         this.mspId = mspId;
+    }
+
+    public String getAffiliation()
+    {
+        return affiliation;
+    }
+
+    public void setAffiliation(String affiliation)
+    {
+        this.affiliation = affiliation;
     }
 }

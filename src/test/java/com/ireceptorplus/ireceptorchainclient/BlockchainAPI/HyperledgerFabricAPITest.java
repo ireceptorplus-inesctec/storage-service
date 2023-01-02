@@ -175,18 +175,18 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
 
             @Override
             public String getMspId() {
-                return "Org1MSP";
+                return hyperledgerCADetails.getMspId();
             }
 
         };
 
         // Register the user, enroll the user, and import the new identity into the wallet.
         RegistrationRequest registrationRequest = new RegistrationRequest(userId);
-        registrationRequest.setAffiliation("org1.department1");
+        registrationRequest.setAffiliation(hyperledgerCADetails.getAffiliation());
         registrationRequest.setEnrollmentID(userId);
         String enrollmentSecret = caClient.register(registrationRequest, admin);
         Enrollment enrollment = caClient.enroll(userId, enrollmentSecret);
-        Identity user = Identities.newX509Identity("Org1MSP", enrollment);
+        Identity user = Identities.newX509Identity(hyperledgerCADetails.getMspId(), enrollment);
         wallet.put(userId, user);
         enrollMyself();
         System.out.println("Successfully enrolled user " + userId + " and imported it into the wallet");
