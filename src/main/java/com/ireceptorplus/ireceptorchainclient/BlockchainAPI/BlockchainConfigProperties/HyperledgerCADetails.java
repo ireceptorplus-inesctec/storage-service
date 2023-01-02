@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HyperledgerCADetails
 {
-    protected String caCertPath;
+    protected String certPath;
     protected String blockchainPeerUrl;
     protected String caAdminUser;
     protected String caAdminPassword;
@@ -20,23 +20,23 @@ public class HyperledgerCADetails
     {
     }
 
-    public HyperledgerCADetails(String caCertPath, String blockchainPeerUrl, String caAdminUser, String caAdminPassword, String mspId)
+    public HyperledgerCADetails(String certPath, String blockchainPeerUrl, String caAdminUser, String caAdminPassword, String mspId)
     {
-        this.caCertPath = caCertPath;
+        this.certPath = certPath;
         this.blockchainPeerUrl = blockchainPeerUrl;
         this.caAdminUser = caAdminUser;
         this.caAdminPassword = caAdminPassword;
         this.mspId = mspId;
     }
 
-    public String getCaCertPath()
+    public String getCertPath()
     {
-        return caCertPath;
+        return certPath;
     }
 
-    public void setCaCertPath(String caCertPath)
+    public void setCertPath(String certPath)
     {
-        this.caCertPath = caCertPath;
+        this.certPath = certPath;
     }
 
     public String getBlockchainPeerUrl()

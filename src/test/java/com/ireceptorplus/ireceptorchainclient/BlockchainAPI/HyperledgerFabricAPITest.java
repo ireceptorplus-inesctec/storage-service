@@ -85,7 +85,7 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
     {
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
-        props.put("pemFile", hyperledgerCADetails.getCaCertPath());
+        props.put("pemFile", hyperledgerCADetails.getCertPath());
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance(hyperledgerCADetails.getBlockchainPeerUrl(), props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
@@ -115,7 +115,7 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
         String userId = hyperledgerWalletDetails.getUserId();
         // Create a CA client for interacting with the CA.
         Properties props = new Properties();
-        props.put("pemFile", hyperledgerCADetails.getCaCertPath());
+        props.put("pemFile", hyperledgerCADetails.getCertPath());
         props.put("allowAllHostNames", "true");
         HFCAClient caClient = HFCAClient.createNewInstance(hyperledgerCADetails.getBlockchainPeerUrl(), props);
         CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();
