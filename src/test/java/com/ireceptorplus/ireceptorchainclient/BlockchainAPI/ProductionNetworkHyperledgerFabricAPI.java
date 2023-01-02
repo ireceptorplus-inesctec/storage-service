@@ -47,7 +47,7 @@ public  class ProductionNetworkHyperledgerFabricAPI extends HyperledgerFabricAPI
     {
         super(networkDetails, hyperledgerWalletDetails,
                 "production-network/blockchain/mainNetwork/organizations/certs/org1.example.com/client/tls-ca-cert.pem",
-                "https://localhost:7053", "org_ca_admin", "org_ca_admin_pw");
+                "https://localhost:7053", "org_ca_admin", "org_ca_admin_pw", "Org1MSP");
     }
 
     public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException

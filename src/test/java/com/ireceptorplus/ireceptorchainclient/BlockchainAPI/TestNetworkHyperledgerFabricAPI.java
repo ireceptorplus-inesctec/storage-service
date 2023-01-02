@@ -45,7 +45,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
     {
         super(networkDetails, hyperledgerWalletDetails,
                 "test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem",
-                "https://localhost:7054", "admin", "adminpw");
+                "https://localhost:7054", "admin", "adminpw", "Org1MSP");
     }
 
     public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
