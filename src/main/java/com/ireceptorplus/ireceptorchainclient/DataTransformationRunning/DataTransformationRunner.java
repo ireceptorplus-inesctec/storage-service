@@ -88,7 +88,7 @@ public class DataTransformationRunner
     {
         this.inputs = new ArrayList<File>(inputDatasets);
         this.command = command;
-        this.outputs = new ArrayList<>(outputDatasets);
+        this.expectedOutputs = new ArrayList<>(outputDatasets);
         this.runningMode = runningMode;
         this.toolId = toolId;
         this.pipelineId = pipelineId;
