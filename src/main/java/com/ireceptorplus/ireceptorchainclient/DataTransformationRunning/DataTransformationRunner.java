@@ -8,16 +8,12 @@ import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandR
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.CommandRunners.MixcrRunner;
 import com.ireceptorplus.ireceptorchainclient.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.ireceptorchainclient.MetadataServiceAPI.FileUrlBuilder;
-import com.ireceptorplus.ireceptorchainclient.Utils.FileUtils;
 import com.ireceptorplus.ireceptorchainclient.iReceptorStorageServiceLogging;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class DataTransformationRunner
@@ -177,17 +173,17 @@ public class DataTransformationRunner
     {
         String inputFilesPath = processingPath;
         new java.io.File(inputFilesPath).mkdirs();
-        ArrayList<DownloadbleFile> inputsDownloadableFiles = getDownloadbleFiles();
+        ArrayList<DownloadbleFile> inputsDownloadableFiles = getInputsAsDownloadbleFiles();
         FileDownloader inputsDownloader = new FileDownloader(inputsDownloadableFiles, inputFilesPath);
         inputsDownloader.downloadFilesToDir();
         FileDownloader outputsDownloader = new FileDownloader(expectedOutputs, fileSystemManager.getExpectedOutputsRelativePath(inputFilesPath));
         outputsDownloader.downloadFilesToDir();
     }
 
-    private ArrayList<DownloadbleFile> getDownloadbleFiles() throws TryingToDownloadFileWithoutUrl
+    private ArrayList<DownloadbleFile> getInputsAsDownloadbleFiles() throws TryingToDownloadFileWithoutUrl
     {
         ArrayList<DownloadbleFile> inputsDownloadableFiles = new ArrayList<>();
-        for (File file : inputsDownloadableFiles)
+        for (File file : this.inputs)
         {
             if (!(file instanceof DownloadbleFile))
                 throw new TryingToDownloadFileWithoutUrl("Error trying to download file without url. Uuid is " + file.getUuid());
