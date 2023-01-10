@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class FileDownloader
             {
                 URL url = new URL(downloadbleFile.getUrl());
                 ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-                FileOutputStream fileOutputStream = new FileOutputStream(destinationPath + "/" + downloadbleFile.getUuid());
+                String filename = downloadbleFile.getUuid() + "." + downloadbleFile.getExtension();
+                FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(destinationPath, filename).toString());
                 fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
             } catch (MalformedURLException e)
             {
