@@ -124,6 +124,10 @@ public class DataTransformationRunner
         }
         this.outputFilesPath = commandRunner.getOutputFilesRelativePath();
         commandRunner.executeCommand();
+        ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
+        outputDatasetFiles = commandRunner.getOutputDatasetFiles();
+        this.outputs = outputDatasets;
+
         if (runningMode == RunningMode.VERIFY)
         {
             try
@@ -134,9 +138,6 @@ public class DataTransformationRunner
                 iReceptorStorageServiceLogging.writeLogMessage(e, "Error comparing file outputs of processing.");
             }
         }
-        ArrayList<File> outputDatasets = commandRunner.getOutputDatasets();
-        outputDatasetFiles = commandRunner.getOutputDatasetFiles();
-        this.outputs = outputDatasets;
     }
 
     /**
