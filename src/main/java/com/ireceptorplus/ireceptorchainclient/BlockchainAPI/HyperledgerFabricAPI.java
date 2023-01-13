@@ -168,7 +168,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
             }
             else if (voteType == VoteType.NO)
             {
-                byte[] result = contract.submitTransaction("registerNoVoteForTraceabilityEntryInVotingRound");
+                byte[] result = contract.submitTransaction("registerNoVoteForTraceabilityEntryInVotingRound", uuid);
                 resultStr = new String(result);
 
                 LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully submitted no vote for traceability data entry awaiting validation: ");
