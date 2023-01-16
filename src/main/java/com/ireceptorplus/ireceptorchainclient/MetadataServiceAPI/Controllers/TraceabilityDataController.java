@@ -183,4 +183,18 @@ public class TraceabilityDataController
         LogFactory.getLog(TraceabilityDataController.class).debug(stackTrace);
     }
 
+    @Operation(summary = "Returns all traceability data entries awaiting validation on the blockchain.")
+    @GetMapping("validated")
+    public List<TraceabilityDataReturnType> getAllTraceabilityDataValidatedFromBlockchain() throws BlockchainAPIException
+    {
+        try
+        {
+            return blockchainAPI.getTraceabilityDataValidated();
+        } catch (BlockchainAPIException e)
+        {
+            handleBlockchainAPIException(e);
+            throw e;
+        }
+    }
+
 }
