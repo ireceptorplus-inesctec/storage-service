@@ -150,6 +150,39 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         }
     }
 
+
+    @Override
+    public List<TraceabilityDataReturnType> getTraceabilityDataValidated() throws BlockchainAPIException
+    {
+        Gateway.Builder builder = setupHyperledgerFabricGatewayBuilder();
+        Contract contract = setupContract(builder);
+
+        try
+        {
+            byte[] result = contract.evaluateTransaction("getAllValidatedTraceabilityDataEntries");
+            String resultStr = new String(result);
+
+            LogFactory.getLog(HyperledgerFabricAPI.class).debug("Successfully fetched traceability data validated from the blockchain:");
+            LogFactory.getLog(HyperledgerFabricAPI.class).debug(resultStr);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            TraceabilityDataReturnType[] dataArray = objectMapper.readValue(resultStr, TraceabilityDataReturnType[].class);
+            List<TraceabilityDataReturnType> dataList = Arrays.asList(dataArray);
+
+            return dataList;
+        } catch (ContractException e)
+        {
+            String message = "Error fetching data validated from blockchain";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        } catch (JsonProcessingException e)
+        {
+            String message = "Error fetching data validated from blockchain: error parsing result from blockchain";
+            iReceptorStorageServiceLogging.writeLogMessage(e, message);
+            throw new ErrorFetchingData(message);
+        }
+    }
+
     @Override
     public VoteResultReturnType submitVote(String uuid, VoteType voteType) throws BlockchainAPIException
     {
