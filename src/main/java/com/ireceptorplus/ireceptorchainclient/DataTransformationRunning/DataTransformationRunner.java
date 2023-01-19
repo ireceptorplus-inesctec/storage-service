@@ -170,14 +170,16 @@ public class DataTransformationRunner
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
             try
             {
-                return comparator.compare();
+                boolean match = comparator.compare();
+                if (!match)
+                    return false;
             } catch (IOException e)
             {
                 throw new ErrorComparingOutputs();
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
