@@ -73,12 +73,12 @@ public class FileSystemManager
 
     public String getExpectedOutputRelativePath(String processingPath, File expectedOutput)
     {
-        return getPathOfFileRelativeToPath(processingPath, getExpectedOutputFileName(expectedOutput));
+        return getPathOfFileRelativeToPath(getExpectedOutputsRelativePath(processingPath), getExpectedOutputFileName(expectedOutput));
     }
 
     public String getProcessedOutputRelativePath(String processingPath, File processedOutput)
     {
-        return getProcessedOutputsRelativePath(processingPath) + "/" + getProcessedOutputFileName(processedOutput);
+        return getPathOfFileRelativeToPath(getProcessedOutputsRelativePath(processingPath), getProcessedOutputFileName(processedOutput));
     }
 
     public String getPathOfFileRelativeToPath(String dirPath, File file)
