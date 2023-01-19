@@ -105,6 +105,8 @@ public class DataTransformationRunner
     {
         String processingFilesDirPrefix = "./processingFiles/" + pipelineId;
 
+        createFilesDirs(processingFilesDirPrefix);
+
         if (runningMode == RunningMode.VERIFY)
             downloadDatasetsToProcessingDir(processingFilesDirPrefix);
         else
@@ -140,6 +142,16 @@ public class DataTransformationRunner
         }
     }
 
+    private void createFilesDirs(String processingFilesDirPrefix)
+    {
+        String inputFilesPath = fileSystemManager.getInputsRelativePath(processingFilesDirPrefix);
+        String outputFilesPath = fileSystemManager.getOutputsRelativePath(processingFilesDirPrefix);
+        String expectedOutputFilesPath = fileSystemManager.getExpectedOutputsRelativePath(processingFilesDirPrefix);
+        new java.io.File(inputFilesPath).mkdirs();
+        new java.io.File(outputFilesPath).mkdirs();
+        new java.io.File(expectedOutputFilesPath).mkdirs();
+    }
+
     /**
      * This method verifies if the outputs of the data processing match.
      * It uses the logic and values defined in class FileSystemManager to determine the file system path structure.
@@ -152,7 +164,9 @@ public class DataTransformationRunner
         for (File output : outputs)
         {
             String expectedOutputRelativePath = fileSystemManager.getExpectedOutputRelativePath(outputFilesPath, output);
+            System.out.println("expectedOutputRelativePath: " + expectedOutputRelativePath);
             String processedOutputRelativePath = fileSystemManager.getProcessedOutputRelativePath(outputFilesPath, output);
+            System.out.println("processedOutputRelativePath: " + processedOutputRelativePath);
             FileContentComparator comparator = new FileContentComparator(expectedOutputRelativePath, processedOutputRelativePath);
             try
             {
