@@ -81,7 +81,7 @@ public class TraceabilityDataController
                 inputDatasetFiles, command, outputDatasetFiles);
 
         ProcessingStep processingStep = processingStepMapper.processingStepDTOToProcessingStep(processingStepDTO);
-        processingStep.setBlockchainState(BlockchainSyncState.IN_VOTING_ROUND);
+        processingStep.setBlockchainState(BlockchainSyncState.SUBMITTED);
         processingStepService.save(processingStep);
 
         try
