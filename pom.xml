@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ireceptorplus</groupId>
-    <artifactId>iReceptorChainClient</artifactId>
+    <artifactId>storage-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iReceptorChainClient</name>
-    <description>iReceptorChainClient</description>
+    <name>storage-service</name>
+    <description>storage-service</description>
     <properties>
 
 
@@ -126,7 +126,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
-                    <mainClass>com.ireceptorplus.ireceptorchainclient.IReceptorChainClientApplication</mainClass>
+                    <mainClass>com.ireceptorplus.storageService.StorageServiceApplication</mainClass>
                 </configuration>
             </plugin>
 
