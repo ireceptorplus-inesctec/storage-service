@@ -37,6 +37,7 @@ services:
       - hyperledger_production_network
       - apache_ireceptor-network
       - default
+      - storage-service-network
 
 
 networks:
@@ -51,6 +52,9 @@ networks:
     driver: overlay
 
   apache_ireceptor-network:
+    external: true
+
+  storage-service-network:
     external: true
 
 volumes:
