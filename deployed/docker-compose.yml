@@ -5,13 +5,15 @@ services:
     image: postgres:12
     volumes:
       - ireceptorchain-storage-service-db:/var/lib/postgresql/data:delegated
-    expose:
-      - 5432
+    ports:
+      - 5432:5432
     environment:
       # default user is 'postgres'
       POSTGRES_DB: ireceptorchain-storage-service
       POSTGRES_PASSWORD: password
     restart: always
+    networks:
+      - storage-service-network
 
   storage-service:
     build: ../
