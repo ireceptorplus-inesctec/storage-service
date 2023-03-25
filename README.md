@@ -40,7 +40,7 @@ Then run
 ```
 to start the java spring-boot application.
 
-### Creating and Migrating the Database
+#### Creating and Migrating the Database
 
 Database creation and migration is managed by [Flyway](https://flywaydb.org/) and is normally called automatically on the application's execution and you are not required to migrate and seed manually, provided that you configured your `.properties` file with similar Flyway settings as shown above.
 
@@ -62,7 +62,21 @@ More details about Flyway can be found on:
 - [Best Practices for Flyway and Hibernate with Spring Boot](https://rieckpil.de/howto-best-practices-for-flyway-and-hibernate-with-spring-boot/)
 
 ### Deployment
-The deployment mode runs both the postegresql and the java spring-boot application inside docker containers. To run the iReceptorChain Storage Service, navigate to the `deployed` folder and run
+The deployment mode runs both the postegresql and the java spring-boot application inside docker containers. Before running the deployment mode, you need to set the environment variables that describe the org being used. The recommended way to do it is creating an env file and passing it as command line argument to the docker-compose command. To run the spring-boot app, run
 ```bash
-docker-compose up
+docker compose up --env-file=.env
+```
+where ```.env``` is a relative path to a file that contains your environment variables.
+
+#### Two peer setup
+One possible setup includes two peers: creator and voter. Their organizations are org1 and org2, respectively. In order to run this production setup, there are already two env files included in the env folder, one for the creator peer and another for the voter peer.
+
+To run the iReceptorChain Storage Service for peer creator, on the first machine, navigate to the `deployed` folder and run
+```bash
+docker compose up --env-file=../env/creator.env
+```
+
+To run it for peer voter, on the second machine, navigate to the `deployed` folder and run
+```bash
+docker compose up --env-file=../env/voter.env
 ```

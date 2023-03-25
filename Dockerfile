@@ -33,6 +33,7 @@ RUN ./mvnw clean install -DskipTests -T 1C
 
 RUN ./mvnw package -DskipTests
 RUN mv ./target/*.jar ./ireceptorchain-storage-service.jar
+RUN ./mvnw test -Dtest="ProductionNetworkHyperledgerFabricAPI"
 
 CMD java -jar ireceptorchain-storage-service.jar --spring.config.location=classpath:/application.properties,$PROPERTIES_PATH
 
