@@ -16,7 +16,16 @@ services:
       - storage-service-network
 
   storage-service:
-    build: ../
+    build:
+      context: ../
+      args:
+        ORG_DOMAIN: ${ORG_DOMAIN}
+        ORG_CONNECTION_FILE: ${ORG_CONNECTION_FILE}
+        WALLET_USER_ID: ${WALLET_USER_ID}
+        ORG_CA_MSP_ID: ${ORG_CA_MSP_ID}
+        ORG_CA_AFFILIATION: ${ORG_CA_AFFILIATION}
+        NETWORK_CONFIG_PATH: ${NETWORK_CONFIG_PATH}
+        CA_CERT_PATH: ${CA_CERT_PATH}
     volumes:
       - ../src:/storage/src
       - ./config:/storage/config
@@ -40,6 +49,8 @@ services:
       - apache_ireceptor-network
       - default
       - storage-service-network
+    env_file:
+      - ../env/general.env
 
 
 networks:
