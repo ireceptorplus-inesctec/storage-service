@@ -31,6 +31,10 @@ services:
       - ORG_CA_AFFILIATION=${ORG_CA_AFFILIATION}
       - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
       - CA_CERT_PATH=${CA_CERT_PATH}
+    networks:
+      - hyperledger_test_network
+      - hyperledger_production_network
+      - default
 
   storage-service:
     build: ../
