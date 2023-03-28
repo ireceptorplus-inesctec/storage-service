@@ -73,10 +73,10 @@ One possible setup includes two peers: creator and voter. Their organizations ar
 
 To run the iReceptorChain Storage Service for peer creator, on the first machine, navigate to the `deployed` folder and run
 ```bash
-docker compose up --env-file=../env/creator.env
+docker compose --env-file=../env/creator.env up
 ```
 
 To run it for peer voter, on the second machine, navigate to the `deployed` folder and run
 ```bash
-docker compose up --env-file=../env/voter.env
+docker compose --env-file=../env/voter.env up
 ```
