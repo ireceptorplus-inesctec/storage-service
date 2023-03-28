@@ -27,16 +27,6 @@ ADD pom.xml /storage
 ADD mvnw /storage
 ADD mvnw.cmd /storage
 
-ARG ORG_DOMAIN
-ARG ORG_DOMAIN
-ARG ORG_CONNECTION_FILE
-ARG WALLET_USER_ID
-ARG ORG_CA_MSP_ID
-ARG ORG_CA_AFFILIATION
-ARG NETWORK_CONFIG_PATH
-ARG CA_CERT_PATH
-
-RUN echo "The ARG variable value is $CA_CERT_PATH"
 
 RUN ./mvnw clean install -DskipTests -T 1C
 
@@ -44,7 +34,6 @@ RUN ./mvnw clean install -DskipTests -T 1C
 
 RUN ./mvnw package -DskipTests
 RUN mv ./target/*.jar ./ireceptorchain-storage-service.jar
-RUN ./mvnw test -Dtest="ProductionNetworkHyperledgerFabricAPI"
 
 CMD java -jar ireceptorchain-storage-service.jar --spring.config.location=classpath:/application.properties,$PROPERTIES_PATH
 

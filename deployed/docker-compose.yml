@@ -15,17 +15,25 @@ services:
     networks:
       - storage-service-network
 
-  storage-service:
+  blockchain-certificate-creation:
     build:
       context: ../
-      args:
-        ORG_DOMAIN: ${ORG_DOMAIN}
-        ORG_CONNECTION_FILE: ${ORG_CONNECTION_FILE}
-        WALLET_USER_ID: ${WALLET_USER_ID}
-        ORG_CA_MSP_ID: ${ORG_CA_MSP_ID}
-        ORG_CA_AFFILIATION: ${ORG_CA_AFFILIATION}
-        NETWORK_CONFIG_PATH: ${NETWORK_CONFIG_PATH}
-        CA_CERT_PATH: ${CA_CERT_PATH}
+      dockerfile: ./blockchain-certificate-creation/Dockerfile
+    volumes:
+      - ../wallets:/storage/wallets
+      - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
+      - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
+    environment:
+      - ORG_DOMAIN=${ORG_DOMAIN}
+      - ORG_CONNECTION_FILE=${ORG_CONNECTION_FILE}
+      - WALLET_USER_ID=${WALLET_USER_ID}
+      - ORG_CA_MSP_ID=${ORG_CA_MSP_ID}
+      - ORG_CA_AFFILIATION=${ORG_CA_AFFILIATION}
+      - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
+      - CA_CERT_PATH=${CA_CERT_PATH}
+
+  storage-service:
+    build: ../
     volumes:
       - ../src:/storage/src
       - ./config:/storage/config
