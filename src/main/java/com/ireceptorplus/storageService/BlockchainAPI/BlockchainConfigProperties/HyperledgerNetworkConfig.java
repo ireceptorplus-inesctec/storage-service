@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
  */
 @ConfigurationProperties("blockchain-api.hyperledger-fabric.blockchain")
 @Component
-public class HyperledgerNetworkDetails
+public class HyperledgerNetworkConfig
 {
     protected String networkConfigPath;
     protected String networkName;
     protected String chaincodeId;
 
-    public HyperledgerNetworkDetails()
+    public HyperledgerNetworkConfig()
     {
     }
 
-    public HyperledgerNetworkDetails(String networkConfigPath, String networkName, String chaincodeId)
+    public HyperledgerNetworkConfig(String networkConfigPath, String networkName, String chaincodeId)
     {
         this.networkConfigPath = networkConfigPath;
         this.networkName = networkName;

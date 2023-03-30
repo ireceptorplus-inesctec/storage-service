@@ -1,7 +1,7 @@
 package com.ireceptorplus.storageService.BlockchainAPI;
 
 import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerCADetails;
-import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
+import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkConfig;
 import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import org.hyperledger.fabric.gateway.*;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -36,9 +36,9 @@ public class HyperledgerFabricAPITest extends HyperledgerFabricAPI
     protected HyperledgerCADetails hyperledgerCADetails;
 
     @Autowired
-    public HyperledgerFabricAPITest(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
+    public HyperledgerFabricAPITest(HyperledgerNetworkConfig hyperledgerNetworkConfig, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
     {
-        super(hyperledgerNetworkDetails, hyperledgerWalletDetails);
+        super(hyperledgerNetworkConfig, hyperledgerWalletDetails);
         this.hyperledgerCADetails = hyperledgerCADetails;
     }
 

@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
 import com.ireceptorplus.storageService.Utils.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.FileSystemUtils;
@@ -20,6 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileSystemStorageService implements StorageService {
 
 	private final Path rootLocation;
+	@Value("${blockchain-api.hyperledger-fabric.blockchain.network-config-path}")
+	private String configPath;
+	@Value("${blockchain-api.hyperledger-fabric.blockchain.network-name}")
+	private String networkName;
 
 	public FileSystemStorageService(StorageProperties properties) {
 		this.rootLocation = Paths.get(properties.getLocation());
@@ -33,6 +38,8 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public void store(MultipartFile file, String customName) {
+		System.out.println(configPath);
+		System.out.println(networkName);
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
