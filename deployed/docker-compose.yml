@@ -17,10 +17,9 @@ services:
 
   blockchain-certificate-creation:
     build:
-      context: ../
-      dockerfile: ./blockchain-certificate-creation/Dockerfile
+      context: ../blockchain-certificate-creation
     volumes:
-      - ../wallets:/storage/wallets
+      - ../wallets:/app/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
       - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
     environment:
@@ -34,7 +33,11 @@ services:
     networks:
       - hyperledger_test_network
       - hyperledger_production_network
+      - apache_ireceptor-network
       - default
+      - storage-service-network
+    env_file:
+      - ../env/ca.env
 
   storage-service:
     build: ../

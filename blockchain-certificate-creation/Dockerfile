@@ -1,30 +1,19 @@
-FROM openjdk:19
+FROM node:16.20.0-alpine
 
-WORKDIR /storage
+# Create app directory
+WORKDIR /app
 
-ADD src /storage/src
-ADD .mvn /storage/.mvn
-ADD pom.xml /storage
-ADD mvnw /storage
-ADD mvnw.cmd /storage
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --omit=dev
 
-ARG ORG_DOMAIN
-ARG ORG_DOMAIN
-ARG ORG_CONNECTION_FILE
-ARG WALLET_USER_ID
-ARG ORG_CA_MSP_ID
-ARG ORG_CA_AFFILIATION
-ARG NETWORK_CONFIG_PATH
-ARG CA_CERT_PATH
+# Bundle app source
+COPY . .
 
-
-RUN echo "The ARG variable value is $CA_CERT_PATH"
-
-RUN ./mvnw clean install -DskipTests -T 1C
-
-#RUN mv ./build/libs/*.jar ./storage.jar
-
-RUN ./mvnw package -DskipTests
-
-CMD ./mvnw test -Dtest="ProductionNetworkHyperledgerFabricAPI"
+EXPOSE 8080
+CMD node app.js admin; node app.js user creator; node app.js user voter
