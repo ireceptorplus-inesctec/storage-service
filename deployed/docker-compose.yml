@@ -19,7 +19,7 @@ services:
     build:
       context: ../blockchain-certificate-creation
     volumes:
-      - ../wallets:/app/wallets
+      - ../wallets:/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
       - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
     environment:
