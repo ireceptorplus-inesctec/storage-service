@@ -22,14 +22,6 @@ services:
       - ../wallets:/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
       - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
-    environment:
-      - ORG_DOMAIN=${ORG_DOMAIN}
-      - ORG_CONNECTION_FILE=${ORG_CONNECTION_FILE}
-      - WALLET_USER_ID=${WALLET_USER_ID}
-      - ORG_CA_MSP_ID=${ORG_CA_MSP_ID}
-      - ORG_CA_AFFILIATION=${ORG_CA_AFFILIATION}
-      - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
-      - CA_CERT_PATH=${CA_CERT_PATH}
     networks:
       - hyperledger_test_network
       - hyperledger_production_network
@@ -38,6 +30,7 @@ services:
       - storage-service-network
     env_file:
       - ../env/ca.env
+      - ../env/general.env
 
   storage-service:
     build: ../
@@ -53,6 +46,13 @@ services:
       - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
     environment:
       - PROPERTIES_PATH=/storage/config/trialreceptor.properties
+      - ORG_DOMAIN=${ORG_DOMAIN}
+      - ORG_CONNECTION_FILE=${ORG_CONNECTION_FILE}
+      - WALLET_USER_ID=${WALLET_USER_ID}
+      - ORG_CA_MSP_ID=${ORG_CA_MSP_ID}
+      - ORG_CA_AFFILIATION=${ORG_CA_AFFILIATION}
+      - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
+      - CA_CERT_PATH=${CA_CERT_PATH}
     depends_on:
       - db
     restart: always
