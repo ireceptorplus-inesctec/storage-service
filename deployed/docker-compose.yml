@@ -41,7 +41,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./processingFiles:/storage/processingFiles
       - ../tools-containers:/storage/tools-containers
-      - ../wallets:/storage/wallets
+      - ../wallets:/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
       - ../../ireceptorchain/production-network/blockchain/mainNetwork/organizations:/ireceptorchain/production-network/blockchain/mainNetwork/organizations
     environment:
@@ -55,6 +55,7 @@ services:
       - CA_CERT_PATH=${CA_CERT_PATH}
     depends_on:
       - db
+      - blockchain-certificate-creation
     restart: always
     ports:
       - 8080:8080
