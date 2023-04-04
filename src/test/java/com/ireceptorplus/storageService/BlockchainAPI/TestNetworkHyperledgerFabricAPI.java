@@ -1,7 +1,7 @@
 package com.ireceptorplus.storageService.BlockchainAPI;
 
 import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerCADetails;
-import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkConfig;
+import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerNetworkDetails;
 import com.ireceptorplus.storageService.BlockchainAPI.BlockchainConfigProperties.HyperledgerWalletDetails;
 import org.hyperledger.fabric.gateway.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,9 @@ import java.util.concurrent.TimeoutException;
 public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
 {
     @Autowired
-    public TestNetworkHyperledgerFabricAPI(HyperledgerNetworkConfig hyperledgerNetworkConfig, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
+    public TestNetworkHyperledgerFabricAPI(HyperledgerNetworkDetails hyperledgerNetworkDetails, HyperledgerWalletDetails hyperledgerWalletDetails, HyperledgerCADetails hyperledgerCADetails)
     {
-        super(hyperledgerNetworkConfig, hyperledgerWalletDetails, hyperledgerCADetails);
+        super(hyperledgerNetworkDetails, hyperledgerWalletDetails, hyperledgerCADetails);
     }
 
     public void clientApp() throws IOException, ContractException, InterruptedException, TimeoutException
@@ -26,7 +26,7 @@ public class TestNetworkHyperledgerFabricAPI extends HyperledgerFabricAPITest
         Path walletPath = Paths.get(hyperledgerWalletDetails.getPath());
         Wallet wallet = Wallets.newFileSystemWallet(walletPath);
         // load a CCP
-        Path networkConfigPath = Paths.get(hyperledgerNetworkConfig.getNetworkConfigPath());
+        Path networkConfigPath = Paths.get(hyperledgerNetworkDetails.getNetworkConfigPath());
 
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, userId).networkConfig(networkConfigPath).discovery(true);
