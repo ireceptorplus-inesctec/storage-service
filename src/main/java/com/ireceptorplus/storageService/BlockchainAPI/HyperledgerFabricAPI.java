@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException;
 public class HyperledgerFabricAPI implements BlockchainAPI
 {
     static {
-        System.setProperty("org.hyperledger.fabric.sdk.service_discovery.as_localhost", "true");
+        System.setProperty("org.hyperledger.fabric.sdk.service_discovery.as_localhost", "false");
     }
 
     protected HyperledgerNetworkDetails hyperledgerNetworkDetails;
