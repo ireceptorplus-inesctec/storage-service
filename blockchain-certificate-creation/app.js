@@ -1,9 +1,11 @@
 'use strict';
 
-const { Wallets } = require('fabric-network');
+const { Gateway, Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
 const fs = require('fs');
+const channel = process.env.CHANNEL_NAME;
+const chaincode = process.env.CHAINCODE_NAME;
 
 const admin_user = process.env.ORG_CA_ADMIN;
 const admin_password = process.env.ORG_CA_ADMIN_PASSWORD;
@@ -21,6 +23,33 @@ const loadCC = () => {
     const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
     return ccp;
+}
+
+const loadContract = async (appUser) => {
+    // load the network configuration
+    const ccp = loadCC();
+
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+    // Check to see if we've already enrolled the user.
+    const identity = await wallet.get(appUser);
+    if (!identity) {
+        console.log('An identity for the user ' + appUser + ' does not exist in the wallet');
+        console.log('Run the registerUser.js application before retrying');
+        return 1;
+    }
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+
+    await gateway.connect(ccp, { wallet, identity: appUser, discovery: { enabled: true, asLocalhost: false } });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork(channel);
+
+    // Get the contract from the network.
+    const contract = network.getContract(chaincode);
+
+    return { contract, gateway };
 }
 
 const enrollAdmin = async () => {
@@ -119,6 +148,20 @@ const registerUser = async (appUser) => {
     } catch (error) {
         console.error(`Failed to register user "${appUser}": ${error}`);
         process.exit(1);
+    }
+
+    try
+    {
+        const { contract, gateway } = await loadContract(appUser);
+
+        await contract.submitTransaction('enrollMyself');
+
+        await gateway.disconnect();
+
+    } catch (err)
+    {
+        console.error(`Failed to submit transaction: ${err}`);
+        return {error: true, msg: String(err)};
     }
 }
 
