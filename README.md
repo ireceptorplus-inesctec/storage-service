@@ -64,7 +64,7 @@ More details about Flyway can be found on:
 ### Deployment
 The deployment mode runs both the postegresql and the java spring-boot application inside docker containers. Before running the deployment mode, you need to set the environment variables that describe the org being used. The recommended way to do it is creating an env file and passing it as command line argument to the docker-compose command. To run the spring-boot app, run
 ```bash
-docker compose up --env-file=.env
+docker-compose up --env-file=.env
 ```
 where ```.env``` is a relative path to a file that contains your environment variables.
 
@@ -73,10 +73,10 @@ One possible setup includes two peers: creator and voter. Their organizations ar
 
 To run the iReceptorChain Storage Service for peer creator, on the first machine, navigate to the `deployed` folder and run
 ```bash
-docker compose --env-file=../env/creator.env up
+docker-compose --env-file=../env/creator.env up
 ```
 
 To run it for peer voter, on the second machine, navigate to the `deployed` folder and run
 ```bash
-docker compose --env-file=../env/voter.env up
+docker-compose --env-file=../env/voter.env up
 ```
