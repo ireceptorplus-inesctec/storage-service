@@ -34,6 +34,7 @@ services:
     environment:
       - WALLET_USER_ID=${WALLET_USER_ID}
       - ORG_DOMAIN=${ORG_DOMAIN}
+      - ORG_CA_DOMAIN=${ORG_CA_DOMAIN}
       - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
 
   storage-service:
