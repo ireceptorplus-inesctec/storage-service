@@ -31,6 +31,8 @@ services:
     env_file:
       - ../env/ca.env
       - ../env/general.env
+    environment:
+      - WALLET_USER_ID=${WALLET_USER_ID}
 
   storage-service:
     build: ../

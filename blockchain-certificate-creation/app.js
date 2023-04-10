@@ -173,7 +173,7 @@ async function main() {
         enrollAdmin(admin_password);
     } else if (args[2] === 'user') {
         // node certificateAuthorityActions.js user paulo
-        let userId = args[3] || 'appUser';
+        let userId = process.env.WALLET_USER_ID || 'appUser';
         registerUser(userId);
     } else {
         console.error('Command not found');

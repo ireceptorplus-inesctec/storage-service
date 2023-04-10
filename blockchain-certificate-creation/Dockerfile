@@ -16,4 +16,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD node app.js admin; node app.js user creator; node app.js user voter
+CMD node app.js admin; node app.js user
