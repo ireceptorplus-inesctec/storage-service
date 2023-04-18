@@ -11,7 +11,8 @@ const admin_user = process.env.ORG_CA_ADMIN;
 const admin_password = process.env.ORG_CA_ADMIN_PASSWORD;
 const walletPath = process.env.WALLET_PATH;
 const orgCADomain = process.env.ORG_CA_DOMAIN;
-
+const orgCAMspId = process.env.ORG_CA_MSP_ID;
+const orgCAAffiliation = process.env.ORG_CA_AFFILIATION;
 
 
 function prettyJSONString(inputString) {
@@ -80,7 +81,7 @@ const enrollAdmin = async () => {
                 certificate: enrollment.certificate,
                 privateKey: enrollment.key.toBytes(),
             },
-            mspId: 'Org1MSP',
+            mspId: orgCAMspId,
             type: 'X.509',
         };
         await wallet.put(admin_user, x509Identity);
@@ -126,7 +127,7 @@ const registerUser = async (appUser) => {
 
         // Register the user, enroll the user, and import the new identity into the wallet.
         const secret = await ca.register({
-            affiliation: 'org1.department1',
+            affiliation: orgCAAffiliation,
             enrollmentID: appUser,
             role: 'client'
         }, adminUser);
@@ -139,7 +140,7 @@ const registerUser = async (appUser) => {
                 certificate: enrollment.certificate,
                 privateKey: enrollment.key.toBytes(),
             },
-            mspId: 'Org1MSP',
+            mspId: orgCAMspId,
             type: 'X.509',
         };
         await wallet.put(appUser, x509Identity);
