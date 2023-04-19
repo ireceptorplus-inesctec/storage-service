@@ -15,9 +15,9 @@ services:
     networks:
       - storage-service-network
 
-  blockchain-certificate-creation:
+  blockchain-wallet-creation:
     build:
-      context: ../blockchain-certificate-creation
+      context: ../blockchain-wallet-creation
     volumes:
       - ../wallets:/wallets
       - ../../ireceptorchain/test-network/organizations:/ireceptorchain/test-network/organizations
@@ -62,7 +62,7 @@ services:
       - CA_CERT_PATH=${CA_CERT_PATH}
     depends_on:
       - db
-      - blockchain-certificate-creation
+      - blockchain-wallet-creation
     restart: always
     ports:
       - 8080:8080
