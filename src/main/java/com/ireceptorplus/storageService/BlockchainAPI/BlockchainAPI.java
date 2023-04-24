@@ -53,4 +53,10 @@ public interface BlockchainAPI
      * @throws BlockchainAPIException  An exception is thrown when there is an error contacting the blockchain or parsing the result. It can be a connection error, blockchain certificate error, user certificate error, permission denied, etc. The exception message and exception class subtype provide detailed information about the error.
      */
     VoteResultReturnType submitVote(String uuid, VoteType voteType) throws BlockchainAPIException;
+
+    /**
+     * Returns a string representing the name of the blockchain consortium organization to which this peer belongs.
+     * @return A string representing the name of the blockchain consortium organization that this peer belongs to.
+     */
+    String getOrgName();
 }

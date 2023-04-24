@@ -60,6 +60,7 @@ services:
       - ORG_CA_AFFILIATION=${ORG_CA_AFFILIATION}
       - NETWORK_CONFIG_PATH=${NETWORK_CONFIG_PATH}
       - CA_CERT_PATH=${CA_CERT_PATH}
+      - ORG_NAME=${ORG_NAME}
     depends_on:
       - db
       - blockchain-wallet-creation

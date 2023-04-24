@@ -278,5 +278,10 @@ public class HyperledgerFabricAPI implements BlockchainAPI
         LogFactory.getLog(HyperledgerFabricAPI.class).debug(stackTrace);
     }
 
+    @Override
+    public String getOrgName()
+    {
+        return hyperledgerWalletDetails.getOrgName();
+    }
 
 }
