@@ -198,8 +198,8 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Returns a string representing the name of the blockchain consortium organization to which this peer belongs.")
-    @GetMapping("getOrgName")
-    public OrgDetails getOrgName() throws BlockchainAPIException
+    @GetMapping("getMyOrgDetails")
+    public OrgDetails getMyOrgDetails() throws BlockchainAPIException
     {
         return new OrgDetails(blockchainAPI.getOrgName());
     }
