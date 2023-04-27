@@ -5,6 +5,7 @@ import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.E
 import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.storageService.BlockchainAPI.Exceptions.BlockchainAPIException;
+import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.MyWalletDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -55,8 +56,8 @@ public interface BlockchainAPI
     VoteResultReturnType submitVote(String uuid, VoteType voteType) throws BlockchainAPIException;
 
     /**
-     * Returns a string representing the name of the blockchain consortium organization to which this peer belongs.
-     * @return A string representing the name of the blockchain consortium organization that this peer belongs to.
+     * Returns an instance of class MyWalletDetails repesenting the wallet details that this storage-service is configured to use.
+     * @return An instance of class MyWalletDetails repesenting the wallet details that this storage-service is configured to use.
      */
-    String getOrgName();
+    MyWalletDetails getMyWalletDetails();
 }

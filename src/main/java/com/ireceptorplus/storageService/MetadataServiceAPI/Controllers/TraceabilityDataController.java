@@ -12,6 +12,7 @@ import com.ireceptorplus.storageService.DataTransformationRunning.DataTransforma
 import com.ireceptorplus.storageService.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.storageService.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.storageService.DataTransformationRunning.ToolsConfigProperties;
+import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.MyWalletDetails;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.OrgDetails;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.ProcessingStepDTO;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Mappers.ProcessingStepMapper;
@@ -198,10 +199,10 @@ public class TraceabilityDataController
     }
 
     @Operation(summary = "Returns a string representing the name of the blockchain consortium organization to which this peer belongs.")
-    @GetMapping("getMyOrgDetails")
-    public OrgDetails getMyOrgDetails() throws BlockchainAPIException
+    @GetMapping("getMyWalletDetails")
+    public MyWalletDetails getMyWalletDetails() throws BlockchainAPIException
     {
-        return new OrgDetails(blockchainAPI.getOrgName());
+        return blockchainAPI.getMyWalletDetails();
     }
 
 }

@@ -9,6 +9,7 @@ import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.E
 import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.TraceabilityDataReturnType;
 import com.ireceptorplus.storageService.BlockchainAPI.ChaincodeReturnDataTypes.VoteResultReturnType;
 import com.ireceptorplus.storageService.BlockchainAPI.Exceptions.*;
+import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.MyWalletDetails;
 import com.ireceptorplus.storageService.iReceptorStorageServiceLogging;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.gateway.*;
@@ -279,9 +280,9 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     }
 
     @Override
-    public String getOrgName()
+    public MyWalletDetails getMyWalletDetails()
     {
-        return hyperledgerWalletDetails.getOrgName();
+        return new MyWalletDetails(getMyWalletDetails().getUserId(), getMyWalletDetails().getOrgName());
     }
 
 }
