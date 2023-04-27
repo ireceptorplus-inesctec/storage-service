@@ -282,7 +282,7 @@ public class HyperledgerFabricAPI implements BlockchainAPI
     @Override
     public MyWalletDetails getMyWalletDetails()
     {
-        return new MyWalletDetails(getMyWalletDetails().getUserId(), getMyWalletDetails().getOrgName());
+        return new MyWalletDetails(hyperledgerWalletDetails.getUserId(), hyperledgerWalletDetails.getOrgName());
     }
 
 }
