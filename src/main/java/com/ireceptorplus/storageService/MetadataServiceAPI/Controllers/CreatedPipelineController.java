@@ -149,6 +149,7 @@ public class CreatedPipelineController
         return newCreatedPipelineDTO;
     }
 
+    @Async()
     private void enqueuePipelineForExecution(CreatedPipeline createdPipeline) throws ErrorCopyingInputFiles, TryingToDownloadFileWithoutUrl, ErrorRunningToolCommand, UnsupportedTool
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
