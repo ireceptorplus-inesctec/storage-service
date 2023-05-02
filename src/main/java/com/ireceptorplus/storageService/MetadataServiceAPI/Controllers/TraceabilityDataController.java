@@ -15,6 +15,7 @@ import com.ireceptorplus.storageService.DataTransformationRunning.ToolsConfigPro
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.MyWalletDetails;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.OrgDetails;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.ProcessingStepDTO;
+import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.VoteResultDTO;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Mappers.ProcessingStepMapper;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Mappers.TraceabilityDataMapper;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Models.BlockchainSyncState;
@@ -114,7 +115,7 @@ public class TraceabilityDataController
     @Operation(summary = "Runs a data processing pipeline corresponding to a traceability data entry. Returns weather the entry is valid or not.")
     @Parameter(name = "data", description = "The traceability data entry of which to run the processing")
     @PostMapping("run")
-    public VoteResultReturnType runDataProcessingPipelineAndSubmitVote(@RequestBody @Valid TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
+    public VoteResultDTO runDataProcessingPipelineAndSubmitVote(@RequestBody @Valid TraceabilityDataReturnType data) throws ErrorComparingOutputs, BlockchainAPIException, TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         DataTransformationRunner runner = new DataTransformationRunner(data.getInputDatasets(),
                 data.getCommand(), data.getOutputDatasets(), DataTransformationRunner.RunningMode.VERIFY,
@@ -150,7 +151,10 @@ public class TraceabilityDataController
         }
 
         VoteType voteType = outputsMatch ? VoteType.YES : VoteType.NO;
-        return submitVoteToBlockchain(data.getUuid(), voteType);
+        VoteResultReturnType voteResultReturn = submitVoteToBlockchain(data.getUuid(), voteType);
+        VoteResultDTO voteResultDTO = new VoteResultDTO(voteType, voteResultReturn.getMessage(), voteResultReturn.isStateChange());
+
+        return voteResultDTO;
     }
 
     @Operation(summary = "Submits a vote to the traceability data entry with the uuid received as parameter.")

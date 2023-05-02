@@ -21,7 +21,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.jobrunr.scheduling.JobScheduler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +38,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Configuration
+@EnableAsync
 @RestController
 @RequestMapping("api")
 @CrossOrigin(origins = "${app.resourceAllowedOrigins}")
