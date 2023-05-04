@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -88,6 +89,10 @@ public class CreatedPipelineController
     @Autowired
     protected FileUrlBuilder fileUrlBuilder;
 
+    @Autowired
+    protected AsyncConfiguration asyncConfiguration;
+
+
 
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
@@ -95,7 +100,8 @@ public class CreatedPipelineController
                                      FileSystemManager fileSystemManager, DatasetService datasetService,
                                      DataProcessingService dataProcessingService, ProcessingStepService processingStepService,
                                      ToolService toolService, CommandService commandService,
-                                     ToolsConfigProperties toolsConfigProperties, FileUrlBuilder fileUrlBuilder)
+                                     ToolsConfigProperties toolsConfigProperties, FileUrlBuilder fileUrlBuilder,
+                                     AsyncConfiguration asyncConfiguration)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -111,6 +117,7 @@ public class CreatedPipelineController
         this.commandService = commandService;
         this.toolsConfigProperties = toolsConfigProperties;
         this.fileUrlBuilder = fileUrlBuilder;
+        this.asyncConfiguration = asyncConfiguration;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -129,39 +136,40 @@ public class CreatedPipelineController
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
-        try
-        {
-            enqueuePipelineForExecution(newCreatedPipeline);
-        } catch (TryingToDownloadFileWithoutUrl e)
-        {
-            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
-            throw e;
-        } catch (ErrorCopyingInputFiles e)
-        {
-            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
-            throw e;
-        } catch (ErrorRunningToolCommand e)
-        {
-            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
-            throw e;
-        } catch (UnsupportedTool e)
-        {
-            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
-            throw e;
-        }
+        executePipelineAsync(createdPipeline);
 
         return newCreatedPipelineDTO;
     }
 
-    @Async()
-    private void enqueuePipelineForExecution(CreatedPipeline createdPipeline) throws ErrorCopyingInputFiles, TryingToDownloadFileWithoutUrl, ErrorRunningToolCommand, UnsupportedTool
+    public void executePipelineAsync(CreatedPipeline createdPipeline)
     {
         createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
-        runPipeline(createdPipeline);
+        Executor executor = asyncConfiguration.threadPoolTaskExecutor();
+        executor.execute(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    runPipeline(createdPipeline);
+                } catch (TryingToDownloadFileWithoutUrl e)
+                {
+                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
+                } catch (ErrorCopyingInputFiles e)
+                {
+                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
+                } catch (ErrorRunningToolCommand e)
+                {
+                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
+                } catch (UnsupportedTool e)
+                {
+                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
+                }
+            }
+        });
     }
 
-    @Async()
-    @GetMapping("runPipelines")
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         System.out.println("running pipeline");
