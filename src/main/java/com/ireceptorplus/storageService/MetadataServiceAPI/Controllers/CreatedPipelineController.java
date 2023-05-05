@@ -135,15 +135,16 @@ public class CreatedPipelineController
         createdPipeline.setState(CreatedPipelineState.JUST_CREATED);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
+        createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
 
-        executePipelineAsync(createdPipeline);
+        executePipelineAsync(createdPipeline.getId());
 
         return newCreatedPipelineDTO;
     }
 
-    public void executePipelineAsync(CreatedPipeline createdPipeline)
+    public void executePipelineAsync(Long createdPipelineId)
     {
-        createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
+        CreatedPipeline createdPipeline = createdPipelineService.readById(createdPipelineId).get();
         Executor executor = asyncConfiguration.threadPoolTaskExecutor();
         executor.execute(new Runnable()
         {
