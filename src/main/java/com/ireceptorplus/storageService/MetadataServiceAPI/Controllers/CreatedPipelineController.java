@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.validation.Valid;
 import java.io.FileInputStream;
@@ -93,7 +94,6 @@ public class CreatedPipelineController
     protected AsyncConfiguration asyncConfiguration;
 
 
-
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
                                      CreatedPipelineMapper createdPipelineMapper, JobScheduler jobScheduler,
@@ -132,43 +132,36 @@ public class CreatedPipelineController
             inputDatasets.add(dataset);
         }
         createdPipeline.setInputDatasets(inputDatasets);
-        createdPipeline.setState(CreatedPipelineState.JUST_CREATED);
+        createdPipeline.setState(CreatedPipelineState.PROCESSING);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
-        createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
-
-        executePipelineAsync(createdPipeline.getId());
 
         return newCreatedPipelineDTO;
     }
 
-    public void executePipelineAsync(Long createdPipelineId)
+    @Scheduled(fixedRate = 5000)
+    public void runNextPipelineInQueue()
     {
-        CreatedPipeline createdPipeline = createdPipelineService.readById(createdPipelineId).get();
-        Executor executor = asyncConfiguration.threadPoolTaskExecutor();
-        executor.execute(new Runnable()
+        CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
+        if (createdPipeline == null)
+            return;
+
+        try
         {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    runPipeline(createdPipeline);
-                } catch (TryingToDownloadFileWithoutUrl e)
-                {
-                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
-                } catch (ErrorCopyingInputFiles e)
-                {
-                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
-                } catch (ErrorRunningToolCommand e)
-                {
-                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
-                } catch (UnsupportedTool e)
-                {
-                    iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
-                }
-            }
-        });
+            runPipeline(createdPipeline);
+        } catch (TryingToDownloadFileWithoutUrl e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
+        } catch (ErrorCopyingInputFiles e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error copying input files.");
+        } catch (ErrorRunningToolCommand e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Error running tool command");
+        } catch (UnsupportedTool e)
+        {
+            iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
+        }
     }
 
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
