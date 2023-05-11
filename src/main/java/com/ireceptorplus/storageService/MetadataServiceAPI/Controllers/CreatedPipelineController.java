@@ -35,6 +35,7 @@ import java.nio.channels.FileChannel;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -90,6 +91,8 @@ public class CreatedPipelineController
     @Autowired
     protected AsyncConfiguration asyncConfiguration;
 
+    protected AtomicInteger remainingNumberOfPipelinesAllowedToRun = new AtomicInteger(1);
+
 
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
@@ -139,13 +142,32 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 5000)
     public void runNextPipelineInQueue()
     {
-        Optional<CreatedPipeline> createdPipeline = createdPipelineService.getNextToProcess();
-        if (!createdPipeline.isPresent())
+        Optional<CreatedPipeline> createdPipelineOptional = createdPipelineService.getNextToProcess();
+        if (!createdPipelineOptional.isPresent())
             return;
+
+        Integer numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
+        boolean result;
+        if (numberOfPipelinesAllowedToRun > 0)
+            result = remainingNumberOfPipelinesAllowedToRun.compareAndSet(numberOfPipelinesAllowedToRun, numberOfPipelinesAllowedToRun - 10);
+        else
+            return;
+        numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
+        while (!result && numberOfPipelinesAllowedToRun > 0)
+        {
+            if (numberOfPipelinesAllowedToRun > 0)
+                remainingNumberOfPipelinesAllowedToRun.compareAndSet(numberOfPipelinesAllowedToRun, numberOfPipelinesAllowedToRun - 10);
+            else
+                return;
+            numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
+        }
+
+        CreatedPipeline createdPipeline = createdPipelineOptional.get();
+        createdPipeline.setState(CreatedPipelineState.PROCESSING);
 
         try
         {
-            runPipeline(createdPipeline.get());
+            runPipeline(createdPipeline);
         } catch (TryingToDownloadFileWithoutUrl e)
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
