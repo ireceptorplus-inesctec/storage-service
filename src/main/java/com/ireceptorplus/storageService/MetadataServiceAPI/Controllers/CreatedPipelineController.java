@@ -33,10 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
@@ -142,13 +139,13 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 5000)
     public void runNextPipelineInQueue()
     {
-        CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
-        if (createdPipeline == null)
+        Optional<CreatedPipeline> createdPipeline = createdPipelineService.getNextToProcess();
+        if (!createdPipeline.isPresent())
             return;
 
         try
         {
-            runPipeline(createdPipeline);
+            runPipeline(createdPipeline.get());
         } catch (TryingToDownloadFileWithoutUrl e)
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
