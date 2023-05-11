@@ -6,6 +6,7 @@ import com.ireceptorplus.storageService.MetadataServiceAPI.Repositories.CreatedP
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,12 +26,12 @@ public class CreatedPipelineService extends CreateAndReadService<CreatedPipeline
         createdPipelineRepository.delete(createdPipeline);
     }
 
-    public Optional<CreatedPipeline> getNextToProcess()
+    public List<CreatedPipeline> getNextToProcess()
     {
         CreatedPipeline pipelineInQueue = new CreatedPipeline();
         pipelineInQueue.setState(CreatedPipelineState.IN_QUEUE);
         Example<CreatedPipeline> examplePipeline = Example.of(pipelineInQueue);
 
-        return createdPipelineRepository.findOne(examplePipeline);
+        return createdPipelineRepository.findAll(examplePipeline);
     }
 }

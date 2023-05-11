@@ -142,8 +142,8 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 5000)
     public void runNextPipelineInQueue()
     {
-        Optional<CreatedPipeline> createdPipelineOptional = createdPipelineService.getNextToProcess();
-        if (!createdPipelineOptional.isPresent())
+        List<CreatedPipeline> createdPipelineList = createdPipelineService.getNextToProcess();
+        if (!createdPipelineList.isEmpty())
             return;
 
         Integer numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
@@ -162,7 +162,7 @@ public class CreatedPipelineController
             numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
         }
 
-        CreatedPipeline createdPipeline = createdPipelineOptional.get();
+        CreatedPipeline createdPipeline = createdPipelineList.get(0);
         createdPipeline.setState(CreatedPipelineState.PROCESSING);
 
         try
