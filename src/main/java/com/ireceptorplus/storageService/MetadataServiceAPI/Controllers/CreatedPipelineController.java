@@ -139,35 +139,20 @@ public class CreatedPipelineController
         return newCreatedPipelineDTO;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void runNextPipelineInQueue()
     {
-        List<CreatedPipeline> createdPipelineList = createdPipelineService.getNextToProcess();
-        if (!createdPipelineList.isEmpty())
+        CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
+        System.out.println("running scheduled job");
+        if (createdPipeline == null)
             return;
 
-        Integer numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
-        boolean result;
-        if (numberOfPipelinesAllowedToRun > 0)
-            result = remainingNumberOfPipelinesAllowedToRun.compareAndSet(numberOfPipelinesAllowedToRun, numberOfPipelinesAllowedToRun - 10);
-        else
-            return;
-        numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
-        while (!result && numberOfPipelinesAllowedToRun > 0)
-        {
-            if (numberOfPipelinesAllowedToRun > 0)
-                remainingNumberOfPipelinesAllowedToRun.compareAndSet(numberOfPipelinesAllowedToRun, numberOfPipelinesAllowedToRun - 10);
-            else
-                return;
-            numberOfPipelinesAllowedToRun = remainingNumberOfPipelinesAllowedToRun.get();
-        }
-
-        CreatedPipeline createdPipeline = createdPipelineList.get(0);
         createdPipeline.setState(CreatedPipelineState.PROCESSING);
 
         try
         {
             runPipeline(createdPipeline);
+            System.out.println("Pipeline Finished.");
         } catch (TryingToDownloadFileWithoutUrl e)
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Trying to download file without URL");
@@ -186,7 +171,16 @@ public class CreatedPipelineController
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
     {
         System.out.println("running pipeline");
-        ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(createdPipeline.getInputDatasets()));
+        List<Dataset> inputDatasets = createdPipeline.getInputDatasets();
+        System.out.println("Started printing datasets: ");
+        for (Dataset dataset : inputDatasets)
+        {
+            System.out.println(dataset.getUuid());
+
+        }
+
+        System.out.println("Finished printing datasets");
+        ArrayList<File> inputDatasetFiles = convertDatasetsToFiles(new ArrayList<>(inputDatasets));
         Command commandModel = createdPipeline.getCommand();
         Tool tool = commandModel.getTool();
         com.ireceptorplus.storageService.BlockchainAPI.DataClasses.ReproducibilityData.Command command =
