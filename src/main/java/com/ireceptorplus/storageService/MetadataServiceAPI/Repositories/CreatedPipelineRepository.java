@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CreatedPipelineRepository extends JpaRepository<CreatedPipeline, Long>
 {
-    @Query("SELECT * FROM CreatedPipeline WHERE state = 2 LIMIT 1")
+    @Query("SELECT pipeline FROM CreatedPipeline pipeline WHERE state = 2 LIMIT 1")
     public CreatedPipeline getOneInQueue();
 }
