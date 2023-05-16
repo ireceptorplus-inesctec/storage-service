@@ -37,7 +37,7 @@ public class CreatedPipelineService extends CreateAndReadService<CreatedPipeline
 
     public CreatedPipeline getNextToProcess()
     {
-        List<CreatedPipeline> resultList = entityManager.createQuery("SELECT pipeline FROM CreatedPipeline pipeline WHERE pipeline.state = 2", CreatedPipeline.class).setMaxResults(1).getResultList();
+        List<CreatedPipeline> resultList = entityManager.createQuery("SELECT pipeline FROM CreatedPipeline pipeline WHERE pipeline.state = 1", CreatedPipeline.class).setMaxResults(1).getResultList();
         if (resultList.isEmpty())
             return null;
 
