@@ -91,8 +91,6 @@ public class CreatedPipelineController
     @Autowired
     protected AsyncConfiguration asyncConfiguration;
 
-    protected AtomicInteger remainingNumberOfPipelinesAllowedToRun = new AtomicInteger(1);
-
 
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
@@ -132,7 +130,7 @@ public class CreatedPipelineController
             inputDatasets.add(dataset);
         }
         createdPipeline.setInputDatasets(inputDatasets);
-        createdPipeline.setState(CreatedPipelineState.PROCESSING);
+        createdPipeline.setState(CreatedPipelineState.IN_QUEUE);
         CreatedPipeline newCreatedPipeline = createdPipelineService.create(createdPipeline);
         CreatedPipelineDTO newCreatedPipelineDTO = createdPipelineMapper.createdPipelineTocreatedPipelineDTO(newCreatedPipeline);
 
