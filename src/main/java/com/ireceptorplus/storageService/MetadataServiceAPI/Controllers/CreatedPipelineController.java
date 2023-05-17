@@ -6,7 +6,6 @@ import com.ireceptorplus.storageService.DataTransformationRunning.DataTransforma
 import com.ireceptorplus.storageService.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.storageService.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.storageService.DataTransformationRunning.ToolsConfigProperties;
-import com.ireceptorplus.storageService.MetadataServiceAPI.Config.EntityManager;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ApiRequestException;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.ProcessingStepDTO;
@@ -27,6 +26,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -136,11 +137,11 @@ public class CreatedPipelineController
     }
 
     @Scheduled(fixedRate = 1000)
+    @Transactional
     public void runNextPipelineInQueue()
     {
-        EntityManager.getEntityManager().getTransaction().begin();
         CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
-        System.out.println("running scheduled job");
+        System.out.println("running scheduled jobbbb");
         if (createdPipeline == null)
             return;
 
@@ -163,7 +164,6 @@ public class CreatedPipelineController
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
         }
-        EntityManager.getEntityManager().getTransaction().commit();
     }
 
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
