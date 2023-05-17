@@ -93,6 +93,9 @@ public class CreatedPipelineController
     @Autowired
     protected AsyncConfiguration asyncConfiguration;
 
+    @Autowired
+    protected HibernateUtil hibernateUtil;
+
 
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
@@ -101,7 +104,7 @@ public class CreatedPipelineController
                                      DataProcessingService dataProcessingService, ProcessingStepService processingStepService,
                                      ToolService toolService, CommandService commandService,
                                      ToolsConfigProperties toolsConfigProperties, FileUrlBuilder fileUrlBuilder,
-                                     AsyncConfiguration asyncConfiguration)
+                                     AsyncConfiguration asyncConfiguration, HibernateUtil hibernateUtil)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -118,6 +121,7 @@ public class CreatedPipelineController
         this.toolsConfigProperties = toolsConfigProperties;
         this.fileUrlBuilder = fileUrlBuilder;
         this.asyncConfiguration = asyncConfiguration;
+        this.hibernateUtil = hibernateUtil;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -142,7 +146,7 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 1000)
     public void runNextPipelineInQueue()
     {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = hibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
         System.out.println("running scheduled job");

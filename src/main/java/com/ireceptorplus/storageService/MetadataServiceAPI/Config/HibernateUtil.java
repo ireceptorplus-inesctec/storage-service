@@ -20,10 +20,10 @@ import javax.persistence.EntityManagerFactory;
 public class HibernateUtil {
 
     @Autowired
-    private static EntityManagerFactory factory;
+    private EntityManagerFactory factory;
 
     @Bean
-    public static SessionFactory getSessionFactory() {
+    public SessionFactory getSessionFactory() {
         if(factory.unwrap(SessionFactory.class) == null) {
             throw new NullPointerException("Factory is not a hibernate factory.");
         }
