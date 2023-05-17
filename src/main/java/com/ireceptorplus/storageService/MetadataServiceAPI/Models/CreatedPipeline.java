@@ -12,7 +12,7 @@ public class CreatedPipeline
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Dataset> inputDatasets;
 
     @OneToOne()

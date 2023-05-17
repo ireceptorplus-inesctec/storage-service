@@ -6,6 +6,7 @@ import com.ireceptorplus.storageService.DataTransformationRunning.DataTransforma
 import com.ireceptorplus.storageService.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.storageService.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.storageService.DataTransformationRunning.ToolsConfigProperties;
+import com.ireceptorplus.storageService.MetadataServiceAPI.Config.HibernateUtil;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ApiRequestException;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.ProcessingStepDTO;
@@ -18,6 +19,7 @@ import com.ireceptorplus.storageService.Utils.FileUtils;
 import com.ireceptorplus.storageService.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.hibernate.Session;
 import org.jobrunr.scheduling.JobScheduler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +142,8 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 1000)
     public void runNextPipelineInQueue()
     {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
         CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
         System.out.println("running scheduled job");
         if (createdPipeline == null)
@@ -164,6 +168,7 @@ public class CreatedPipelineController
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
         }
+        session.close();
     }
 
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
