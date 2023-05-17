@@ -6,7 +6,7 @@ import com.ireceptorplus.storageService.DataTransformationRunning.DataTransforma
 import com.ireceptorplus.storageService.DataTransformationRunning.Exceptions.*;
 import com.ireceptorplus.storageService.DataTransformationRunning.FileSystemManager;
 import com.ireceptorplus.storageService.DataTransformationRunning.ToolsConfigProperties;
-import com.ireceptorplus.storageService.MetadataServiceAPI.Config.HibernateUtil;
+import com.ireceptorplus.storageService.MetadataServiceAPI.Config.EntityManager;
 import com.ireceptorplus.storageService.MetadataServiceAPI.Controllers.ExceptionHandling.Exceptions.ApiRequestException;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.CreatedPipelineDTO;
 import com.ireceptorplus.storageService.MetadataServiceAPI.DTOs.ProcessingStepDTO;
@@ -19,12 +19,10 @@ import com.ireceptorplus.storageService.Utils.FileUtils;
 import com.ireceptorplus.storageService.iReceptorStorageServiceLogging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.hibernate.Session;
 import org.jobrunr.scheduling.JobScheduler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,8 +34,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -93,9 +89,6 @@ public class CreatedPipelineController
     @Autowired
     protected AsyncConfiguration asyncConfiguration;
 
-    @Autowired
-    protected HibernateUtil hibernateUtil;
-
 
     public CreatedPipelineController(ScriptService scriptService, ScriptMapper scriptMapper,
                                      ModelMapper modelMapper, CreatedPipelineService createdPipelineService,
@@ -104,7 +97,7 @@ public class CreatedPipelineController
                                      DataProcessingService dataProcessingService, ProcessingStepService processingStepService,
                                      ToolService toolService, CommandService commandService,
                                      ToolsConfigProperties toolsConfigProperties, FileUrlBuilder fileUrlBuilder,
-                                     AsyncConfiguration asyncConfiguration, HibernateUtil hibernateUtil)
+                                     AsyncConfiguration asyncConfiguration)
     {
         this.scriptService = scriptService;
         this.scriptMapper = scriptMapper;
@@ -121,7 +114,6 @@ public class CreatedPipelineController
         this.toolsConfigProperties = toolsConfigProperties;
         this.fileUrlBuilder = fileUrlBuilder;
         this.asyncConfiguration = asyncConfiguration;
-        this.hibernateUtil = hibernateUtil;
     }
 
     @Operation(summary = "Creates a new CreatedPipeline object")
@@ -146,8 +138,7 @@ public class CreatedPipelineController
     @Scheduled(fixedRate = 1000)
     public void runNextPipelineInQueue()
     {
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+        EntityManager.getEntityManager().getTransaction().begin();
         CreatedPipeline createdPipeline = createdPipelineService.getNextToProcess();
         System.out.println("running scheduled job");
         if (createdPipeline == null)
@@ -172,7 +163,7 @@ public class CreatedPipelineController
         {
             iReceptorStorageServiceLogging.writeLogMessage(e, "Error running pipeline: Reference to unsupported tool.");
         }
-        session.close();
+        EntityManager.getEntityManager().getTransaction().commit();
     }
 
     public void runPipeline(CreatedPipeline createdPipeline) throws TryingToDownloadFileWithoutUrl, ErrorCopyingInputFiles, ErrorRunningToolCommand, UnsupportedTool
