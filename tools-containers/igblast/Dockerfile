@@ -10,7 +10,6 @@ RUN tar -xvf mouse_gl_VDJ.tar
 WORKDIR /igblast/ncbi-igblast-1.19.0
 
 RUN apt-get update \
-    && apt-get dist-upgrade -y \
     && apt-get install -y --no-install-recommends git ca-certificates \
     && apt-get install -y --no-install-recommends git \
         ca-certificates \
