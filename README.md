@@ -1,8 +1,8 @@
 # iReceptorChain Client
 
-This repository contains the back-end software of the client to interact with [iReceptorChain](https://gitlab.inesctec.pt/ireceptorplus/blockchain/ireceptorchain) prototype. The iReceptorChain client also consists of a front-end that is available at [this repository](https://gitlab.inesctec.pt/ireceptorplus/prototypes/storage-service-ionic-vue).
+This repository contains the back-end software of the client to interact with [iReceptorChain](https://github.com/ireceptorplus-inesctec/ireceptorchain) prototype. The iReceptorChain client also consists of a front-end that is available at [this repository](https://gitlab.inesctec.pt/ireceptorplus/prototypes/storage-service-ionic-vue).
 
-This repository contains the code for a java spring application that interacts with the front-end and the blockchain. Since it interacts with the blockchain, it is required to run the [iReceptorChain prototype](https://gitlab.inesctec.pt/ireceptorplus/blockchain/ireceptorchain) first, using the instruction available at the repository README.md.  It it is a GUI-based client that allows the user to create traceability data entries and validate other users' traceability data entries, submitting a vote accordingly to the blockchain.
+This repository contains the code for a java spring application that interacts with the front-end and the blockchain. Since it interacts with the blockchain, it is required to run the [iReceptorChain prototype](https://github.com/ireceptorplus-inesctec/ireceptorchain) first, using the instruction available at the repository README.md.  It it is a GUI-based client that allows the user to create traceability data entries and validate other users' traceability data entries, submitting a vote accordingly to the blockchain.
 
 # Test network
 Since this is a client of the iReceptorChain blockchain prototype, it is required to run the iReceptorChain blockchain prototype first. This section will explain how to run both the iReceptorChain Storage Service and the iReceptorChain, using the test network provided by Hyperledger Fabric.
